@@ -1,0 +1,50 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package roguelike;
+
+/**
+ *
+ * @author Anthony
+ */
+public class Board {
+    GameObject[][] gameboard;
+    int size;
+    
+    public Board(int size) {
+        this.size = size;
+        gameboard = new GameObject[size][size];
+    }
+    
+    //Returns the object at a specified square, returns null if empty
+    public GameObject GetObjectAtSquare(int x, int y){
+        return gameboard[x][y];
+    }
+    
+    //Sets the object at a specified square
+    public void SetObjectAtSquare(int x, int y, GameObject object){
+        gameboard[x][y] = object;
+    }
+    
+    //Prints the board
+    public void Print(){
+        for (int x = 0; x < gameboard.length; x++){
+            String s = "";
+            
+            for (int y = 0; y < gameboard.length; y++) {
+                //If the square is empty/null, set the character to 0
+                if (GetObjectAtSquare(x, y) == null){
+                    s += '0' + " ";
+                }
+                //Else, add the respective character to represent the object
+                else {
+                    s += GetObjectAtSquare(x, y).GetSymbol() + " ";
+                }
+            }
+            
+            System.out.println(s + "\n");
+        }
+    }
+}
