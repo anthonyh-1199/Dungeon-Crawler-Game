@@ -15,7 +15,6 @@ public class ObjectWall extends GameObject{
     boolean isSolid = true;
     
     public ObjectWall(int xposition, int yposition, Board gameboard){
-        isSolid = true;
         gameboard.SetObjectAtSquare(xposition, yposition, this);
     }
     
