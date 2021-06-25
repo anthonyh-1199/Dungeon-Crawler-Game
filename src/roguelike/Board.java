@@ -28,23 +28,28 @@ public class Board {
         gameboard[x][y] = object;
     }
     
-    //Prints the board
-    public void Print(){
-        for (int x = 0; x < gameboard.length; x++){
-            String s = "";
+    //Returns a representation of the board in a String
+    public String ToString(){
+        String s = "";
+        
+        for (int y = 0; y < gameboard.length; y++){
             
-            for (int y = 0; y < gameboard.length; y++) {
+            for (int x = 0; x < gameboard.length; x++) {
+                
                 //If the square is empty/null, set the character to 0
                 if (GetObjectAtSquare(x, y) == null){
                     s += '0' + " ";
                 }
+                
                 //Else, add the respective character to represent the object
                 else {
                     s += GetObjectAtSquare(x, y).GetSymbol() + " ";
                 }
             }
             
-            System.out.println(s + "\n");
+            s += "\n";
         }
+        
+        return s;
     }
 }
