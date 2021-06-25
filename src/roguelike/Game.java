@@ -14,19 +14,24 @@ import java.awt.event.KeyListener;
  */
 public class Game extends javax.swing.JFrame implements KeyListener {
 
-    //Initialize variables
-    Board gameboard = new Board(9);
+    //Initialize game elements
+    Board gameboard = new Board(10);
+
+    Player player = new Player(100, 5, 5, gameboard);
     
     public Game() {
         initComponents();
         this.addKeyListener(this);
+
+
         
-        
+        System.out.println(gameboard.ToString());
+
     }
     
     //Updates the board to reflect changes
     private void Update() {
-        
+
     }
 
     /**
@@ -38,17 +43,22 @@ public class Game extends javax.swing.JFrame implements KeyListener {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jTextField1 = new javax.swing.JTextField();
+
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+
+        jTextField1.setEditable(false);
+        jTextField1.setFocusable(false);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 499, Short.MAX_VALUE)
+            .addComponent(jTextField1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 499, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 459, Short.MAX_VALUE)
+            .addComponent(jTextField1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 459, Short.MAX_VALUE)
         );
 
         pack();
@@ -92,12 +102,30 @@ public class Game extends javax.swing.JFrame implements KeyListener {
 
     @Override
     public void keyPressed(KeyEvent e) {
-        System.out.println("AWF");
+        
+        switch (e.getKeyCode()) {
+            case KeyEvent.VK_UP:
+                player.MoveUp();
+                break;
+            case KeyEvent.VK_DOWN:
+                player.MoveDown();
+                break;
+            case KeyEvent.VK_LEFT:
+                player.MoveLeft();
+                break;
+            case KeyEvent.VK_RIGHT:
+                player.MoveRight();
+                break;
+        }
+        
+        System.out.println(gameboard.ToString());
+
     }
 
     @Override
     public void keyReleased(KeyEvent e) {}
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JTextField jTextField1;
     // End of variables declaration//GEN-END:variables
 }
