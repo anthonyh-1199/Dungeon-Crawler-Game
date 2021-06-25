@@ -19,6 +19,7 @@ public class Game extends javax.swing.JFrame implements KeyListener {
     Player player = new Player(100, 5, 5, gameboard);
     
     GameObject o = new ObjectWall(9,9,gameboard);
+    GameObject e = new Enemy(6,6,gameboard,5);
     
     public Game() {
         initComponents();
@@ -105,16 +106,16 @@ public class Game extends javax.swing.JFrame implements KeyListener {
         
         switch (e.getKeyCode()) {
             case KeyEvent.VK_UP:
-                player.MoveUp();
+                player.Move("UP");
                 break;
             case KeyEvent.VK_DOWN:
-                player.MoveDown();
+                player.Move("DOWN");
                 break;
             case KeyEvent.VK_LEFT:
-                player.MoveLeft();
+                player.Move("LEFT");
                 break;
             case KeyEvent.VK_RIGHT:
-                player.MoveRight();
+                player.Move("RIGHT");
                 break;
         }
         

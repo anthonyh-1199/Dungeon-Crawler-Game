@@ -9,7 +9,7 @@ package roguelike;
  *
  * @author Anthony
  */
-public class Board {
+public class Board<T> {
     GameObject[][] gameboard;
     int size;
     
@@ -19,8 +19,8 @@ public class Board {
     }
     
     //Returns the object at a specified square, returns null if empty
-    public GameObject GetObjectAtSquare(int x, int y){
-        return gameboard[x][y];
+    public T GetObjectAtSquare(int x, int y){
+        return (T)gameboard[x][y];
     }
     
     //Sets the object at a specified square
@@ -43,7 +43,7 @@ public class Board {
                 
                 //Else, add the respective character to represent the object
                 else {
-                    s += GetObjectAtSquare(x, y).GetSymbol() + " ";
+                    s += ((GameObject)GetObjectAtSquare(x, y)).GetSymbol() + " ";
                 }
             }
             
