@@ -24,80 +24,56 @@ public class Player extends GameObject{
         gameboard.SetObjectAtSquare(xposition, yposition, this);
     }
     
-    public void MoveUp(){
-        //Check if space is empty or nonsolid
-        if ((gameboard.GetObjectAtSquare(xposition, yposition - 1)) == null ||
-            (gameboard.GetObjectAtSquare(xposition, yposition - 1)).IsSolid() == false){
+    public void Move(String direction){
+        
+        //Initialize variables
+        int xgoal = xposition;
+        int ygoal = yposition;
+        
+        //Set x and y positions of goal based on direction
+        switch (direction){
+            case "UP":
+                ygoal--;
+                break;
+            case "DOWN":
+                ygoal++;
+                break;
+            case "RIGHT":
+                xgoal++;
+                break;
+            case "LEFT":
+                xgoal--;
+                break;
+        }
+        
+        //If space is empty or nonsolid, move into it
+        if ((gameboard.GetObjectAtSquare(xgoal, ygoal)) == null ||
+            ((GameObject)gameboard.GetObjectAtSquare(xgoal, ygoal)).IsSolid() == false){
 
                 //Remove current position in board
                 gameboard.SetObjectAtSquare(xposition, yposition, null);
-
+                
                 //Update player's positional variables
-                yposition--;
+                xposition = xgoal;
+                yposition = ygoal;
 
-                //Set player's board position
+                //Set to new position in board
                 gameboard.SetObjectAtSquare(xposition, yposition, this);
 
         }
         
         //If not, perform contextual behavior based on object in square
-    }
-    
-    public void MoveDown(){
-        //Check if space is empty
-       if ((gameboard.GetObjectAtSquare(xposition, yposition + 1)) == null ||
-            (gameboard.GetObjectAtSquare(xposition, yposition + 1)).IsSolid() == false){
-
-                //Remove current position in board
-                gameboard.SetObjectAtSquare(xposition, yposition, null);
-
-                //Update player's positional variables
-                yposition++;
-
-                //Set player's board position
-                gameboard.SetObjectAtSquare(xposition, yposition, this);
-
+        else {
+            switch (gameboard.GetObjectAtSquare(xgoal, ygoal).getClass().getSimpleName()){
+                case "Enemy":
+                    Enemy object = (Enemy)gameboard.GetObjectAtSquare(xgoal, ygoal);
+                    object.health--;
+                    if (object.health <= 0){
+                        gameboard.SetObjectAtSquare(xgoal, ygoal, null);
+                    }
+                    break;
+            }
         }
-        
-        //If not, perform contextual behavior based on object in square
-    }
-    
-    public void MoveRight(){
-        //Check if space is empty
-       if ((gameboard.GetObjectAtSquare(xposition + 1, yposition)) == null ||
-            (gameboard.GetObjectAtSquare(xposition + 1, yposition)).IsSolid() == false){
-
-                //Remove current position in board
-                gameboard.SetObjectAtSquare(xposition, yposition, null);
-
-                //Update player's positional variables
-                xposition++;
-
-                //Set player's board position
-                gameboard.SetObjectAtSquare(xposition, yposition, this);
-
-        }
-        
-        //If not, perform contextual behavior based on object in square
-    }
-    
-    public void MoveLeft(){
-        //Check if space is empty
-       if ((gameboard.GetObjectAtSquare(xposition - 1, yposition)) == null ||
-            (gameboard.GetObjectAtSquare(xposition - 1, yposition)).IsSolid() == false){
-
-                //Remove current position in board
-                gameboard.SetObjectAtSquare(xposition, yposition, null);
-
-                //Update player's positional variables
-                xposition--;
-
-                //Set player's board position
-                gameboard.SetObjectAtSquare(xposition, yposition, this);
-
-        }
-        
-        //If not, perform contextual behavior based on object in square
     }
 
     @Override
