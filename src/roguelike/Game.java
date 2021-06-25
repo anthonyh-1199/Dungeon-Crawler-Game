@@ -15,23 +15,21 @@ import java.awt.event.KeyListener;
 public class Game extends javax.swing.JFrame implements KeyListener {
 
     //Initialize game elements
-    Board gameboard = new Board(10);
-
+    Board gameboard = new Board(19);
     Player player = new Player(100, 5, 5, gameboard);
+    
+    GameObject o = new ObjectWall(9,9,gameboard);
     
     public Game() {
         initComponents();
         this.addKeyListener(this);
 
-
-        
-        System.out.println(gameboard.ToString());
-
+        Update();
     }
     
     //Updates the board to reflect changes
     private void Update() {
-
+        jGameScreen.setText(gameboard.ToString());
     }
 
     /**
@@ -43,22 +41,24 @@ public class Game extends javax.swing.JFrame implements KeyListener {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jTextField1 = new javax.swing.JTextField();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        jGameScreen = new javax.swing.JTextPane();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        jTextField1.setEditable(false);
-        jTextField1.setFocusable(false);
+        jGameScreen.setFont(new java.awt.Font("Consolas", 0, 18)); // NOI18N
+        jGameScreen.setFocusable(false);
+        jScrollPane2.setViewportView(jGameScreen);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jTextField1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 499, Short.MAX_VALUE)
+            .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 499, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jTextField1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 459, Short.MAX_VALUE)
+            .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 459, Short.MAX_VALUE)
         );
 
         pack();
@@ -118,7 +118,7 @@ public class Game extends javax.swing.JFrame implements KeyListener {
                 break;
         }
         
-        System.out.println(gameboard.ToString());
+        Update();
 
     }
 
@@ -126,6 +126,7 @@ public class Game extends javax.swing.JFrame implements KeyListener {
     public void keyReleased(KeyEvent e) {}
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JTextField jTextField1;
+    private javax.swing.JTextPane jGameScreen;
+    private javax.swing.JScrollPane jScrollPane2;
     // End of variables declaration//GEN-END:variables
 }

@@ -21,9 +21,7 @@ public class Roguelike {
         
         System.out.println(gameboard.GetObjectAtSquare(0, 0));
         
-        gameboard.SetObjectAtSquare(2, 2, new ObjectWall());
-        
-        gameboard.Print();
+        System.out.println(gameboard.ToString());
     }
     
 }

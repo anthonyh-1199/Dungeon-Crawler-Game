@@ -18,4 +18,6 @@ public abstract class GameObject {
     
     //Class methods
     public abstract char GetSymbol();
+    
+    public abstract boolean IsSolid();
 }

@@ -25,9 +25,9 @@ public class Player extends GameObject{
     }
     
     public void MoveUp(){
-        //Check if space is empty
+        //Check if space is empty or nonsolid
         if ((gameboard.GetObjectAtSquare(xposition, yposition - 1)) == null ||
-            (gameboard.GetObjectAtSquare(xposition, yposition - 1)).isSolid == false){
+            (gameboard.GetObjectAtSquare(xposition, yposition - 1)).IsSolid() == false){
 
                 //Remove current position in board
                 gameboard.SetObjectAtSquare(xposition, yposition, null);
@@ -46,7 +46,7 @@ public class Player extends GameObject{
     public void MoveDown(){
         //Check if space is empty
        if ((gameboard.GetObjectAtSquare(xposition, yposition + 1)) == null ||
-            (gameboard.GetObjectAtSquare(xposition, yposition + 1)).isSolid == false){
+            (gameboard.GetObjectAtSquare(xposition, yposition + 1)).IsSolid() == false){
 
                 //Remove current position in board
                 gameboard.SetObjectAtSquare(xposition, yposition, null);
@@ -65,7 +65,7 @@ public class Player extends GameObject{
     public void MoveRight(){
         //Check if space is empty
        if ((gameboard.GetObjectAtSquare(xposition + 1, yposition)) == null ||
-            (gameboard.GetObjectAtSquare(xposition + 1, yposition)).isSolid == false){
+            (gameboard.GetObjectAtSquare(xposition + 1, yposition)).IsSolid() == false){
 
                 //Remove current position in board
                 gameboard.SetObjectAtSquare(xposition, yposition, null);
@@ -84,7 +84,7 @@ public class Player extends GameObject{
     public void MoveLeft(){
         //Check if space is empty
        if ((gameboard.GetObjectAtSquare(xposition - 1, yposition)) == null ||
-            (gameboard.GetObjectAtSquare(xposition - 1, yposition)).isSolid == false){
+            (gameboard.GetObjectAtSquare(xposition - 1, yposition)).IsSolid() == false){
 
                 //Remove current position in board
                 gameboard.SetObjectAtSquare(xposition, yposition, null);
@@ -103,5 +103,10 @@ public class Player extends GameObject{
     @Override
     public char GetSymbol() {
         return symbol;
+    }
+    
+    @Override
+    public boolean IsSolid() {
+        return isSolid;
     }
 }
