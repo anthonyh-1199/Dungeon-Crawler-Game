@@ -20,4 +20,6 @@ public abstract class GameObject {
     public abstract char GetSymbol();
     
     public abstract boolean IsSolid();
+    
+    public abstract void Update();
 }

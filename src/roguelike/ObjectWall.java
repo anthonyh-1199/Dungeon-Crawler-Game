@@ -27,4 +27,7 @@ public class ObjectWall extends GameObject{
     public char GetSymbol(){
         return symbol;
     }
+
+    @Override
+    public void Update() {}
 }

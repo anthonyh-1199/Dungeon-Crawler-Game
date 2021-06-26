@@ -5,13 +5,18 @@
  */
 package roguelike;
 
+import java.util.*;
+
 /**
  *
  * @author Anthony
  */
 public class Board<T> {
+    
     GameObject[][] gameboard;
     int size;
+    LinkedList<GameObject> actionList = new LinkedList<>();
+    Player gamePlayer;
     
     public Board(int size) {
         this.size = size;
@@ -26,6 +31,33 @@ public class Board<T> {
     //Sets the object at a specified square
     public void SetObjectAtSquare(int x, int y, GameObject object){
         gameboard[x][y] = object;
+    }
+    
+    //Adds object to ActionQueue
+    public void AddObjectToList(GameObject object) {
+        actionList.add(object);
+    }
+    
+    public void SetPlayer(Player player){
+        gamePlayer = player;
+    }
+    
+    public Player GetPlayer(){
+        return this.gamePlayer;
+    }
+    
+    //Removes object from ActionQueue
+    public void RemoveObjectFromList(GameObject object) {
+        actionList.remove(object);
+    }
+    
+    //Updates the game state oops through all objects in the action list and calls their Update() functions
+    public void Update() {
+        
+        for (GameObject object : actionList) {
+            object.Update();
+        }
+        
     }
     
     //Returns a representation of the board in a String
@@ -52,4 +84,5 @@ public class Board<T> {
         
         return s;
     }
+    
 }

@@ -68,8 +68,9 @@ public class Player extends GameObject{
                 case "Enemy":
                     Enemy object = (Enemy)gameboard.GetObjectAtSquare(xgoal, ygoal);
                     object.health--;
+                    System.out.println(object.health);
                     if (object.health <= 0){
-                        gameboard.SetObjectAtSquare(xgoal, ygoal, null);
+                        object.Die();
                     }
                     break;
             }
@@ -84,5 +85,10 @@ public class Player extends GameObject{
     @Override
     public boolean IsSolid() {
         return isSolid;
+    }
+
+    @Override
+    public void Update() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 }

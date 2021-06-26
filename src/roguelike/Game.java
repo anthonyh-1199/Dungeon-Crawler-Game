@@ -16,20 +16,24 @@ public class Game extends javax.swing.JFrame implements KeyListener {
 
     //Initialize game elements
     Board gameboard = new Board(19);
-    Player player = new Player(100, 5, 5, gameboard);
+    Player player = new Player(100, 3, 3, gameboard);
     
     GameObject o = new ObjectWall(9,9,gameboard);
-    GameObject e = new Enemy(6,6,gameboard,5);
+    Enemy e1 = new Enemy(8,8,gameboard,5);
+    Enemy e2 = new Enemy(7,8,gameboard,5);
+    Enemy e3 = new Enemy(8,7,gameboard,5);
     
     public Game() {
         initComponents();
         this.addKeyListener(this);
-
-        Update();
+        gameboard.SetPlayer(player);
+        
+        jGameScreen.setText(gameboard.ToString());
     }
     
     //Updates the board to reflect changes
     private void Update() {
+        gameboard.Update();
         jGameScreen.setText(gameboard.ToString());
     }
 
