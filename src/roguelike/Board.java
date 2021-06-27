@@ -70,7 +70,7 @@ public class Board<T> {
                 
                 //If the square is empty/null, set the character to 0
                 if (GetObjectAtSquare(x, y) == null){
-                    s += '0' + " ";
+                    s += '.' + " ";
                 }
                 
                 //Else, add the respective character to represent the object

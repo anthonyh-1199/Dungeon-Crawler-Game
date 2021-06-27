@@ -15,18 +15,26 @@ import java.awt.event.KeyListener;
 public class Game extends javax.swing.JFrame implements KeyListener {
 
     //Initialize game elements
-    Board gameboard = new Board(19);
+    Board gameboard = new Board(27);
     Player player = new Player(100, 3, 3, gameboard);
     
     GameObject o = new ObjectWall(9,9,gameboard);
-    Enemy e1 = new Enemy(8,8,gameboard,5);
-    Enemy e2 = new Enemy(7,8,gameboard,5);
-    Enemy e3 = new Enemy(8,7,gameboard,5);
+    //Entity e1 = new EntitySheep(8,8,gameboard,5);
+    Entity e2 = new EntityGoblin(7,8,gameboard,5);
+    //Entity e3 = new EntityGoblin(8,7,gameboard,5);
     
     public Game() {
         initComponents();
         this.addKeyListener(this);
         gameboard.SetPlayer(player);
+        
+        //Set walls
+        for (int i = 0; i < 27; i++){
+            new ObjectWall(i,0,gameboard);
+            new ObjectWall(i,26,gameboard);
+            new ObjectWall(0,i,gameboard);
+            new ObjectWall(26,i,gameboard);
+        }
         
         jGameScreen.setText(gameboard.ToString());
     }
@@ -59,11 +67,11 @@ public class Game extends javax.swing.JFrame implements KeyListener {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 499, Short.MAX_VALUE)
+            .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 640, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 459, Short.MAX_VALUE)
+            .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 640, Short.MAX_VALUE)
         );
 
         pack();
