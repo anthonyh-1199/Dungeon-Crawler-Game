@@ -12,14 +12,16 @@ package roguelike;
 public class Player extends GameObject{
     
     int health, xposition, yposition;
-    char symbol = '@';
     Board gameboard;
     
     public Player(int health, int xposition, int yposition, Board gameboard){
+        
+        //Set variables
         this.health = health;
         this.xposition = xposition;
         this.yposition = yposition;
         this.gameboard = gameboard;
+        this.symbol = '@';
         
         gameboard.SetObjectAtSquare(xposition, yposition, this);
     }
@@ -64,27 +66,13 @@ public class Player extends GameObject{
         
         //If not, perform contextual behavior based on object in square
         else {
-            switch (gameboard.GetObjectAtSquare(xgoal, ygoal).getClass().getSimpleName()){
-                case "Enemy":
-                    Enemy object = (Enemy)gameboard.GetObjectAtSquare(xgoal, ygoal);
+            switch (gameboard.GetObjectAtSquare(xgoal, ygoal).getClass().getSuperclass().getSimpleName()){
+                case "Entity":
+                    Entity object = (Entity)gameboard.GetObjectAtSquare(xgoal, ygoal);
                     object.health--;
-                    System.out.println(object.health);
-                    if (object.health <= 0){
-                        object.Die();
-                    }
                     break;
             }
         }
-    }
-
-    @Override
-    public char GetSymbol() {
-        return symbol;
-    }
-    
-    @Override
-    public boolean IsSolid() {
-        return isSolid;
     }
 
     @Override

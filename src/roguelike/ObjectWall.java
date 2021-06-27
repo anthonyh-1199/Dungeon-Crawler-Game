@@ -11,23 +11,15 @@ package roguelike;
  */
 public class ObjectWall extends GameObject{
     
-    char symbol = '#';
-    boolean isSolid = true;
-    
     public ObjectWall(int xposition, int yposition, Board gameboard){
+        
+        //Set variables
+        this.isSolid = true;
+        this.symbol = '#';
+        
         gameboard.SetObjectAtSquare(xposition, yposition, this);
     }
     
-    @Override
-    public boolean IsSolid(){
-        return isSolid;
-    }
-    
-    @Override
-    public char GetSymbol(){
-        return symbol;
-    }
-
     @Override
     public void Update() {}
 }

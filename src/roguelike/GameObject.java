@@ -1,7 +1,5 @@
 /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+ * Abstract class that encapsulates all game objects (walls, items, ncps)
  */
 package roguelike;
 
@@ -10,16 +8,19 @@ package roguelike;
  * @author Anthony
  */
 public abstract class GameObject {
-    //Abstract class that encapsulates all game objects (walls, items, ncps)
     
     //Class variables
     boolean isSolid;
     char symbol;
     
     //Class methods
-    public abstract char GetSymbol();
+    public boolean IsSolid(){
+        return isSolid;
+    }
     
-    public abstract boolean IsSolid();
+    public char GetSymbol(){
+        return symbol;
+    }
     
     public abstract void Update();
 }
