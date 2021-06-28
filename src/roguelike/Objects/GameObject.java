@@ -12,11 +12,14 @@ import roguelike.Board;
 public abstract class GameObject {
     
     //Class variables
+    
     Board gameboard;
     boolean isSolid;
     char symbol;
     int xposition;
     int yposition;
+    
+    //Constructor
     
     public GameObject(int x, int y, Board b){
         this.xposition = x;
@@ -27,8 +30,19 @@ public abstract class GameObject {
     }
     
     //Class methods
+    
     public boolean IsSolid(){
         return isSolid;
+    }
+    
+    //Getter methods
+    
+    public int GetX(){
+        return xposition;
+    }
+    
+    public int GetY(){
+        return yposition;
     }
     
     public char GetSymbol(){
