@@ -5,6 +5,7 @@
  */
 package roguelike;
 
+import roguelike.Objects.Player;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 
@@ -15,27 +16,46 @@ import java.awt.event.KeyListener;
 public class Game extends javax.swing.JFrame implements KeyListener {
 
     //Initialize game elements
-    Board gameboard = new Board(27);
-    Player player = new Player(100, 3, 3, gameboard);
-    
-    GameObject o = new ObjectWall(9,9,gameboard);
-    //Entity e1 = new EntitySheep(8,8,gameboard,5);
-    Entity e2 = new EntityGoblin(7,8,gameboard,5);
-    //Entity e3 = new EntityGoblin(8,7,gameboard,5);
-    
+    Board gameboard;
+    Player player;
+
     public Game() {
         initComponents();
         this.addKeyListener(this);
-        gameboard.SetPlayer(player);
         
-        //Set walls
-        for (int i = 0; i < 27; i++){
-            new ObjectWall(i,0,gameboard);
-            new ObjectWall(i,26,gameboard);
-            new ObjectWall(0,i,gameboard);
-            new ObjectWall(26,i,gameboard);
-        }
+        String seed =
+        "###########################" + 
+        "#..............C..#.......#" + 
+        "#.P............C..#.......#" + 
+        "#..............#..#.......#" + 
+        "#..............#..#...#...#" + 
+        "#..............#..#...#...#" + 
+        "#..............#..#...#...#" + 
+        "#..............#..#...#...#" + 
+        "#..............#..#...#...#" + 
+        "#..............#..#...#...#" + 
+        "#..............#..#...#...#" + 
+        "#..............#..#...#...#" + 
+        "#..............#..#...#...#" + 
+        "#..............#..#...#...#" + 
+        "#..............#..#...#...#" + 
+        "#..............#..#...#...#" + 
+        "#..............#..#...#...#" + 
+        "#..............#..#...#...#" + 
+        "#..............#..#...#...#" + 
+        "#..............#..#...#...#" + 
+        "#..............#..#...#...#" + 
+        "#..............#..#...#...#" + 
+        "#..............#..#...#...#" + 
+        "#..............#......#...#" + 
+        "#..............#......#...#" + 
+        "#..............#......#GGG#" + 
+        "###########################";
         
+        this.gameboard = new Board(27, seed);
+        
+        this.player = gameboard.GetPlayer();
+
         jGameScreen.setText(gameboard.ToString());
     }
     
@@ -67,7 +87,10 @@ public class Game extends javax.swing.JFrame implements KeyListener {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 640, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addGap(41, 41, 41)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 558, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(41, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -116,6 +139,8 @@ public class Game extends javax.swing.JFrame implements KeyListener {
     @Override
     public void keyPressed(KeyEvent e) {
         
+        player = gameboard.GetPlayer();
+
         switch (e.getKeyCode()) {
             case KeyEvent.VK_UP:
                 player.Move("UP");

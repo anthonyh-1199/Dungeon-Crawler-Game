@@ -5,6 +5,7 @@
  */
 package roguelike;
 
+import roguelike.Objects.Player;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 
@@ -25,7 +26,7 @@ public class KeyController implements KeyListener {
         
         switch (e.getKeyCode()) {
             case KeyEvent.VK_UP:
-                player.MoveUp();
+                //player.MoveUp();
                 break;
             case KeyEvent.VK_DOWN:
                 //player.MoveRight();

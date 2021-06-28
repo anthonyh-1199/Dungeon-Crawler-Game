@@ -5,6 +5,12 @@
  */
 package roguelike;
 
+import roguelike.Objects.Player;
+import roguelike.Objects.GameObject;
+import roguelike.Objects.EntitySheep;
+import roguelike.Objects.EntityGoblin;
+import roguelike.Objects.ObjectWall;
+import roguelike.Objects.EntityCrate;
 import java.util.*;
 
 /**
@@ -18,14 +24,58 @@ public class Board<T> {
     LinkedList<GameObject> actionList = new LinkedList<>();
     Player gamePlayer;
     
+    //Creates a square board with given dimensions
     public Board(int size) {
         this.size = size;
         gameboard = new GameObject[size][size];
     }
     
+    //Creates a square board and fills it based on a pre-made seed
+    //Seed must match the dimensions of the board
+    public Board(int size, String seed){
+        
+        this.size = size;
+        gameboard = new GameObject[size][size];
+        
+        int currentCharacter = 0;
+        
+        for (int y = 0; y < size; y++){
+            for (int x = 0; x < size; x++){
+                
+                char c = seed.charAt(currentCharacter);
+                
+                //Add game object based on character in String
+                switch (c){
+                    case '#':
+                        new ObjectWall(x, y, this);
+                        break;
+                    case 'C':
+                        new EntityCrate(x, y, this, 2);
+                        break;
+                    case 'P':
+                        new Player(10, x, y, this);
+                        break;
+                    case 'G':
+                        new EntityGoblin(x, y, this, 5);
+                        break;
+                    case 'S':
+                        new EntitySheep(x, y, this, 3);
+                        break;
+                }
+                
+                currentCharacter++;
+                
+            }
+        }
+    }
+    
     //Returns the object at a specified square, returns null if empty
     public T GetObjectAtSquare(int x, int y){
         return (T)gameboard[x][y];
+    }
+    
+    public boolean CheckIfSquareIsEmpty(int x, int y){
+        return (GetObjectAtSquare(x, y) == null);
     }
     
     //Sets the object at a specified square
@@ -51,7 +101,7 @@ public class Board<T> {
         actionList.remove(object);
     }
     
-    //Updates the game state oops through all objects in the action list and calls their Update() functions
+    //Loops through all objects in the action list and calls their Update() functions
     public void Update() {
         
         for (GameObject object : actionList) {

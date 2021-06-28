@@ -5,6 +5,8 @@
  */
 package roguelike;
 
+import roguelike.Objects.Player;
+
 /**
  *
  * @author Anthony
