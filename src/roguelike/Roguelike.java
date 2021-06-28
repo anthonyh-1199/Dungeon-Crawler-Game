@@ -21,7 +21,7 @@ public class Roguelike {
         
         Player player = new Player(100, 5, 5, gameboard);
         
-        System.out.println(gameboard.GetObjectAtSquare(0, 0));
+        System.out.println(gameboard.GetSquare(0, 0));
         
         System.out.println(gameboard.ToString());
     }

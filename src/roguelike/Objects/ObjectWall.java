@@ -19,7 +19,7 @@ public class ObjectWall extends GameObject{
         this.isSolid = true;
         this.symbol = '#';
         
-        gameboard.SetObjectAtSquare(xposition, yposition, this);
+        gameboard.SetSquare(xposition, yposition, this);
     }
     
     @Override

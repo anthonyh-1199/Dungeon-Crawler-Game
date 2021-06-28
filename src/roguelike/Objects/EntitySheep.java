@@ -18,7 +18,7 @@ public class EntitySheep extends Entity{
     public EntitySheep(int xposition, int yposition, Board gameboard, int health){
         
         //Add self to board
-        gameboard.SetObjectAtSquare(xposition, yposition, this);
+        gameboard.SetSquare(xposition, yposition, this);
         
         //Set variables
         this.xposition = xposition;
@@ -63,14 +63,14 @@ public class EntitySheep extends Entity{
         if (gameboard.CheckIfSquareIsEmpty(xgoal, ygoal)) {
 
             //Remove current position in board
-            gameboard.SetObjectAtSquare(xposition, yposition, null);
+            gameboard.SetSquare(xposition, yposition, null);
             
             //Update positional variables
             xposition = xgoal;
             yposition = ygoal;
 
             //Set to new position in board
-            gameboard.SetObjectAtSquare(xgoal, ygoal, this);
+            gameboard.SetSquare(xgoal, ygoal, this);
             
         }
         
@@ -79,7 +79,7 @@ public class EntitySheep extends Entity{
     public void Die(){
         
         //Remove self from board
-        gameboard.SetObjectAtSquare(xposition, yposition, null);
+        gameboard.SetSquare(xposition, yposition, null);
         
         //Remove self from actionList
         gameboard.RemoveObjectFromList(this);

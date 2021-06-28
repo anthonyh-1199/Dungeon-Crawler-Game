@@ -19,7 +19,7 @@ public class EntityGoblin extends Entity{
     public EntityGoblin(int xposition, int yposition, Board gameboard, int health){
         
         //Add self to board
-        gameboard.SetObjectAtSquare(xposition, yposition, this);
+        gameboard.SetSquare(xposition, yposition, this);
         
         //Set variables
         this.xposition = xposition;
@@ -37,17 +37,17 @@ public class EntityGoblin extends Entity{
     public void Move(int xgoal, int ygoal){
 
         //If space is empty, move into it
-        if ((gameboard.GetObjectAtSquare(xgoal, ygoal)) == null) {
+        if ((gameboard.GetSquare(xgoal, ygoal)) == null) {
 
             //Remove current position in board
-            gameboard.SetObjectAtSquare(xposition, yposition, null);
+            gameboard.SetSquare(xposition, yposition, null);
             
             //Update positional variables
             xposition = xgoal;
             yposition = ygoal;
 
             //Set to new position in board
-            gameboard.SetObjectAtSquare(xgoal, ygoal, this);
+            gameboard.SetSquare(xgoal, ygoal, this);
             
         }
         
@@ -145,7 +145,7 @@ public class EntityGoblin extends Entity{
     public void Die(){
         
         //Remove self from board
-        gameboard.SetObjectAtSquare(xposition, yposition, null);
+        gameboard.SetSquare(xposition, yposition, null);
         
         //Remove self from actionList
         gameboard.RemoveObjectFromList(this);

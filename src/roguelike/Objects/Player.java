@@ -26,7 +26,7 @@ public class Player extends GameObject{
         this.symbol = '@';
         this.damage = 1;
         
-        gameboard.SetObjectAtSquare(xposition, yposition, this);
+        gameboard.SetSquare(xposition, yposition, this);
         gameboard.SetPlayer(this);
     }
     
@@ -54,25 +54,25 @@ public class Player extends GameObject{
         
         //If space is empty or nonsolid, move into it
         if ((gameboard.CheckIfSquareIsEmpty(xgoal, ygoal)) ||
-            ((GameObject)gameboard.GetObjectAtSquare(xgoal, ygoal)).IsSolid() == false){
+            ((GameObject)gameboard.GetSquare(xgoal, ygoal)).IsSolid() == false){
 
                 //Remove current position in board
-                gameboard.SetObjectAtSquare(xposition, yposition, null);
+                gameboard.SetSquare(xposition, yposition, null);
                 
                 //Update player's positional variables
                 xposition = xgoal;
                 yposition = ygoal;
 
                 //Set to new position in board
-                gameboard.SetObjectAtSquare(xposition, yposition, this);
+                gameboard.SetSquare(xposition, yposition, this);
 
         }
         
         //If not, perform contextual behavior based on object in square
         else {
-            switch (gameboard.GetObjectAtSquare(xgoal, ygoal).getClass().getSuperclass().getSimpleName()){
+            switch (gameboard.GetSquare(xgoal, ygoal).getClass().getSuperclass().getSimpleName()){
                 case "Entity":
-                    Entity object = (Entity)gameboard.GetObjectAtSquare(xgoal, ygoal);
+                    Entity object = (Entity)gameboard.GetSquare(xgoal, ygoal);
                     object.health -= damage;
                     break;
             }

@@ -70,17 +70,26 @@ public class Board<T> {
     }
     
     //Returns the object at a specified square, returns null if empty
-    public T GetObjectAtSquare(int x, int y){
-        return (T)gameboard[x][y];
+    public T GetSquare(int x, int y){
+        if ((x < size && x > 0) &&
+            (y < size && y > 0)){
+                return (T)gameboard[x][y];
+        }
+        return null;
     }
     
     public boolean CheckIfSquareIsEmpty(int x, int y){
-        return (GetObjectAtSquare(x, y) == null);
+        return (GetSquare(x, y) == null);
     }
     
     //Sets the object at a specified square
-    public void SetObjectAtSquare(int x, int y, GameObject object){
-        gameboard[x][y] = object;
+    public void SetSquare(int x, int y, GameObject object){
+        
+        if ((x < size && x > 0) &&
+            (y < size && y > 0)){
+                gameboard[x][y] = object;
+        }
+        
     }
     
     //Adds object to ActionQueue
@@ -88,12 +97,16 @@ public class Board<T> {
         actionList.add(object);
     }
     
-    public void SetPlayer(Player player){
+    public void SetPlayer(Player player) {
         gamePlayer = player;
     }
     
-    public Player GetPlayer(){
+    public Player GetPlayer() {
         return this.gamePlayer;
+    }
+    
+    public int GetSize() {
+        return this.size;
     }
     
     //Removes object from ActionQueue
@@ -119,13 +132,13 @@ public class Board<T> {
             for (int x = 0; x < gameboard.length; x++) {
                 
                 //If the square is empty/null, set the character to 0
-                if (GetObjectAtSquare(x, y) == null){
+                if (GetSquare(x, y) == null){
                     s += '.' + " ";
                 }
                 
                 //Else, add the respective character to represent the object
                 else {
-                    s += ((GameObject)GetObjectAtSquare(x, y)).GetSymbol() + " ";
+                    s += ((GameObject)GetSquare(x, y)).GetSymbol() + " ";
                 }
             }
             

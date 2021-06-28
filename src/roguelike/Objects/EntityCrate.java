@@ -17,7 +17,7 @@ public class EntityCrate extends Entity{
     public EntityCrate(int xposition, int yposition, Board gameboard, int health){
         
         //Add self to board
-        gameboard.SetObjectAtSquare(xposition, yposition, this);
+        gameboard.SetSquare(xposition, yposition, this);
         
         //Set variables
         this.xposition = xposition;
@@ -35,7 +35,7 @@ public class EntityCrate extends Entity{
     public void Die(){
         
         //Remove self from board
-        gameboard.SetObjectAtSquare(xposition, yposition, null);
+        gameboard.SetSquare(xposition, yposition, null);
         
         //Remove self from actionList
         gameboard.RemoveObjectFromList(this);
