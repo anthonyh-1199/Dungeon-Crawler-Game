@@ -53,7 +53,7 @@ public class Board<T> {
                         new EntityCrate(x, y, this, 2);
                         break;
                     case 'P':
-                        new Player(10, x, y, this);
+                        new Player(x, y, this, 10);
                         break;
                     case 'G':
                         new EntityGoblin(x, y, this, 5);
@@ -71,8 +71,8 @@ public class Board<T> {
     
     //Returns the object at a specified square, returns null if empty
     public T GetSquare(int x, int y){
-        if ((x < size && x > 0) &&
-            (y < size && y > 0)){
+        if ((x < size && x >= 0) &&
+            (y < size && y >= 0)){
                 return (T)gameboard[x][y];
         }
         return null;
@@ -85,8 +85,8 @@ public class Board<T> {
     //Sets the object at a specified square
     public void SetSquare(int x, int y, GameObject object){
         
-        if ((x < size && x > 0) &&
-            (y < size && y > 0)){
+        if ((x < size && x >= 0) &&
+            (y < size && y >= 0)){
                 gameboard[x][y] = object;
         }
         

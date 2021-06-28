@@ -19,7 +19,7 @@ public class Roguelike {
     public static void main(String[] args) {
         Board gameboard = new Board(10);
         
-        Player player = new Player(100, 5, 5, gameboard);
+        Player player = new Player(5, 5, gameboard, 10);
         
         System.out.println(gameboard.GetSquare(0, 0));
         

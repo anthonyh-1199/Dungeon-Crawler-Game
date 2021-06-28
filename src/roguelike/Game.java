@@ -5,6 +5,7 @@
  */
 package roguelike;
 
+import MapGeneration.CaveGenerator;
 import roguelike.Objects.Player;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
@@ -52,7 +53,11 @@ public class Game extends javax.swing.JFrame implements KeyListener {
         "#..............#......#GGG#" + 
         "###########################";
         
-        this.gameboard = new Board(27, seed);
+        //this.gameboard = new Board(27, seed);
+        
+        this.gameboard = new Board(35);
+        
+        CaveGenerator cg = new CaveGenerator(gameboard);
         
         this.player = gameboard.GetPlayer();
 
@@ -88,13 +93,13 @@ public class Game extends javax.swing.JFrame implements KeyListener {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(41, 41, 41)
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 558, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(41, Short.MAX_VALUE))
+                .addGap(46, 46, 46)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 718, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(46, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 640, Short.MAX_VALUE)
+            .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 807, javax.swing.GroupLayout.PREFERRED_SIZE)
         );
 
         pack();
