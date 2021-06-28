@@ -19,6 +19,7 @@ public class Game extends javax.swing.JFrame implements KeyListener {
     //Initialize game elements
     Board gameboard;
     Player player;
+    Camera camera;
 
     public Game() {
         initComponents();
@@ -55,19 +56,21 @@ public class Game extends javax.swing.JFrame implements KeyListener {
         
         //this.gameboard = new Board(27, seed);
         
-        this.gameboard = new Board(35);
+        this.gameboard = new Board(43);
         
         CaveGenerator cg = new CaveGenerator(gameboard);
         
         this.player = gameboard.GetPlayer();
+        
+        camera = new Camera(player, gameboard, 20);
 
-        jGameScreen.setText(gameboard.ToString());
+        jGameScreen.setText(camera.ToString());
     }
     
     //Updates the board to reflect changes
     private void Update() {
         gameboard.Update();
-        jGameScreen.setText(gameboard.ToString());
+        jGameScreen.setText(camera.ToString());
     }
 
     /**
@@ -92,14 +95,16 @@ public class Game extends javax.swing.JFrame implements KeyListener {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGap(46, 46, 46)
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 718, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(46, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap(60, Short.MAX_VALUE)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 887, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(60, 60, 60))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 807, javax.swing.GroupLayout.PREFERRED_SIZE)
+            .addGroup(layout.createSequentialGroup()
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 984, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 27, Short.MAX_VALUE))
         );
 
         pack();
