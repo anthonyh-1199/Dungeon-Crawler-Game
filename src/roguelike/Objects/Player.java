@@ -13,20 +13,18 @@ import roguelike.Board;
  */
 public class Player extends GameObject{
     
-    int health, xposition, yposition, damage;
-    Board gameboard;
+    int health, damage;
     
-    public Player(int health, int xposition, int yposition, Board gameboard){
+    public Player(int x, int y, Board b, int h){
+        
+        //Call parent constructor
+        super(x, y, b);
         
         //Set variables
-        this.health = health;
-        this.xposition = xposition;
-        this.yposition = yposition;
-        this.gameboard = gameboard;
+        this.health = h;
         this.symbol = '@';
         this.damage = 1;
         
-        gameboard.SetSquare(xposition, yposition, this);
         gameboard.SetPlayer(this);
     }
     

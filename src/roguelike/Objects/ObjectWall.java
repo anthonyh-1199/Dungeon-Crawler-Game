@@ -13,13 +13,15 @@ import roguelike.Board;
  */
 public class ObjectWall extends GameObject{
     
-    public ObjectWall(int xposition, int yposition, Board gameboard){
+    public ObjectWall(int x, int y, Board b){
+        
+        //Call parent constructor
+        super(x, y, b);
         
         //Set variables
         this.isSolid = true;
         this.symbol = '#';
-        
-        gameboard.SetSquare(xposition, yposition, this);
+
     }
     
     @Override

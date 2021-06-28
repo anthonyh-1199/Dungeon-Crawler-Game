@@ -15,16 +15,13 @@ import roguelike.Board;
 public class EntitySheep extends Entity{
     
     //Constructor
-    public EntitySheep(int xposition, int yposition, Board gameboard, int health){
+    public EntitySheep(int x, int y, Board b, int h){
         
-        //Add self to board
-        gameboard.SetSquare(xposition, yposition, this);
+        //Call parent constructor
+        super(x, y, b);
         
         //Set variables
-        this.xposition = xposition;
-        this.yposition = yposition;
-        this.gameboard = gameboard;
-        this.health = health;
+        this.health = h;
         this.symbol = 'S';
         this.isSolid = true;
         this.speed = 1;

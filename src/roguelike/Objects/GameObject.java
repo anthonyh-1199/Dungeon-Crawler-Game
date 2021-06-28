@@ -3,6 +3,8 @@
  */
 package roguelike.Objects;
 
+import roguelike.Board;
+
 /**
  *
  * @author Anthony
@@ -10,8 +12,19 @@ package roguelike.Objects;
 public abstract class GameObject {
     
     //Class variables
+    Board gameboard;
     boolean isSolid;
     char symbol;
+    int xposition;
+    int yposition;
+    
+    public GameObject(int x, int y, Board b){
+        this.xposition = x;
+        this.yposition = y;
+        this.gameboard = b;
+        
+        gameboard.SetSquare(xposition, yposition, this);
+    }
     
     //Class methods
     public boolean IsSolid(){

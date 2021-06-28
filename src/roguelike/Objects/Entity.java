@@ -11,7 +11,10 @@ import roguelike.Board;
  */
 public abstract class Entity extends GameObject{
     
-    int health, xposition, yposition, speed;
-    Board gameboard;
+    int health, speed;
+
+    public Entity(int x, int y, Board b) {
+        super(x, y, b);
+    }
     
 }

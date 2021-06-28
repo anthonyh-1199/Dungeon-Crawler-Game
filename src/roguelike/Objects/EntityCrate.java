@@ -14,22 +14,20 @@ import roguelike.Board;
 public class EntityCrate extends Entity{
     
     //Constructor
-    public EntityCrate(int xposition, int yposition, Board gameboard, int health){
+    public EntityCrate(int x, int y, Board b, int h){
         
-        //Add self to board
-        gameboard.SetSquare(xposition, yposition, this);
+        //Call parent constructor
+        super(x, y, b);
         
         //Set variables
-        this.xposition = xposition;
-        this.yposition = yposition;
-        this.gameboard = gameboard;
-        this.health = health;
+        this.health = h;
         this.symbol = 'C';
         this.isSolid = true;
         this.speed = 0;
         
         //Add self to actionQueue
         gameboard.AddObjectToList(this);
+        
     }
 
     public void Die(){

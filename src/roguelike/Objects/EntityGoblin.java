@@ -16,16 +16,13 @@ import roguelike.Node;
 public class EntityGoblin extends Entity{
 
     //Constructor
-    public EntityGoblin(int xposition, int yposition, Board gameboard, int health){
+    public EntityGoblin(int x, int y, Board b, int h){
         
-        //Add self to board
-        gameboard.SetSquare(xposition, yposition, this);
+        //Call parent constructor
+        super(x, y, b);
         
         //Set variables
-        this.xposition = xposition;
-        this.yposition = yposition;
-        this.gameboard = gameboard;
-        this.health = health;
+        this.health = h;
         this.symbol = 'G';
         this.isSolid = true;
         this.speed = 1;
