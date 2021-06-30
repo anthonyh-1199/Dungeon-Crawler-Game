@@ -5,7 +5,7 @@
  */
 package roguelike;
 
-import roguelike.Objects.Player;
+import MapGeneration.DungeonLayoutGenerator;
 
 /**
  *
@@ -17,13 +17,7 @@ public class Roguelike {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        Board gameboard = new Board(10);
-        
-        Player player = new Player(5, 5, gameboard, 10);
-        
-        System.out.println(gameboard.GetSquare(0, 0));
-        
-        System.out.println(gameboard.ToString());
+        DungeonLayoutGenerator dg = new DungeonLayoutGenerator();
     }
     
 }
