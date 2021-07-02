@@ -5,7 +5,9 @@
  */
 package roguelike;
 
+import View.Camera;
 import MapGeneration.CaveGenerator;
+import java.awt.Color;
 import roguelike.Objects.Player;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
@@ -26,43 +28,45 @@ public class Game extends javax.swing.JFrame implements KeyListener {
         this.addKeyListener(this);
         
         String seed =
-        "###########################" + 
-        "#..............C..#.......#" + 
-        "#.P............C..#.......#" + 
-        "#..............#..#.......#" + 
-        "#..............#..#...#...#" + 
-        "#..............#..#...#...#" + 
-        "#..............#..#...#...#" + 
-        "#..............#..#...#...#" + 
-        "#..............#..#...#...#" + 
-        "#..............#..#...#...#" + 
-        "#..............#..#...#...#" + 
-        "#..............#..#...#...#" + 
-        "#..............#..#...#...#" + 
-        "#..............#..#...#...#" + 
-        "#..............#..#...#...#" + 
-        "#..............#..#...#...#" + 
-        "#..............#..#...#...#" + 
-        "#..............#..#...#...#" + 
-        "#..............#..#...#...#" + 
-        "#..............#..#...#...#" + 
-        "#..............#..#...#...#" + 
-        "#..............#..#...#...#" + 
-        "#..............#..#...#...#" + 
-        "#..............#......#...#" + 
-        "#..............#......#...#" + 
-        "#..............#......#GGG#" + 
-        "###########################";
+        "............................." + 
+        ".###########################." + 
+        ".#..............C..#.......#." + 
+        ".#..............C..#.......#." + 
+        ".#..............#..#.......#." + 
+        ".#..............#..#...#...#." + 
+        ".#..............#..#...#...#." + 
+        ".#..............#..#...#...#." + 
+        ".#..............#..#...#...#." + 
+        ".#..............#..#...#...#." + 
+        ".#..............#..#...#...#." + 
+        ".#..............#..#...#...#." + 
+        ".#..............#..#...#...#." + 
+        ".#..............#..#...#...#." + 
+        ".#......P.......#..#...#...#." + 
+        ".#..............#..#...#...#." + 
+        ".#..............#..#...#...#." + 
+        ".#..............#..#...#...#." + 
+        ".#..............#..#...#...#." + 
+        ".#..............#..#...#...#." + 
+        ".#..............#..#...#...#." + 
+        ".#..............#..#...#...#." + 
+        ".#..............#..#...#...#." + 
+        ".#..............#..#...#...#." + 
+        ".#..............#......#...#." + 
+        ".#..............#......#...#." + 
+        ".#..............#......#GGG#." + 
+        ".###########################." +
+        ".............................";
         
-        //this.gameboard = new Board(27, seed);
+        this.gameboard = new Board(29, seed);
         
-        this.gameboard = new Board(43);
+        //this.gameboard = new Board(200);
         
-        CaveGenerator cg = new CaveGenerator(gameboard);
+        //new CaveGenerator(gameboard);
         
         this.player = gameboard.GetPlayer();
         
-        camera = new Camera(player, gameboard, 20);
+        camera = new Camera(player, gameboard, 35);
 
         jGameScreen.setText(camera.ToString());
     }
@@ -96,15 +100,15 @@ public class Game extends javax.swing.JFrame implements KeyListener {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(60, Short.MAX_VALUE)
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 887, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(60, 60, 60))
+                .addContainerGap(57, Short.MAX_VALUE)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 757, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(57, 57, 57))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 984, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 27, Short.MAX_VALUE))
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 812, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, Short.MAX_VALUE))
         );
 
         pack();

@@ -6,6 +6,7 @@
 package roguelike;
 
 import MapGeneration.DungeonLayoutGenerator;
+import View.Camera;
 
 /**
  *
@@ -17,7 +18,9 @@ public class Roguelike {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        DungeonLayoutGenerator dg = new DungeonLayoutGenerator();
+        Camera c = new Camera(null, null, 35);
+        boolean b = c.CheckLine(6, 4, 0, 1);
+        //DungeonLayoutGenerator dg = new DungeonLayoutGenerator();
     }
     
 }
