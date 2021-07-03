@@ -11,6 +11,11 @@ import java.awt.Color;
 import roguelike.Objects.Player;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.util.Random;
+import javax.swing.text.DefaultStyledDocument;
+import javax.swing.text.SimpleAttributeSet;
+import javax.swing.text.StyleConstants;
+import javax.swing.text.StyledDocument;
 
 /**
  *
@@ -68,13 +73,32 @@ public class Game extends javax.swing.JFrame implements KeyListener {
         
         camera = new Camera(player, gameboard, 35);
 
-        jGameScreen.setText(camera.ToString());
+        UpdateView();
     }
     
     //Updates the board to reflect changes
     private void Update() {
         gameboard.Update();
-        jGameScreen.setText(camera.ToString());
+        UpdateView();
+    }
+    
+    private void UpdateView() {
+        String viewDataSymbols = camera.GetSymbols();
+        Color[] viewDataColors = camera.GetColors();
+
+        jGameScreen.setText(viewDataSymbols);
+        StyledDocument doc = jGameScreen.getStyledDocument();
+        
+        for (int i = 0; i < viewDataSymbols.length(); i++) {
+            SimpleAttributeSet set = new SimpleAttributeSet();
+            StyleConstants.setBackground(set, new Color(0, 0, 0));
+            if (viewDataColors[i] != null){
+                StyleConstants.setForeground(set, viewDataColors[i]);
+            }
+            doc.setCharacterAttributes(i, 1, set, true);
+        }
+        
+        
     }
 
     /**
