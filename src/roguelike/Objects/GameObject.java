@@ -3,6 +3,7 @@
  */
 package roguelike.Objects;
 
+import java.awt.Color;
 import roguelike.Board;
 
 /**
@@ -16,12 +17,13 @@ public abstract class GameObject {
     Board gameboard;
     boolean isSolid;
     char symbol;
+    Color color;
     int xposition;
     int yposition;
     
     //Constructor
     
-    public GameObject(int x, int y, Board b){
+    public GameObject(int x, int y, Board b) {
         this.xposition = x;
         this.yposition = y;
         this.gameboard = b;
@@ -31,22 +33,26 @@ public abstract class GameObject {
     
     //Class methods
     
-    public boolean IsSolid(){
+    public boolean IsSolid() {
         return isSolid;
     }
     
     //Getter methods
     
-    public int GetX(){
+    public int GetX() {
         return xposition;
     }
     
-    public int GetY(){
+    public int GetY() {
         return yposition;
     }
     
-    public char GetSymbol(){
+    public char GetSymbol() {
         return symbol;
+    }
+    
+    public Color GetColor() {
+        return color;
     }
     
     public abstract void Update();

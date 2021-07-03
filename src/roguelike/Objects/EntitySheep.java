@@ -25,6 +25,7 @@ public class EntitySheep extends Entity{
         this.symbol = 'S';
         this.isSolid = true;
         this.speed = 1;
+        this.color = color.WHITE;
         
         //Add self to actionQueue
         gameboard.AddObjectToList(this);

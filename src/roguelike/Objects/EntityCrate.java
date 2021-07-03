@@ -24,6 +24,7 @@ public class EntityCrate extends Entity{
         this.symbol = 'C';
         this.isSolid = true;
         this.speed = 0;
+        this.color = color.WHITE;
         
         //Add self to actionQueue
         gameboard.AddObjectToList(this);

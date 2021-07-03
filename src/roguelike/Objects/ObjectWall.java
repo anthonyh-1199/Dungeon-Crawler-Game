@@ -5,6 +5,7 @@
  */
 package roguelike.Objects;
 
+import java.awt.Color;
 import roguelike.Board;
 
 /**
@@ -21,6 +22,7 @@ public class ObjectWall extends GameObject{
         //Set variables
         this.isSolid = true;
         this.symbol = '#';
+        this.color = new Color(255, 255, 255);
 
     }
     

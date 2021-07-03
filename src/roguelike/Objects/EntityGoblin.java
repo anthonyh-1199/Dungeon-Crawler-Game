@@ -5,6 +5,7 @@
  */
 package roguelike.Objects;
 
+import java.awt.Color;
 import java.util.PriorityQueue;
 import roguelike.Board;
 import roguelike.Node;
@@ -26,6 +27,7 @@ public class EntityGoblin extends Entity{
         this.symbol = 'G';
         this.isSolid = true;
         this.speed = 1;
+        color = new Color(36,191,32);
         
         //Add self to actionQueue
         gameboard.AddObjectToList(this);
