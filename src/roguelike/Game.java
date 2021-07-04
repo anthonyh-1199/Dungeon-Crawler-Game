@@ -7,15 +7,9 @@ package roguelike;
 
 import View.Camera;
 import MapGeneration.CaveGenerator;
-import java.awt.Color;
 import roguelike.Objects.Player;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
-import java.util.Random;
-import javax.swing.text.DefaultStyledDocument;
-import javax.swing.text.SimpleAttributeSet;
-import javax.swing.text.StyleConstants;
-import javax.swing.text.StyledDocument;
 
 /**
  *
@@ -63,11 +57,11 @@ public class Game extends javax.swing.JFrame implements KeyListener {
         ".###########################." +
         ".............................";
         
-        this.gameboard = new Board(29, seed);
+        //this.gameboard = new Board(29, seed);
         
-        //this.gameboard = new Board(200);
+        this.gameboard = new Board(200);
         
-        //new CaveGenerator(gameboard);
+        new CaveGenerator(gameboard);
         
         this.player = gameboard.GetPlayer();
         
@@ -83,9 +77,9 @@ public class Game extends javax.swing.JFrame implements KeyListener {
     }
     
     private void UpdateView() {
-        String viewDataSymbols = camera.GetSymbols();
-        Color[] viewDataColors = camera.GetColors();
-
+        camera.GetView(jGameScreen);
+        
+        /*
         jGameScreen.setText(viewDataSymbols);
         StyledDocument doc = jGameScreen.getStyledDocument();
         
@@ -97,6 +91,7 @@ public class Game extends javax.swing.JFrame implements KeyListener {
             }
             doc.setCharacterAttributes(i, 1, set, true);
         }
+        */
         
         
     }

@@ -19,7 +19,7 @@ import java.util.*;
  */
 public class Board<T> {
     
-    GameObject[][] gameboard;
+    Tile[][] gameboard;
     int size;
     LinkedList<GameObject> actionList = new LinkedList<>();
     Player gamePlayer;
@@ -27,7 +27,13 @@ public class Board<T> {
     //Creates a square board with given dimensions
     public Board(int size) {
         this.size = size;
-        gameboard = new GameObject[size][size];
+        gameboard = new Tile[size][size];
+        
+        for (int y = 0; y < size; y++){
+            for (int x = 0; x < size; x++){
+                gameboard[x][y] = new Tile();
+            }
+        }
     }
     
     //Creates a square board and fills it based on a pre-made seed
@@ -35,7 +41,7 @@ public class Board<T> {
     public Board(int size, String seed){
         
         this.size = size;
-        gameboard = new GameObject[size][size];
+        gameboard = new Tile[size][size];
         
         int currentCharacter = 0;
         
@@ -70,31 +76,38 @@ public class Board<T> {
     }
     
     //Returns the object at a specified square, returns null if empty
-    public T GetSquare(int x, int y){
+    public T GetSquare(int x, int y) {
         if ((x < size && x >= 0) &&
-            (y < size && y >= 0)){
-                return (T)gameboard[x][y];
+            (y < size && y >= 0)) {
+                return (T)gameboard[x][y].GetObject();
         }
         return null;
     }
     
-    public boolean CheckIfSquareIsEmpty(int x, int y){
+    //Return true if the square is empty
+    public boolean CheckIfSquareIsEmpty(int x, int y) {
         return (GetSquare(x, y) == null);
     }
     
     //Sets the object at a specified square
-    public void SetSquare(int x, int y, GameObject object){
-        
+    public void SetSquare(int x, int y, GameObject object) {
         if ((x < size && x >= 0) &&
             (y < size && y >= 0)){
-                gameboard[x][y] = object;
+                gameboard[x][y].SetObject(object);
         }
-        
     }
     
     //Adds object to ActionQueue
     public void AddObjectToList(GameObject object) {
         actionList.add(object);
+    }
+    
+    public void SetSeen(int x, int y) {
+        gameboard[x][y].SetSeen(true);
+    }
+    
+    public boolean GetSeen(int x, int y) {
+        return (gameboard[x][y].GetSeen());
     }
     
     public void SetPlayer(Player player) {
