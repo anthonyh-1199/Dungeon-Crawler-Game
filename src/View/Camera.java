@@ -3,8 +3,11 @@ package View;
 
 import java.awt.Color;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
+import javax.swing.JTextPane;
+import javax.swing.text.SimpleAttributeSet;
+import javax.swing.text.StyleConstants;
+import javax.swing.text.StyledDocument;
 import roguelike.Board;
 import roguelike.Objects.GameObject;
 
@@ -95,6 +98,134 @@ public class Camera {
         return s;
     }
     
+    public void GetView(JTextPane j) {
+        
+        //Initialize variables
+        String s = "";
+        StyledDocument doc = j.getStyledDocument();
+        Color[] colors = new Color[2 * (size * size) + size];
+        int i = 0;
+        
+        //Set the start point to the top-left corner relative to the focal point
+        int startx = (focalPoint.GetX() - (size / 2));
+        int starty = (focalPoint.GetY() - (size / 2));
+        
+        //Clamp the view so that it doesn't go out of range
+        if (startx < 0){
+            startx = 0;
+        }
+        if (starty < 0){
+            starty = 0;
+        }
+        if ((startx + size) > gameboard.GetSize()){
+            startx = gameboard.GetSize() - size;
+        }
+        if ((starty + size) > gameboard.GetSize()){
+            starty = gameboard.GetSize() - size;
+        }
+        
+        //Loop through the area that will be in the view
+        for (int y = starty; y < starty + size; y++){
+            
+            for (int x = startx; x < startx + size; x++) {
+                
+                //Drawing out-of-sight
+                if (CheckSightLine(focalPoint.GetX(), focalPoint.GetY(), x, y) &&
+                    CheckSightLine(x, y, focalPoint.GetX(), focalPoint.GetY())){
+                    
+                    //If we haven't seen that square yet, don't draw it
+                    if (!gameboard.GetSeen(x, y)){
+                        s += "  ";
+                        i++;
+                        i++;
+                        continue;
+                    }
+
+                    //If the square is surrounded on all 4 sides, don't draw it
+                    if (gameboard.CheckIfSquareIsEmpty(x, y)){
+                        s += '.' + " ";
+                        colors[i++] = new Color(40,80,100);
+                        i++;
+                        continue;
+                    }
+                    if ((!gameboard.CheckIfSquareIsEmpty(x - 1, y) &&
+                        !gameboard.CheckIfSquareIsEmpty(x + 1, y) &&
+                        !gameboard.CheckIfSquareIsEmpty(x, y - 1) &&
+                        !gameboard.CheckIfSquareIsEmpty(x, y + 1)) &&
+                        gameboard.GetSquare(x - 1, y).getClass().getSimpleName().equals("ObjectWall") &&
+                        gameboard.GetSquare(x + 1, y).getClass().getSimpleName().equals("ObjectWall") &&
+                        gameboard.GetSquare(x, y - 1).getClass().getSimpleName().equals("ObjectWall") &&
+                        gameboard.GetSquare(x, y + 1).getClass().getSimpleName().equals("ObjectWall")){
+                            s += "  ";
+                            i++;
+                            i++;
+                        continue;
+                    } 
+                    
+                    if (gameboard.GetSquare(x, y).getClass().getSimpleName().equals("ObjectWall")){
+                        s += ((GameObject)gameboard.GetSquare(x, y)).GetSymbol() + " ";
+                        colors[i++] = new Color(40,80,100);
+                        i++;
+                        continue;
+                    }
+                    
+                    s += '.' + " ";
+                    colors[i++] = new Color(40,80,100);
+                    i++;
+                    continue;
+                }
+                
+                //Make square seen
+                gameboard.SetSeen(x, y);
+
+                //If the square is empty/null, set the character to .
+                if (gameboard.CheckIfSquareIsEmpty(x, y)){
+                    s += '.' + " ";
+                    colors[i++] = Color.WHITE;
+                    i++;
+                }
+                
+                //Else, add the respective character to represent the object
+                else {
+                    //If the square is surrounded on all 4 sides, don't draw it
+                    if ((!gameboard.CheckIfSquareIsEmpty(x - 1, y) &&
+                        !gameboard.CheckIfSquareIsEmpty(x + 1, y) &&
+                        !gameboard.CheckIfSquareIsEmpty(x, y - 1) &&
+                        !gameboard.CheckIfSquareIsEmpty(x, y + 1)) &&
+                        gameboard.GetSquare(x - 1, y).getClass().getSimpleName().equals("ObjectWall") &&
+                        gameboard.GetSquare(x + 1, y).getClass().getSimpleName().equals("ObjectWall") &&
+                        gameboard.GetSquare(x, y - 1).getClass().getSimpleName().equals("ObjectWall") &&
+                        gameboard.GetSquare(x, y + 1).getClass().getSimpleName().equals("ObjectWall")){
+                            s += "▪ ";
+                            colors[i++] = ((GameObject)gameboard.GetSquare(x, y)).GetColor();
+                            i++;
+                        } else {
+                            s += ((GameObject)gameboard.GetSquare(x, y)).GetSymbol() + " ";
+                            colors[i++] = ((GameObject)gameboard.GetSquare(x, y)).GetColor();
+                            i++;
+                    }
+                }
+            }
+            
+            i++;
+            s += "\n";
+        }
+        
+        //Set text
+        j.setText(s);
+        
+        //Set colors
+        for (int k = 0; k < s.length(); k++) {
+            SimpleAttributeSet set = new SimpleAttributeSet();
+            StyleConstants.setBackground(set, new Color(0, 0, 0));
+            Color c = colors[k];
+            if (c != null){
+                StyleConstants.setForeground(set, c);
+            }
+            doc.setCharacterAttributes(k, 1, set, true);
+        }
+    }
+    
     //Returns a 1-dimensional array that contains the colors of each symbol
     //in the view
     public Color[] GetColors() {
@@ -139,7 +270,7 @@ public class Camera {
                 //If the square is empty/null, set the character to 0
                 if (gameboard.CheckIfSquareIsEmpty(x, y)){
                     colors[i++] = Color.WHITE;
-                    i++;;
+                    i++;
                 }
                 
                 //Else, add the respective character to represent the object
