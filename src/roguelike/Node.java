@@ -4,6 +4,8 @@
  */
 package roguelike;
 
+import java.util.PriorityQueue;
+
 /**
  *
  * @author Anthony
@@ -53,6 +55,17 @@ public class Node implements Comparable<Node> {
         final Node n = (Node) o;
         
         return ((x == n.x) && (y == n.y));
+    }
+    
+    public static boolean containsNode(PriorityQueue q, Node n){
+        
+        for (Object o : q){
+            if (n.equals(o)){
+                return true;
+            }
+        }
+        
+        return false;
     }
 
 }
