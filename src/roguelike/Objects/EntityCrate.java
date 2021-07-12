@@ -1,14 +1,11 @@
 /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+
  */
 package roguelike.Objects;
 
 import roguelike.Board;
 
 /**
- *
  * @author Anthony
  */
 public class EntityCrate extends Entity{
@@ -25,6 +22,7 @@ public class EntityCrate extends Entity{
         this.isSolid = true;
         this.speed = 0;
         this.color = color.WHITE;
+        this.name = "Crate";
         
         //Add self to actionQueue
         gameboard.AddObjectToList(this);

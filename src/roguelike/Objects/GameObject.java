@@ -7,19 +7,19 @@ import java.awt.Color;
 import roguelike.Board;
 
 /**
- *
  * @author Anthony
  */
 public abstract class GameObject {
     
     //Class variables
     
-    Board gameboard;
-    boolean isSolid;
-    char symbol;
-    Color color;
-    int xposition;
-    int yposition;
+    public Board gameboard;
+    public boolean isSolid;
+    public char symbol;
+    public Color color;
+    public int xposition;
+    public int yposition;
+    public String name;
     
     //Constructor
     

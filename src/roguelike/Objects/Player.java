@@ -25,6 +25,7 @@ public class Player extends GameObject{
         this.health = h;
         this.symbol = '@';
         this.damage = 1;
+        this.name = "Player";
         this.color = new Color(255,255,255);
         
         gameboard.SetPlayer(this);
