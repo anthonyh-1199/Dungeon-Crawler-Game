@@ -1,18 +1,18 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package roguelike;
 
 import View.Camera;
 import MapGeneration.CaveGenerator;
+import java.awt.Color;
 import roguelike.Objects.Player;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.util.ArrayList;
+import javax.swing.text.SimpleAttributeSet;
+import javax.swing.text.StyleConstants;
+import javax.swing.text.StyledDocument;
 
 /**
- *
  * @author Anthony
  */
 public class Game extends javax.swing.JFrame implements KeyListener {
@@ -56,43 +56,60 @@ public class Game extends javax.swing.JFrame implements KeyListener {
         ".#..............#......#GGG#." + 
         ".###########################." +
         ".............................";
-        
-        //this.gameboard = new Board(29, seed);
-        
+
         this.gameboard = new Board(200);
         
         new CaveGenerator(gameboard);
         
+        //this.gameboard = new Board(29, seed);
+        
         this.player = gameboard.GetPlayer();
         
-        camera = new Camera(player, gameboard, 35);
+        camera = gameboard.camera;
 
         UpdateView();
+
     }
     
     //Updates the board to reflect changes
     private void Update() {
+
         gameboard.Update();
         UpdateView();
+
     }
     
     private void UpdateView() {
+        
+        //Update camera screen
         camera.GetView(jGameScreen);
         
-        /*
-        jGameScreen.setText(viewDataSymbols);
-        StyledDocument doc = jGameScreen.getStyledDocument();
+        //Update message board
+        ArrayList<String> messages = camera.GetMessages();
         
-        for (int i = 0; i < viewDataSymbols.length(); i++) {
-            SimpleAttributeSet set = new SimpleAttributeSet();
-            StyleConstants.setBackground(set, new Color(0, 0, 0));
-            if (viewDataColors[i] != null){
-                StyleConstants.setForeground(set, viewDataColors[i]);
-            }
-            doc.setCharacterAttributes(i, 1, set, true);
+        String s = "";
+        
+        for (String m : messages) {
+            
+            s += m + "\n";
+            
         }
-        */
         
+        jMessageBoard.setText(s);
+        
+        //Format message board
+                
+        SimpleAttributeSet set = new SimpleAttributeSet();
+        StyleConstants.setBackground(set, Color.BLACK);
+        StyleConstants.setForeground(set, Color.WHITE);
+        
+        StyledDocument doc = jMessageBoard.getStyledDocument();
+        
+        for (int k = 0; k < s.length(); k++) {
+            
+            doc.setCharacterAttributes(k, 1, set, true);
+            
+        }
         
     }
 
@@ -107,27 +124,59 @@ public class Game extends javax.swing.JFrame implements KeyListener {
 
         jScrollPane2 = new javax.swing.JScrollPane();
         jGameScreen = new javax.swing.JTextPane();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        jMessageBoard = new javax.swing.JTextPane();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setBackground(new java.awt.Color(0, 0, 0));
 
+        jScrollPane2.setBackground(new java.awt.Color(0, 0, 0));
+        jScrollPane2.setHorizontalScrollBarPolicy(javax.swing.ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+        jScrollPane2.setVerticalScrollBarPolicy(javax.swing.ScrollPaneConstants.VERTICAL_SCROLLBAR_NEVER);
+        jScrollPane2.setAlignmentX(0.0F);
+        jScrollPane2.setAlignmentY(0.0F);
+        jScrollPane2.setFocusable(false);
+        jScrollPane2.setHorizontalScrollBar(null);
+
+        jGameScreen.setBackground(new java.awt.Color(0, 0, 0));
+        jGameScreen.setBorder(null);
         jGameScreen.setFont(new java.awt.Font("Consolas", 0, 18)); // NOI18N
         jGameScreen.setFocusable(false);
+        jGameScreen.setMargin(new java.awt.Insets(0, 0, 0, 0));
+        jGameScreen.setSelectedTextColor(new java.awt.Color(0, 0, 0));
         jScrollPane2.setViewportView(jGameScreen);
+
+        jScrollPane1.setBackground(new java.awt.Color(0, 0, 0));
+        jScrollPane1.setHorizontalScrollBarPolicy(javax.swing.ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+        jScrollPane1.setVerticalScrollBarPolicy(javax.swing.ScrollPaneConstants.VERTICAL_SCROLLBAR_NEVER);
+        jScrollPane1.setAlignmentX(0.0F);
+        jScrollPane1.setAlignmentY(0.0F);
+        jScrollPane1.setFocusable(false);
+        jScrollPane1.setHorizontalScrollBar(null);
+
+        jMessageBoard.setBackground(new java.awt.Color(0, 0, 0));
+        jMessageBoard.setBorder(null);
+        jMessageBoard.setFont(new java.awt.Font("Consolas", 0, 18)); // NOI18N
+        jMessageBoard.setFocusable(false);
+        jMessageBoard.setMargin(new java.awt.Insets(0, 0, 0, 0));
+        jScrollPane1.setViewportView(jMessageBoard);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(57, Short.MAX_VALUE)
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 757, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(57, 57, 57))
+            .addGroup(layout.createSequentialGroup()
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 706, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 298, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 812, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, Short.MAX_VALUE))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 766, Short.MAX_VALUE)
+                    .addComponent(jScrollPane1))
+                .addGap(0, 46, Short.MAX_VALUE))
         );
 
         pack();
@@ -198,6 +247,8 @@ public class Game extends javax.swing.JFrame implements KeyListener {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTextPane jGameScreen;
+    private javax.swing.JTextPane jMessageBoard;
+    private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     // End of variables declaration//GEN-END:variables
 }
