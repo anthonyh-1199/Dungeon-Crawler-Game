@@ -15,14 +15,14 @@ import java.util.Random;
 public class DungeonLayoutGenerator {
     
     DungeonRoom[][] roomsGrid = new DungeonRoom[30][30];
-    int roomGoal = 10;
-    int bonusGoal = 9;
+    int roomGoal = 5;
+    int bonusGoal = 2;
     
     public DungeonLayoutGenerator() { 
         do {
             GenerateBaseLayout();
         } 
-        while (!AddExtraRooms());
+        while (!AddDeadEndRooms());
         
         System.out.println(ToString());
     }
@@ -115,7 +115,16 @@ public class DungeonLayoutGenerator {
                 //If the neighbor is empty, add a room to it, add it to the 
                 //queue, then increment the # of rooms
                 if (roomsGrid[neighborx][neighbory] == null) {
-                    roomsGrid[neighborx][neighbory] = new DungeonRoom(neighborx, neighbory, false);
+
+                    //Create new room
+                    DungeonRoom neighbor = new DungeonRoom(neighborx, neighbory, false);
+
+                    //Update the neighbors of the square
+                    room.AddNeighbor(neighbor);
+                    neighbor.AddNeighbor(room);
+
+                    //Set the neighbor as the current room
+                    roomsGrid[neighborx][neighbory] = neighbor;
                     roomsQueue.add(roomsGrid[neighborx][neighbory]);
                     roomsCount++;
                 }
@@ -131,7 +140,124 @@ public class DungeonLayoutGenerator {
         while (roomsCount < roomGoal);
     }
     
-    public boolean AddExtraRooms() {
+    public boolean AddDeadEndRooms() {
+        
+        //Initialize variables
+        Random r = new Random();
+        int direction;
+        
+        //Store all the rooms in the base layout in a list
+        List<DungeonRoom> roomsList = new LinkedList<>();
+        
+        for (int y = 0; y < roomsGrid.length; y++){
+            for (int x = 0; x < roomsGrid.length; x++) {
+                if (roomsGrid[x][y] != null){
+                    roomsList.add(roomsGrid[x][y]);
+                }
+            }
+        }
+        
+        //Shuffle the list
+        Collections.shuffle(roomsList);
+        
+        //Set a variable to hold the # of special rooms generated
+        int roomsCount = 0;
+        
+        //Go through the list and attempt to add extra rooms
+        for (DungeonRoom room : roomsList){
+            
+            //Get a random neighbor of the square
+            int neighborx = room.GetX();
+            int neighbory = room.GetY();
+            
+            //If this square is already a dead end, pass it
+            int neighborsCount = 0;
+
+            if (roomsGrid[neighborx + 1][neighbory] != null) {
+                neighborsCount++;
+            }
+            if (roomsGrid[neighborx - 1][neighbory] != null) {
+                neighborsCount++;
+            }
+            if (roomsGrid[neighborx][neighbory + 1] != null) {
+                neighborsCount++;
+            }
+            if (roomsGrid[neighborx][neighbory - 1] != null) {
+                neighborsCount++;
+            }
+
+            if (neighborsCount == 1){
+                continue;
+            }
+
+            direction = r.nextInt(4);
+
+            switch (direction){
+                //Up
+                case 0: 
+                    neighbory--;
+                    break;
+                //Right
+                case 1:
+                    neighborx++;
+                    break;
+                //Down
+                case 2:
+                    neighbory++;
+                    break;
+                //Left
+                case 3:
+                    neighborx--;
+                    break;
+            }
+            
+            //If this square has more than one neighbor, pass it
+            neighborsCount = 0;
+
+            if (roomsGrid[neighborx + 1][neighbory] != null) {
+                neighborsCount++;
+            }
+            if (roomsGrid[neighborx - 1][neighbory] != null) {
+                neighborsCount++;
+            }
+            if (roomsGrid[neighborx][neighbory + 1] != null) {
+                neighborsCount++;
+            }
+            if (roomsGrid[neighborx][neighbory - 1] != null) {
+                neighborsCount++;
+            }
+
+            if (neighborsCount > 1){
+                continue;
+            }
+
+            //If the neighbor is empty, add a room to it
+            if (roomsGrid[neighborx][neighbory] == null) {
+                
+                //Create new room
+                DungeonRoom neighbor = new DungeonRoom(neighborx, neighbory, true);
+                
+                //Update the neighbors of the square
+                room.AddNeighbor(neighbor);
+                neighbor.AddNeighbor(room);
+                
+                //Set the neighbor as the current room
+                roomsGrid[neighborx][neighbory] = neighbor;
+                roomsCount++;
+            }
+
+            //Leave once we hit the goal # of rooms
+            if (roomsCount == bonusGoal){
+                return true;
+            }
+            
+        }
+        
+        return false;
+        
+    }
+    
+    public boolean ExpandDeadEndRooms() {
         
         //Initialize variables
         Random r = new Random();
@@ -182,9 +308,38 @@ public class DungeonLayoutGenerator {
                     break;
             }
             
+            //If this square has more than one neighbor, pass it
+            int neighborsCount = 0;
+
+            if (roomsGrid[neighborx + 1][neighbory] != null) {
+                neighborsCount++;
+            }
+            if (roomsGrid[neighborx - 1][neighbory] != null) {
+                neighborsCount++;
+            }
+            if (roomsGrid[neighborx][neighbory + 1] != null) {
+                neighborsCount++;
+            }
+            if (roomsGrid[neighborx][neighbory - 1] != null) {
+                neighborsCount++;
+            }
+
+            if (neighborsCount > 1){
+                continue;
+            }
+
             //If the neighbor is empty, add a room to it
             if (roomsGrid[neighborx][neighbory] == null) {
-                roomsGrid[neighborx][neighbory] = new DungeonRoom(neighborx, neighbory, true);
+                
+                //Create new room
+                DungeonRoom neighbor = new DungeonRoom(neighborx, neighbory, true);
+                
+                //Update the neighbors of the square
+                room.AddNeighbor(neighbor);
+                neighbor.AddNeighbor(room);
+                
+                //Set the neighbor as the current room
+                roomsGrid[neighborx][neighbory] = neighbor;
                 roomsCount++;
             }
 
@@ -226,6 +381,27 @@ public class DungeonLayoutGenerator {
             s += "\n";
         }
         
+        for (int y = 0; y < roomsGrid.length; y++){
+            
+            for (int x = 0; x < roomsGrid.length; x++) {
+                
+                //If the square is empty, draw a 0
+                if (roomsGrid[x][y] != null){
+                    
+                    DungeonRoom d = roomsGrid[x][y];
+                    
+                    s += d.GetX() + " " + d.GetY() + " : ";
+                    
+                    for (DungeonRoom n : d.GetNeighbors()){
+                        s += n.GetX() + " " + n.GetY() + ", ";;
+                    }
+                    
+                    s += "\n";
+                    
+                }
+            }
+        }
+
         return s;
     }
 }
