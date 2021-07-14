@@ -6,13 +6,14 @@
 package roguelike;
 
 import View.Camera;
-import roguelike.Objects.Player;
+import roguelike.Objects.Player.Player;
 import roguelike.Objects.GameObject;
 import roguelike.Objects.EntitySheep;
 import roguelike.Objects.Goblin.EntityGoblin;
 import roguelike.Objects.ObjectWall;
 import roguelike.Objects.EntityCrate;
 import java.util.*;
+import roguelike.Items.ItemDagger;
 
 /**
  *
@@ -62,6 +63,9 @@ public class Board<T> {
                 switch (c){
                     case '#':
                         new ObjectWall(x, y, this);
+                        break;
+                    case 'd':
+                        new ItemDagger(x, y, this);
                         break;
                     case 'C':
                         new EntityCrate(x, y, this, 2);

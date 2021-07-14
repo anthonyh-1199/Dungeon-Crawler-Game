@@ -5,7 +5,7 @@
  */
 package roguelike;
 
-import roguelike.Objects.Player;
+import roguelike.Objects.Player.Player;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 

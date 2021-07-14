@@ -19,8 +19,7 @@ public class Roguelike {
      */
     public static void main(String[] args) {
         Camera c = new Camera(null, null, 35);
-        boolean b = c.CheckLine(6, 4, 0, 1);
-        //DungeonLayoutGenerator dg = new DungeonLayoutGenerator();
+        DungeonLayoutGenerator dg = new DungeonLayoutGenerator();
     }
     
 }

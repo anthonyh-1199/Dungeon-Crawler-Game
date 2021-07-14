@@ -4,13 +4,15 @@ package roguelike;
 import View.Camera;
 import MapGeneration.CaveGenerator;
 import java.awt.Color;
-import roguelike.Objects.Player;
+import roguelike.Objects.Player.Player;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.util.ArrayList;
 import javax.swing.text.SimpleAttributeSet;
 import javax.swing.text.StyleConstants;
 import javax.swing.text.StyledDocument;
+import roguelike.Items.ItemDagger;
+import roguelike.Items.ParentItem;
 
 /**
  * @author Anthony
@@ -29,18 +31,18 @@ public class Game extends javax.swing.JFrame implements KeyListener {
         String seed =
         "............................." + 
         ".###########################." + 
-        ".#..............C..#.......#." + 
-        ".#..............C..#.......#." + 
-        ".#..............#..#.......#." + 
-        ".#..............#..#...#...#." + 
-        ".#..............#..#...#...#." + 
-        ".#..............#..#...#...#." + 
-        ".#..............#..#...#...#." + 
-        ".#..............#..#...#...#." + 
-        ".#..............#..#...#...#." + 
-        ".#..............#..#...#...#." + 
-        ".#..............#..#...#...#." + 
-        ".#..............#..#...#...#." + 
+        ".#.......d......C..#.......#." + 
+        ".#.......d......C..#.......#." + 
+        ".#.......d......#..#.......#." + 
+        ".#.......d......#..#...#...#." + 
+        ".#.......d......#..#...#...#." + 
+        ".#.......d......#..#...#...#." + 
+        ".#.......d......#..#...#...#." + 
+        ".#.......d......#..#...#...#." + 
+        ".#.......d......#..#...#...#." + 
+        ".#.......d......#..#...#...#." + 
+        ".#.......d......#..#...#...#." + 
+        ".#.......d......#..#...#...#." + 
         ".#......P.......#..#...#...#." + 
         ".#..............#..#...#...#." + 
         ".#..............#..#...#...#." + 
@@ -57,14 +59,14 @@ public class Game extends javax.swing.JFrame implements KeyListener {
         ".###########################." +
         ".............................";
 
-        this.gameboard = new Board(200);
+        this.gameboard = new Board(400);
         
-        new CaveGenerator(gameboard);
+        new CaveGenerator(gameboard, 300, 2);
         
-        //this.gameboard = new Board(29, seed);
+        this.gameboard = new Board(29, seed);
         
         this.player = gameboard.GetPlayer();
-        
+
         camera = gameboard.camera;
 
         UpdateView();
@@ -81,13 +83,23 @@ public class Game extends javax.swing.JFrame implements KeyListener {
     
     private void UpdateView() {
         
+        //Initialize formating variables
+        
+        String s;
+        StyledDocument doc;
+        SimpleAttributeSet set = new SimpleAttributeSet();
+        StyleConstants.setBackground(set, Color.BLACK);
+        StyleConstants.setForeground(set, Color.WHITE);
+        
         //Update camera screen
+        
         camera.GetView(jGameScreen);
         
         //Update message board
+        
         ArrayList<String> messages = camera.GetMessages();
         
-        String s = "";
+        s = "";
         
         for (String m : messages) {
             
@@ -98,12 +110,8 @@ public class Game extends javax.swing.JFrame implements KeyListener {
         jMessageBoard.setText(s);
         
         //Format message board
-                
-        SimpleAttributeSet set = new SimpleAttributeSet();
-        StyleConstants.setBackground(set, Color.BLACK);
-        StyleConstants.setForeground(set, Color.WHITE);
-        
-        StyledDocument doc = jMessageBoard.getStyledDocument();
+
+        doc = jMessageBoard.getStyledDocument();
         
         for (int k = 0; k < s.length(); k++) {
             
@@ -111,6 +119,59 @@ public class Game extends javax.swing.JFrame implements KeyListener {
             
         }
         
+        //Update stats board
+        
+        s = " ";
+        
+        s += player.name + " (" + player.classLevel + ")";
+        while (s.length() < 28) {s += " ";}
+        
+        s += "\n Hitpoints: " + player.hitPoints + " / " + player.maxHitPoints;
+        while (s.length() < 28 * 2 + 1) {s += " ";}
+        
+        s += "\n STR: " + player.statStrength;
+        while (s.length() < 28 * 2 + 1 + 15) {s += " ";}
+        s += "DEX: " + player.statDexterity;
+        while (s.length() < 28 * 3 + 2) {s += " ";}
+        
+        s += "\n CON: " + player.statConstitution;
+        while (s.length() < 28 * 3 + 2 + 15) {s += " ";}
+        s += "WIS: " + player.statWisdom;
+        while (s.length() < 28 * 4 + 3) {s += " ";}
+        
+        s += "\n INT: " + player.statIntelligence;
+        while (s.length() < 28 * 4 + 3 + 15) {s += " ";}
+        s += "CHA: " + player.statCharisma;
+        while (s.length() < 28 * 5 + 4) {s += " ";}
+        
+        
+        for (int i = 0; i < player.inventory.inventory.length; i++) {
+            
+            ParentItem item = player.inventory.inventory[i];
+            
+            s += "\n • ";
+            
+            if (item != null) {
+                
+                s += item.itemName;
+                
+            }
+            
+            while (s.length() < 28 * (6 + i) + (5 + i)) {s += " ";}
+        }
+        
+        jStatsBoard.setText(s);
+        
+        //Format message board
+
+        doc = jStatsBoard.getStyledDocument();
+        
+        for (int k = 0; k < s.length(); k++) {
+            
+            doc.setCharacterAttributes(k, 1, set, true);
+            
+        }
+
     }
 
     /**
@@ -125,6 +186,8 @@ public class Game extends javax.swing.JFrame implements KeyListener {
         jScrollPane2 = new javax.swing.JScrollPane();
         jGameScreen = new javax.swing.JTextPane();
         jScrollPane1 = new javax.swing.JScrollPane();
+        jStatsBoard = new javax.swing.JTextPane();
+        jScrollPane3 = new javax.swing.JScrollPane();
         jMessageBoard = new javax.swing.JTextPane();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -154,12 +217,27 @@ public class Game extends javax.swing.JFrame implements KeyListener {
         jScrollPane1.setFocusable(false);
         jScrollPane1.setHorizontalScrollBar(null);
 
+        jStatsBoard.setBackground(new java.awt.Color(0, 0, 0));
+        jStatsBoard.setBorder(null);
+        jStatsBoard.setFont(new java.awt.Font("Consolas", 0, 18)); // NOI18N
+        jStatsBoard.setFocusable(false);
+        jStatsBoard.setMargin(new java.awt.Insets(0, 0, 0, 0));
+        jScrollPane1.setViewportView(jStatsBoard);
+
+        jScrollPane3.setBackground(new java.awt.Color(0, 0, 0));
+        jScrollPane3.setHorizontalScrollBarPolicy(javax.swing.ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+        jScrollPane3.setVerticalScrollBarPolicy(javax.swing.ScrollPaneConstants.VERTICAL_SCROLLBAR_NEVER);
+        jScrollPane3.setAlignmentX(0.0F);
+        jScrollPane3.setAlignmentY(0.0F);
+        jScrollPane3.setFocusable(false);
+        jScrollPane3.setHorizontalScrollBar(null);
+
         jMessageBoard.setBackground(new java.awt.Color(0, 0, 0));
         jMessageBoard.setBorder(null);
         jMessageBoard.setFont(new java.awt.Font("Consolas", 0, 18)); // NOI18N
         jMessageBoard.setFocusable(false);
         jMessageBoard.setMargin(new java.awt.Insets(0, 0, 0, 0));
-        jScrollPane1.setViewportView(jMessageBoard);
+        jScrollPane3.setViewportView(jMessageBoard);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -167,16 +245,21 @@ public class Game extends javax.swing.JFrame implements KeyListener {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 706, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 298, Short.MAX_VALUE))
+                .addGap(4, 4, 4)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 290, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 290, javax.swing.GroupLayout.PREFERRED_SIZE)))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 766, Short.MAX_VALUE)
-                    .addComponent(jScrollPane1))
-                .addGap(0, 46, Short.MAX_VALUE))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 766, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 334, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 426, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap())
         );
 
         pack();
@@ -250,5 +333,7 @@ public class Game extends javax.swing.JFrame implements KeyListener {
     private javax.swing.JTextPane jMessageBoard;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JScrollPane jScrollPane3;
+    private javax.swing.JTextPane jStatsBoard;
     // End of variables declaration//GEN-END:variables
 }
