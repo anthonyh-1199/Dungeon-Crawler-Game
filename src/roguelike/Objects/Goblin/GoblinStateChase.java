@@ -6,7 +6,7 @@ package roguelike.Objects.Goblin;
 import java.util.PriorityQueue;
 import roguelike.Node;
 import roguelike.Objects.Entity;
-import roguelike.Objects.Player;
+import roguelike.Objects.Player.Player;
 import roguelike.State;
 
 /**
@@ -43,7 +43,7 @@ public class GoblinStateChase extends State {
     public void CheckTransitions() {
         
         //Check if object is dead
-        if (parent.health <= 0) {
+        if (parent.hitPoints <= 0) {
             
             parent.gameboard.GetCamera().AddMessage("You've slain the goblin!");
             

@@ -6,7 +6,7 @@ package roguelike.Objects.Goblin;
 import java.util.Random;
 import roguelike.Board;
 import roguelike.Objects.Entity;
-import roguelike.Objects.Player;
+import roguelike.Objects.Player.Player;
 import roguelike.State;
 
 /**
@@ -37,7 +37,7 @@ public class GoblinStateIdle extends State {
     public void CheckTransitions() {
         
         //Check if object is dead
-        if (parent.health <= 0){
+        if (parent.hitPoints <= 0){
             
             parent.gameboard.GetCamera().AddMessage("You've slain the goblin!");
 
@@ -52,7 +52,7 @@ public class GoblinStateIdle extends State {
             
             if (!Board.CheckSightLine(parent.xposition, parent.yposition, p.GetX(), p.GetY(), parent.gameboard)){
                 
-                parent.gameboard.GetCamera().AddMessage("The goblin lets out a     startling scream!");
+                parent.gameboard.GetCamera().AddMessage("The goblin lets out a    startling scream!");
                 
                 parent.ChangeState(parent.STATE_CHASE);
             }

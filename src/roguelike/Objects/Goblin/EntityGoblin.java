@@ -23,13 +23,13 @@ public class EntityGoblin extends Entity implements StateMachine {
     State currentState;
 
     //Constructor
-    public EntityGoblin(int x, int y, Board b, int h){
+    public EntityGoblin(int x, int y, Board b, int h) {
         
         //Call parent constructor
         super(x, y, b);
         
         //Set variables
-        this.health = h;
+        this.hitPoints = h;
         this.symbol = 'g';
         this.isSolid = true;
         this.speed = 1;
