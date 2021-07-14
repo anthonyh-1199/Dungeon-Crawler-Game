@@ -2,7 +2,6 @@
 package MapGeneration;
 
 import roguelike.Board;
-import roguelike.Objects.GameObject;
 import roguelike.Objects.ObjectWall;
 
 /**

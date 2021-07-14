@@ -4,19 +4,21 @@ package MapGeneration;
 import java.util.Random;
 import roguelike.Board;
 import roguelike.Objects.Goblin.EntityGoblin;
-import roguelike.Objects.Player;
+import roguelike.Objects.Player.Player;
 
 /**
  * @author Anthony
  */
 public class CaveGenerator extends Generator{
     
-    public CaveGenerator(Board b) {
+    public CaveGenerator(Board b, int length, int passes) {
         super(b);
         
         FillBoard();
         
-        GenerateCave(gameboard.GetSize() / 2, gameboard.GetSize() / 2, 780);
+        for (int i = 0; i < passes; i++) {
+            GenerateCave(gameboard.GetSize() / 2, gameboard.GetSize() / 2, length);
+        }
         
         CaveCleanup();
     }
