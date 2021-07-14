@@ -26,7 +26,7 @@ public class Camera {
     Board gameboard;
     int size;
     ArrayList<String> messages = new ArrayList<>();
-    final int MESSAGES_MAX_SIZE = 16;
+    final int MESSAGES_MAX_SIZE = 17;
             
     //Constructor
     
@@ -47,6 +47,7 @@ public class Camera {
         StyledDocument doc = j.getStyledDocument();
         Color[] colors = new Color[2 * (size * size) + size];
         int i = 0;
+        Color darkColor = new Color(20,40,50);
         
         //Set the start point to the top-left corner relative to the focal point
         int startx = (focalPoint.GetX() - (size / 2));
@@ -87,7 +88,7 @@ public class Camera {
                     //If the square is surrounded on all 4 sides, don't draw it
                     if (gameboard.CheckIfSquareIsEmpty(x, y)){
                         s += '.' + " ";
-                        colors[i++] = new Color(40,80,100);
+                        colors[i++] = darkColor;
                         i++;
                         continue;
                     }
@@ -108,13 +109,13 @@ public class Camera {
                     
                     if (gameboard.GetSquare(x, y).getClass().getSimpleName().equals("ObjectWall")){
                         s += ((GameObject)gameboard.GetSquare(x, y)).GetSymbol() + " ";
-                        colors[i++] = new Color(40,80,100);
+                        colors[i++] = darkColor;
                         i++;
                         continue;
                     }
                     
                     s += '.' + " ";
-                    colors[i++] = new Color(40,80,100);
+                    colors[i++] = darkColor;
                     i++;
                     continue;
                 }
@@ -179,7 +180,7 @@ public class Camera {
         //Split larger messages into smaller ones
         for (int i = 0; i < s.length(); i++){
             
-            if (i == 28) {
+            if (i == 27) {
                 
                 //Put the beginning part of the message in its own line
                 messages.add(s.substring(0, i) + " ");
@@ -194,7 +195,7 @@ public class Camera {
         }
         
         //Add padding to shorter messages (helps with formating)
-        while (s.length() <= 28) {
+        while (s.length() <= 27) {
             
             s += " ";
             
@@ -203,12 +204,13 @@ public class Camera {
         //Add message
         messages.add(s);
         
+        //Remove old messages if we've exceeded capacity
         while (messages.size() > MESSAGES_MAX_SIZE) {
             
             messages.remove(0);
             
         }
-        
+
     }
 
     //Getter methods
@@ -222,7 +224,17 @@ public class Camera {
     }
     
     public ArrayList<String> GetMessages() {
-        return this.messages;
+        
+        ArrayList<String> output = (ArrayList<String>) messages.clone();
+        
+        //Formating hack - if not at capacity, fill the remainder with blanks
+        while (output.size() <= MESSAGES_MAX_SIZE) {
+            
+            output.add("                            ");
+            
+        }
+        
+        return output;
     }
     
     //Setter methods
