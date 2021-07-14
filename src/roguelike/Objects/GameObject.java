@@ -23,6 +23,8 @@ public abstract class GameObject {
     
     //Constructor
     
+    public GameObject() {}
+    
     public GameObject(int x, int y, Board b) {
         this.xposition = x;
         this.yposition = y;

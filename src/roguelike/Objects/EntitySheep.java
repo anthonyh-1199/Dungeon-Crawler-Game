@@ -5,6 +5,7 @@
  */
 package roguelike.Objects;
 
+import roguelike.Objects.Player.Player;
 import java.util.Random;
 import roguelike.Board;
 
@@ -21,7 +22,7 @@ public class EntitySheep extends Entity{
         super(x, y, b);
         
         //Set variables
-        this.health = h;
+        this.hitPoints = h;
         this.symbol = 'S';
         this.isSolid = true;
         this.speed = 1;
@@ -89,7 +90,7 @@ public class EntitySheep extends Entity{
     public void Update() {
 
         //Check if object is dead
-        if (health <= 0){
+        if (hitPoints <= 0){
 
             Die();
             return;

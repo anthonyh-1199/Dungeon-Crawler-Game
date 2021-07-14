@@ -17,7 +17,7 @@ public class EntityCrate extends Entity{
         super(x, y, b);
         
         //Set variables
-        this.health = h;
+        this.hitPoints = h;
         this.symbol = 'C';
         this.isSolid = true;
         this.speed = 0;
@@ -45,7 +45,7 @@ public class EntityCrate extends Entity{
     public void Update() {
 
         //Check if object is dead
-        if (health <= 0){
+        if (hitPoints <= 0){
 
             Die();
             return;
