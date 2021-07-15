@@ -26,7 +26,7 @@ public class ItemDagger extends ParentWeapon {
         //Status effect attributes
         weaponDamage = 2;
         weaponRange = 1;
-        
+
     }
     
     //Constructor for when item is in player's inventory

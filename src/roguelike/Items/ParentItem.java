@@ -15,8 +15,7 @@ public abstract class ParentItem extends GameObject{
     //Constructor for when item is on the board
     public ParentItem(int x, int y, Board b) {
         super(x, y, b);
-        this.itemName = itemName;
-        this.itemType = itemType;
+        isOpaque = false;
     }
     
     //Constructor for when item is in player's inventory

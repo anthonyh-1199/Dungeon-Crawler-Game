@@ -34,6 +34,7 @@ public class EntityGoblin extends Entity implements StateMachine {
         this.isSolid = true;
         this.speed = 1;
         this.name = "Goblin";
+        isOpaque = false;
         color = new Color(36,191,32);
         
         //Add self to actionQueue

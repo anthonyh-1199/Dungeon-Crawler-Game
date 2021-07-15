@@ -20,9 +20,10 @@ public class ObjectWall extends GameObject{
         super(x, y, b);
         
         //Set variables
-        this.isSolid = true;
-        this.symbol = '#';
-        this.color = new Color(255,255,255);
+        isSolid = true;
+        symbol = '#';
+        color = new Color(255,255,255);
+        isOpaque = true;
 
     }
     

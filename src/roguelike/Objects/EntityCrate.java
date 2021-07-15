@@ -17,12 +17,13 @@ public class EntityCrate extends Entity{
         super(x, y, b);
         
         //Set variables
-        this.hitPoints = h;
-        this.symbol = 'C';
-        this.isSolid = true;
-        this.speed = 0;
-        this.color = color.WHITE;
-        this.name = "Crate";
+        hitPoints = h;
+        symbol = 'C';
+        isSolid = true;
+        speed = 0;
+        color = color.WHITE;
+        name = "Crate";
+        isOpaque = true;
         
         //Add self to actionQueue
         gameboard.AddObjectToList(this);

@@ -20,6 +20,7 @@ public abstract class GameObject {
     public int xposition;
     public int yposition;
     public String name;
+    public boolean isOpaque;
     
     //Constructor
     
