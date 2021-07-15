@@ -13,7 +13,7 @@ import roguelike.Objects.Goblin.EntityGoblin;
 import roguelike.Objects.ObjectWall;
 import roguelike.Objects.EntityCrate;
 import java.util.*;
-import roguelike.Items.ItemDagger;
+import roguelike.Items.WeaponDagger;
 
 /**
  *
@@ -65,7 +65,7 @@ public class Board<T> {
                         new ObjectWall(x, y, this);
                         break;
                     case 'd':
-                        new ItemDagger(x, y, this);
+                        new WeaponDagger(x, y, this);
                         break;
                     case 'C':
                         new EntityCrate(x, y, this, 2);
@@ -88,7 +88,7 @@ public class Board<T> {
     }
     
     //Returns the object at a specified square, returns null if empty
-    public T GetSquare(int x, int y) {
+    public T getSquare(int x, int y) {
         if ((x < size && x >= 0) &&
             (y < size && y >= 0)) {
                 return (T)gameboard[x][y].GetObject();
@@ -96,17 +96,17 @@ public class Board<T> {
         return null;
     }
     
-    public Camera GetCamera() {
+    public Camera getCamera() {
         return this.camera;
     }
     
     //Return true if the square is empty
-    public boolean CheckIfSquareIsEmpty(int x, int y) {
-        return (GetSquare(x, y) == null);
+    public boolean checkIfSquareIsEmpty(int x, int y) {
+        return (getSquare(x, y) == null);
     }
     
     //Sets the object at a specified square
-    public void SetSquare(int x, int y, GameObject object) {
+    public void setSquare(int x, int y, GameObject object) {
         if ((x < size && x >= 0) &&
             (y < size && y >= 0)){
                 gameboard[x][y].SetObject(object);
@@ -114,15 +114,15 @@ public class Board<T> {
     }
     
     //Adds object to ActionQueue
-    public void AddObjectToList(GameObject object) {
+    public void addObjectToList(GameObject object) {
         actionList.add(object);
     }
     
-    public void SetSeen(int x, int y) {
+    public void setSeen(int x, int y) {
         gameboard[x][y].SetSeen(true);
     }
     
-    public boolean GetSeen(int x, int y) {
+    public boolean getSeen(int x, int y) {
         if ((x < size && x >= 0) &&
             (y < size && y >= 0)) {
                 return (gameboard[x][y].GetSeen());
@@ -130,35 +130,35 @@ public class Board<T> {
         return false;
     }
     
-    public void SetPlayer(Player player) {
+    public void setPlayer(Player player) {
         this.player = player;
         this.camera = new Camera(player, this, 35);
     }
     
-    public Player GetPlayer() {
+    public Player getPlayer() {
         return this.player;
     }
     
-    public int GetSize() {
+    public int getSize() {
         return this.size;
     }
     
     //Removes object from ActionQueue
-    public void RemoveObjectFromList(GameObject object) {
+    public void removeObjectFromList(GameObject object) {
         actionList.remove(object);
     }
     
     //Loops through all objects in the action list and calls their Update() functions
-    public void Update() {
+    public void update() {
         
         for (GameObject object : actionList) {
-            object.Update();
+            object.update();
         }
         
     }
     
     //Returns true if an opaque object is blocking the line
-    public static boolean CheckSightLine(int x0, int y0, int x1, int y1, Board gameboard){
+    public static boolean checkSightLine(int x0, int y0, int x1, int y1, Board gameboard){
         
         //Holds starting coordinates
         int startx = x0;
@@ -194,8 +194,8 @@ public class Board<T> {
 
         for (int[] i : points){
             if (!((i[0] == x1 && i[1] == y1) || (i[0] == startx && i[1] == starty))){
-                if (gameboard.GetSquare(i[0], i[1]) != null){
-                    if (((GameObject)gameboard.GetSquare(i[0], i[1])).isOpaque == true)
+                if (gameboard.getSquare(i[0], i[1]) != null){
+                    if (((GameObject)gameboard.getSquare(i[0], i[1])).isOpaque == true)
                         return true;
                 }
             }
@@ -205,7 +205,8 @@ public class Board<T> {
     }
     
     //Returns a representation of the board in a String
-    public String ToString(){
+    @Override
+    public String toString(){
         String s = "";
         
         for (int y = 0; y < gameboard.length; y++){
@@ -213,13 +214,13 @@ public class Board<T> {
             for (int x = 0; x < gameboard.length; x++) {
                 
                 //If the square is empty/null, set the character to 0
-                if (GetSquare(x, y) == null){
+                if (getSquare(x, y) == null){
                     s += '.' + " ";
                 }
                 
                 //Else, add the respective character to represent the object
                 else {
-                    s += ((GameObject)GetSquare(x, y)).GetSymbol() + " ";
+                    s += ((GameObject)getSquare(x, y)).getSymbol() + " ";
                 }
             }
             

@@ -30,7 +30,7 @@ public class EntitySheep extends Entity{
         this.color = color.WHITE;
         
         //Add self to actionQueue
-        gameboard.AddObjectToList(this);
+        gameboard.addObjectToList(this);
     }
     
     public void Move(Player p){
@@ -60,46 +60,46 @@ public class EntitySheep extends Entity{
         }
         
         //If space is empty, move into it
-        if (gameboard.CheckIfSquareIsEmpty(xgoal, ygoal)) {
+        if (gameboard.checkIfSquareIsEmpty(xgoal, ygoal)) {
 
             //Remove current position in board
-            gameboard.SetSquare(xposition, yposition, null);
+            gameboard.setSquare(xposition, yposition, null);
             
             //Update positional variables
             xposition = xgoal;
             yposition = ygoal;
 
             //Set to new position in board
-            gameboard.SetSquare(xgoal, ygoal, this);
+            gameboard.setSquare(xgoal, ygoal, this);
             
         }
         
     }
 
-    public void Die(){
+    public void die(){
         
         //Remove self from board
-        gameboard.SetSquare(xposition, yposition, null);
+        gameboard.setSquare(xposition, yposition, null);
         
         //Remove self from actionList
-        gameboard.RemoveObjectFromList(this);
+        gameboard.removeObjectFromList(this);
         
     }
     
     @Override
-    public void Update() {
+    public void update() {
 
         //Check if object is dead
         if (hitPoints <= 0){
 
-            Die();
+            die();
             return;
             
         }
         
         //Else, move
         for (int i = 0; i < speed; i++){
-            Move(gameboard.GetPlayer());
+            Move(gameboard.getPlayer());
         }
 
     }

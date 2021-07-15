@@ -17,63 +17,61 @@ public class GoblinStateChase extends State {
     EntityGoblin parent;
 
     @Override
-    public void EnterState(Entity e) {
+    public void enterState(Entity e) {
         
         parent = (EntityGoblin) e;
         
     }
 
     @Override
-    public void Update() {
+    public void update() {
         
-        Player p = parent.gameboard.GetPlayer();
+        Player p = parent.gameboard.getPlayer();
 
-        CheckTransitions();
+        checkTransitions();
         
         //Move to player
         if (p != null){
             
-            CalculatePath(p.GetX(), p.GetY());
+            calculatePath(p.getX(), p.getY());
             
         }
         
     }
 
     @Override
-    public void CheckTransitions() {
+    public void checkTransitions() {
         
         //Check if object is dead
         if (parent.hitPoints <= 0) {
-            
-            parent.gameboard.GetCamera().AddMessage("You've slain the goblin!");
-            
-            parent.ChangeState(parent.STATE_DEAD);
+
+            parent.changeState(parent.STATE_DEAD);
             
         }
         
     }
     
-    public void Move(int xgoal, int ygoal){
+    public void move(int xgoal, int ygoal){
 
         //If space is empty, move into it
-        if ((parent.gameboard.GetSquare(xgoal, ygoal)) == null) {
+        if ((parent.gameboard.getSquare(xgoal, ygoal)) == null) {
 
             //Remove current position in board
-            parent.gameboard.SetSquare(parent.xposition, parent.yposition, null);
+            parent.gameboard.setSquare(parent.xposition, parent.yposition, null);
             
             //Update positional variables
             parent.xposition = xgoal;
             parent.yposition = ygoal;
 
             //Set to new position in board
-            parent.gameboard.SetSquare(xgoal, ygoal, parent);
+            parent.gameboard.setSquare(xgoal, ygoal, parent);
             
         }
         
     }
     
     //Pathfinding algorithm using A*
-    public void CalculatePath(int xgoal, int ygoal){
+    public void calculatePath(int xgoal, int ygoal){
         
         //Create node to represent target
         Node target = new Node(xgoal, ygoal, 0);
@@ -114,13 +112,13 @@ public class GoblinStateChase extends State {
                             m = m.parent;
                         }
 
-                        Move(m.x, m.y);
+                        move(m.x, m.y);
 
                         return;
                     }
                     
                     //If the node isn't empty, add it directly to the closed list
-                    if (!parent.gameboard.CheckIfSquareIsEmpty(m.x, m.y)) {
+                    if (!parent.gameboard.checkIfSquareIsEmpty(m.x, m.y)) {
                     //if (((gameboard.GetObjectAtSquare(m.x, m.y)) != null) &&
                     //!(gameboard.GetObjectAtSquare(m.x, m.y).getClass().getSimpleName().equals(this.getClass().getSimpleName()))) {
                         

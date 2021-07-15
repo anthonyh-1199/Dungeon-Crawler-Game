@@ -31,32 +31,32 @@ public abstract class GameObject {
         this.yposition = y;
         this.gameboard = b;
         
-        gameboard.SetSquare(xposition, yposition, this);
+        gameboard.setSquare(xposition, yposition, this);
     }
     
     //Class methods
     
-    public boolean IsSolid() {
+    public boolean isSolid() {
         return isSolid;
     }
     
     //Getter methods
     
-    public int GetX() {
+    public int getX() {
         return xposition;
     }
     
-    public int GetY() {
+    public int getY() {
         return yposition;
     }
     
-    public char GetSymbol() {
+    public char getSymbol() {
         return symbol;
     }
     
-    public Color GetColor() {
+    public Color getColor() {
         return color;
     }
     
-    public abstract void Update();
+    public abstract void update();
 }

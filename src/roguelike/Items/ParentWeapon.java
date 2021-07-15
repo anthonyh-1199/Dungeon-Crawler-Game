@@ -11,19 +11,29 @@ public abstract class ParentWeapon extends ParentItem {
     int weaponDamage, weaponRange;
 
     public ParentWeapon(int x, int y, Board b) {
+        
         super(x, y, b);
+        
+        this.itemType = "weapon";
+        
     }
     
     //Constructor for when item is in player's inventory
-    public ParentWeapon() {}
+    public ParentWeapon() {
+        
+        this.itemType = "weapon";
+    }
+    
     
     //Class methods
     
-    abstract int GetDamage();
+    public abstract int getDamage();
     
-    abstract void OnHitEffect();
+    public abstract int getAccuracy(int accuracyModifier);
+    
+    public abstract void onHitEffect();
 
     @Override
-    public void Update() {}
+    public void update() {}
     
 }

@@ -5,6 +5,8 @@ package roguelike.Objects.Player;
 import java.awt.Color;
 import roguelike.Board;
 import roguelike.Items.ParentItem;
+import roguelike.Items.ParentWeapon;
+import roguelike.Items.WeaponFists;
 import roguelike.Objects.Entity;
 import roguelike.Objects.GameObject;
 
@@ -34,7 +36,25 @@ public class Player extends GameObject{
         this.classLevel = 1;
         this.walletBalance = 10;
         
-        gameboard.SetPlayer(this);
+        gameboard.setPlayer(this);
+    }
+    
+    public ParentWeapon getWeapon() {
+        
+        for (ParentItem item : inventory.inventory) {
+            
+            if (item == null) break;
+            
+            if (item.itemType.equals("Weapon")) {
+                
+                return (ParentWeapon)item;
+                
+            }
+            
+        }
+        
+        return new WeaponFists();
+        
     }
     
     public void Move(String direction){
@@ -60,41 +80,43 @@ public class Player extends GameObject{
         }
         
         //If space is empty, move into it
-        if (gameboard.CheckIfSquareIsEmpty(xgoal, ygoal)) {
+        if (gameboard.checkIfSquareIsEmpty(xgoal, ygoal)) {
 
             //Remove current position in board
-            gameboard.SetSquare(xposition, yposition, null);
+            gameboard.setSquare(xposition, yposition, null);
 
             //Update player's positional variables
             xposition = xgoal;
             yposition = ygoal;
 
             //Set to new position in board
-            gameboard.SetSquare(xposition, yposition, this);
+            gameboard.setSquare(xposition, yposition, this);
             
             return;
 
         }
         
         //Get non-null object occupying the square
-        GameObject object = (GameObject)gameboard.GetSquare(xgoal, ygoal);
+        GameObject object = (GameObject)gameboard.getSquare(xgoal, ygoal);
         
         //If object is nonsolid, interact with it
-        if ((object).IsSolid() == false){
+        if ((object).isSolid() == false){
 
             switch (object.getClass().getSuperclass().getSimpleName()){
+                
                 case "ParentWeapon":
                     ParentItem i = (ParentItem)(object);
                     //If our inventory isn't full, add it to inventory and
                     //remove it from the board
                     if (!inventory.isFull()) {
                         inventory.addItem(i);
-                        gameboard.SetSquare(xposition, yposition, null);
+                        gameboard.setSquare(xposition, yposition, null);
                     }
                     //Else, we move around it
                     else {
-                        gameboard.SetSquare(xposition, yposition, object);
+                        gameboard.setSquare(xposition, yposition, object);
                     }
+                    
             }
 
             //Update player's positional variables
@@ -102,7 +124,7 @@ public class Player extends GameObject{
             yposition = ygoal;
 
             //Set to new position in board
-            gameboard.SetSquare(xposition, yposition, this);
+            gameboard.setSquare(xposition, yposition, this);
 
         }
         
@@ -110,13 +132,14 @@ public class Player extends GameObject{
         else {
             switch (object.getClass().getSuperclass().getSimpleName()){
                 case "Entity":
-                    Entity entity = (Entity)gameboard.GetSquare(xgoal, ygoal);
-                    entity.hitPoints -= weaponDamage;
+                    Entity entity = (Entity)gameboard.getSquare(xgoal, ygoal);
+                    ParentWeapon weapon = getWeapon();
+                    entity.takeDamage(this, weapon.getDamage(), weapon.getAccuracy(this.statDexterity));
                     break;
             }
         }
     }
 
     @Override
-    public void Update() {}
+    public void update() {}
 }

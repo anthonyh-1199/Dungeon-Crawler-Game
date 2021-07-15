@@ -8,10 +8,10 @@ package roguelike;
  */
 public interface StateMachine {
 
-    public void Start(); 
+    public void start(); 
     
-    public void Update();
+    public void update();
     
-    public void ChangeState(State state);
+    public void changeState(State state);
     
 }

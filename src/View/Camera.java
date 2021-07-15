@@ -50,8 +50,8 @@ public class Camera {
         Color darkColor = new Color(20,40,50);
         
         //Set the start point to the top-left corner relative to the focal point
-        int startx = (focalPoint.GetX() - (size / 2));
-        int starty = (focalPoint.GetY() - (size / 2));
+        int startx = (focalPoint.getX() - (size / 2));
+        int starty = (focalPoint.getY() - (size / 2));
         
         //Clamp the view so that it doesn't go out of range
         if (startx < 0){
@@ -60,11 +60,11 @@ public class Camera {
         if (starty < 0){
             starty = 0;
         }
-        if ((startx + size) > gameboard.GetSize()){
-            startx = gameboard.GetSize() - size;
+        if ((startx + size) > gameboard.getSize()){
+            startx = gameboard.getSize() - size;
         }
-        if ((starty + size) > gameboard.GetSize()){
-            starty = gameboard.GetSize() - size;
+        if ((starty + size) > gameboard.getSize()){
+            starty = gameboard.getSize() - size;
         }
         
         //Loop through the area that will be in the view
@@ -73,12 +73,12 @@ public class Camera {
             for (int x = startx; x < startx + size; x++) {
                 
                 //Drawing out-of-sight
-                if ((Board.CheckSightLine(focalPoint.GetX(), focalPoint.GetY(), x, y, gameboard) &&
-                    Board.CheckSightLine(x, y, focalPoint.GetX(), focalPoint.GetY(), gameboard)) ||
-                    (Math.sqrt(Math.pow((focalPoint.GetX() - x), 2) + Math.pow((focalPoint.GetY() - y), 2)) > 8.5)){
+                if ((Board.checkSightLine(focalPoint.getX(), focalPoint.getY(), x, y, gameboard) &&
+                    Board.checkSightLine(x, y, focalPoint.getX(), focalPoint.getY(), gameboard)) ||
+                    (Math.sqrt(Math.pow((focalPoint.getX() - x), 2) + Math.pow((focalPoint.getY() - y), 2)) > 8.5)){
                     
                     //If we haven't seen that square yet, don't draw it
-                    if (!gameboard.GetSeen(x, y)){
+                    if (!gameboard.getSeen(x, y)){
                         s += "  ";
                         i++;
                         i++;
@@ -86,29 +86,29 @@ public class Camera {
                     }
 
                     //If the square is surrounded on all 4 sides, don't draw it
-                    if (gameboard.CheckIfSquareIsEmpty(x, y)){
+                    if (gameboard.checkIfSquareIsEmpty(x, y)){
                         s += '.' + " ";
                         colors[i++] = darkColor;
                         i++;
                         continue;
                     }
 
-                    if ((!gameboard.CheckIfSquareIsEmpty(x - 1, y) &&
-                        !gameboard.CheckIfSquareIsEmpty(x + 1, y) &&
-                        !gameboard.CheckIfSquareIsEmpty(x, y - 1) &&
-                        !gameboard.CheckIfSquareIsEmpty(x, y + 1)) &&
-                        gameboard.GetSquare(x - 1, y).getClass().getSimpleName().equals("ObjectWall") &&
-                        gameboard.GetSquare(x + 1, y).getClass().getSimpleName().equals("ObjectWall") &&
-                        gameboard.GetSquare(x, y - 1).getClass().getSimpleName().equals("ObjectWall") &&
-                        gameboard.GetSquare(x, y + 1).getClass().getSimpleName().equals("ObjectWall")){
+                    if ((!gameboard.checkIfSquareIsEmpty(x - 1, y) &&
+                        !gameboard.checkIfSquareIsEmpty(x + 1, y) &&
+                        !gameboard.checkIfSquareIsEmpty(x, y - 1) &&
+                        !gameboard.checkIfSquareIsEmpty(x, y + 1)) &&
+                        gameboard.getSquare(x - 1, y).getClass().getSimpleName().equals("ObjectWall") &&
+                        gameboard.getSquare(x + 1, y).getClass().getSimpleName().equals("ObjectWall") &&
+                        gameboard.getSquare(x, y - 1).getClass().getSimpleName().equals("ObjectWall") &&
+                        gameboard.getSquare(x, y + 1).getClass().getSimpleName().equals("ObjectWall")){
                             s += "  ";
                             i++;
                             i++;
                         continue;
                     } 
                     
-                    if (gameboard.GetSquare(x, y).getClass().getSimpleName().equals("ObjectWall")){
-                        s += ((GameObject)gameboard.GetSquare(x, y)).GetSymbol() + " ";
+                    if (gameboard.getSquare(x, y).getClass().getSimpleName().equals("ObjectWall")){
+                        s += ((GameObject)gameboard.getSquare(x, y)).getSymbol() + " ";
                         colors[i++] = darkColor;
                         i++;
                         continue;
@@ -121,10 +121,10 @@ public class Camera {
                 }
                 
                 //Make square seen
-                gameboard.SetSeen(x, y);
+                gameboard.setSeen(x, y);
 
                 //If the square is empty/null, set the character to .
-                if (gameboard.CheckIfSquareIsEmpty(x, y)){
+                if (gameboard.checkIfSquareIsEmpty(x, y)){
                     s += '.' + " ";
                     colors[i++] = Color.WHITE;
                     i++;
@@ -133,20 +133,20 @@ public class Camera {
                 //Else, add the respective character to represent the object
                 else {
                     //If the square is surrounded on all 4 sides, don't draw it
-                    if ((!gameboard.CheckIfSquareIsEmpty(x - 1, y) &&
-                        !gameboard.CheckIfSquareIsEmpty(x + 1, y) &&
-                        !gameboard.CheckIfSquareIsEmpty(x, y - 1) &&
-                        !gameboard.CheckIfSquareIsEmpty(x, y + 1)) &&
-                        gameboard.GetSquare(x - 1, y).getClass().getSimpleName().equals("ObjectWall") &&
-                        gameboard.GetSquare(x + 1, y).getClass().getSimpleName().equals("ObjectWall") &&
-                        gameboard.GetSquare(x, y - 1).getClass().getSimpleName().equals("ObjectWall") &&
-                        gameboard.GetSquare(x, y + 1).getClass().getSimpleName().equals("ObjectWall")){
+                    if ((!gameboard.checkIfSquareIsEmpty(x - 1, y) &&
+                        !gameboard.checkIfSquareIsEmpty(x + 1, y) &&
+                        !gameboard.checkIfSquareIsEmpty(x, y - 1) &&
+                        !gameboard.checkIfSquareIsEmpty(x, y + 1)) &&
+                        gameboard.getSquare(x - 1, y).getClass().getSimpleName().equals("ObjectWall") &&
+                        gameboard.getSquare(x + 1, y).getClass().getSimpleName().equals("ObjectWall") &&
+                        gameboard.getSquare(x, y - 1).getClass().getSimpleName().equals("ObjectWall") &&
+                        gameboard.getSquare(x, y + 1).getClass().getSimpleName().equals("ObjectWall")){
                             s += "  ";
-                            colors[i++] = ((GameObject)gameboard.GetSquare(x, y)).GetColor();
+                            colors[i++] = ((GameObject)gameboard.getSquare(x, y)).getColor();
                             i++;
                         } else {
-                            s += ((GameObject)gameboard.GetSquare(x, y)).GetSymbol() + " ";
-                            colors[i++] = ((GameObject)gameboard.GetSquare(x, y)).GetColor();
+                            s += ((GameObject)gameboard.getSquare(x, y)).getSymbol() + " ";
+                            colors[i++] = ((GameObject)gameboard.getSquare(x, y)).getColor();
                             i++;
                     }
                 }

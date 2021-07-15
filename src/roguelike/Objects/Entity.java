@@ -10,10 +10,12 @@ import roguelike.Board;
  */
 public abstract class Entity extends GameObject{
     
-    public int hitPoints, speed;
+    public int hitPoints, speed, armorClass;
 
     public Entity(int x, int y, Board b) {
         super(x, y, b);
     }
+    
+    public void takeDamage(GameObject source, int damageRoll, int hitRoll) {};
     
 }

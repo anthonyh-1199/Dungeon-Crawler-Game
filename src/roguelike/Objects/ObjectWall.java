@@ -28,5 +28,5 @@ public class ObjectWall extends GameObject{
     }
     
     @Override
-    public void Update() {}
+    public void update() {}
 }

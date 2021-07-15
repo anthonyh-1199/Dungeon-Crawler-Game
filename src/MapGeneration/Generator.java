@@ -21,9 +21,9 @@ public abstract class Generator {
     }
     
     public void FillBoard(){
-        for (int y = 0; y < gameboard.GetSize(); y++){
-            for (int x = 0; x < gameboard.GetSize(); x++){
-                gameboard.SetSquare(x, y, new ObjectWall(x, y, gameboard));
+        for (int y = 0; y < gameboard.getSize(); y++){
+            for (int x = 0; x < gameboard.getSize(); x++){
+                gameboard.setSquare(x, y, new ObjectWall(x, y, gameboard));
             }
         }
     }

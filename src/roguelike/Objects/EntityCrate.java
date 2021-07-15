@@ -24,31 +24,39 @@ public class EntityCrate extends Entity{
         color = color.WHITE;
         name = "Crate";
         isOpaque = true;
+        this.armorClass = 0;
         
         //Add self to actionQueue
-        gameboard.AddObjectToList(this);
+        gameboard.addObjectToList(this);
         
     }
 
-    public void Die(){
+    public void die(){
         
         //Remove self from board
-        gameboard.SetSquare(xposition, yposition, null);
+        gameboard.setSquare(xposition, yposition, null);
         
         //Remove self from actionList
-        gameboard.RemoveObjectFromList(this);
+        gameboard.removeObjectFromList(this);
         
         //TO-DO: Add items drops
         
     }
     
     @Override
-    public void Update() {
+    public void takeDamage(GameObject source, int damageRoll, int hitRoll) {
+        
+        this.hitPoints -= damageRoll;
+        
+    }
+    
+    @Override
+    public void update() {
 
         //Check if object is dead
         if (hitPoints <= 0){
 
-            Die();
+            die();
             return;
             
         }

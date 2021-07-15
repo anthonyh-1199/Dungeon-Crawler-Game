@@ -17,16 +17,16 @@ public class GoblinStateIdle extends State {
     EntityGoblin parent;
 
     @Override
-    public void EnterState(Entity e) {
+    public void enterState(Entity e) {
         
         parent = (EntityGoblin) e;
         
     }
 
     @Override
-    public void Update() {
+    public void update() {
 
-        CheckTransitions();
+        checkTransitions();
         
         //Move randomly
         MoveRandomly();
@@ -34,27 +34,25 @@ public class GoblinStateIdle extends State {
     }
 
     @Override
-    public void CheckTransitions() {
+    public void checkTransitions() {
         
         //Check if object is dead
         if (parent.hitPoints <= 0){
-            
-            parent.gameboard.GetCamera().AddMessage("You've slain the goblin!");
 
-            parent.ChangeState(parent.STATE_DEAD);
+            parent.changeState(parent.STATE_DEAD);
             
             return;
         }
         
-        Player p = parent.gameboard.GetPlayer();
+        Player p = parent.gameboard.getPlayer();
         
         if (p != null){
             
-            if (!Board.CheckSightLine(parent.xposition, parent.yposition, p.GetX(), p.GetY(), parent.gameboard)){
+            if (!Board.checkSightLine(parent.xposition, parent.yposition, p.getX(), p.getY(), parent.gameboard)){
                 
-                parent.gameboard.GetCamera().AddMessage("The goblin lets out a    startling scream!");
+                parent.gameboard.getCamera().AddMessage("The goblin lets out a    startling scream!");
                 
-                parent.ChangeState(parent.STATE_CHASE);
+                parent.changeState(parent.STATE_CHASE);
             }
         }
     }
@@ -86,17 +84,17 @@ public class GoblinStateIdle extends State {
         }
         
         //If space is empty, move into it
-        if (parent.gameboard.CheckIfSquareIsEmpty(xgoal, ygoal)) {
+        if (parent.gameboard.checkIfSquareIsEmpty(xgoal, ygoal)) {
 
             //Remove current position in board
-            parent.gameboard.SetSquare(parent.xposition, parent.yposition, null);
+            parent.gameboard.setSquare(parent.xposition, parent.yposition, null);
             
             //Update positional variables
             parent.xposition = xgoal;
             parent.yposition = ygoal;
 
             //Set to new position in board
-            parent.gameboard.SetSquare(xgoal, ygoal, parent);
+            parent.gameboard.setSquare(xgoal, ygoal, parent);
             
         }
         

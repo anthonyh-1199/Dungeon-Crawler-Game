@@ -11,7 +11,7 @@ import java.util.ArrayList;
 import javax.swing.text.SimpleAttributeSet;
 import javax.swing.text.StyleConstants;
 import javax.swing.text.StyledDocument;
-import roguelike.Items.ItemDagger;
+import roguelike.Items.WeaponDagger;
 import roguelike.Items.ParentItem;
 
 /**
@@ -65,23 +65,23 @@ public class Game extends javax.swing.JFrame implements KeyListener {
         
         this.gameboard = new Board(29, seed);
         
-        this.player = gameboard.GetPlayer();
+        this.player = gameboard.getPlayer();
 
         camera = gameboard.camera;
 
-        UpdateView();
+        updateView();
 
     }
     
     //Updates the board to reflect changes
-    private void Update() {
+    private void update() {
 
-        gameboard.Update();
-        UpdateView();
+        gameboard.update();
+        updateView();
 
     }
     
-    private void UpdateView() {
+    private void updateView() {
         
         //Initialize formating variables
         
@@ -304,7 +304,7 @@ public class Game extends javax.swing.JFrame implements KeyListener {
     @Override
     public void keyPressed(KeyEvent e) {
         
-        player = gameboard.GetPlayer();
+        player = gameboard.getPlayer();
 
         switch (e.getKeyCode()) {
             case KeyEvent.VK_UP:
@@ -321,7 +321,7 @@ public class Game extends javax.swing.JFrame implements KeyListener {
                 break;
         }
         
-        Update();
+        update();
 
     }
 

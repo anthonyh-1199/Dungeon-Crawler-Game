@@ -8,14 +8,15 @@ import roguelike.Board;
 /**
  * @author Anthony
  */
-public class ItemDagger extends ParentWeapon {
+public class WeaponFists extends ParentWeapon {
     
     //Constructor for when item is on the board
-    public ItemDagger(int x, int y, Board b) {
+    public WeaponFists(int x, int y, Board b) {
+        
         super(x, y, b);
         
         //Item attributes
-        itemName = "Dagger";
+        itemName = "Fists";
         itemType = "Weapon";
         
         //Board state attributes
@@ -30,10 +31,10 @@ public class ItemDagger extends ParentWeapon {
     }
     
     //Constructor for when item is in player's inventory
-    public ItemDagger() {
+    public WeaponFists() {
 
         //Item attributes
-        itemName = "Dagger";
+        itemName = "Fists";
         itemType = "Weapon";
         
         //Board state attributes
@@ -47,18 +48,29 @@ public class ItemDagger extends ParentWeapon {
         
     }
     
-    //Returns a random number representing the damage done by an attack
     @Override
-    public int GetDamage() {
+    public int getAccuracy(int accuracyModifier) {
+        
         Random r = new Random();
         
-        return (r.nextInt(4) + 1) + 1;
+        return (r.nextInt(20) + 1) + accuracyModifier;
+        
+    }
+
+    //Returns a random number representing the damage done by an attack
+    @Override
+    public int getDamage() {
+        
+        Random r = new Random();
+        
+        return (r.nextInt(2) + 1);
+        
     }
     
     @Override
-    public void OnHitEffect() {};
+    public void onHitEffect() {};
 
     @Override
-    public void Update() {}
+    public void update() {};
     
 }

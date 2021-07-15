@@ -13,22 +13,24 @@ public class GoblinStateDead extends State {
     EntityGoblin parent;
 
     @Override
-    public void EnterState(Entity e) {
+    public void enterState(Entity e) {
         
         parent = (EntityGoblin) e;
         
+        parent.gameboard.getCamera().AddMessage("The goblin's been slain!");
+        
         //Remove self from board
-        e.gameboard.SetSquare(e.xposition, e.yposition, null);
+        e.gameboard.setSquare(e.xposition, e.yposition, null);
         
         //Remove self from actionList
-        e.gameboard.RemoveObjectFromList(e);
+        e.gameboard.removeObjectFromList(e);
         
     }
 
     @Override
-    public void Update() {}
+    public void update() {}
 
     @Override
-    public void CheckTransitions() {}
+    public void checkTransitions() {}
     
 }

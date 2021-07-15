@@ -13,10 +13,10 @@ import roguelike.Objects.Entity;
  */
 public abstract class State {
     
-    public abstract void EnterState(Entity e);
+    public abstract void enterState(Entity e);
 
-    public abstract void Update();
+    public abstract void update();
     
-    public abstract void CheckTransitions();
+    public abstract void checkTransitions();
     
 }
