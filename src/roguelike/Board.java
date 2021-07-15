@@ -157,7 +157,7 @@ public class Board<T> {
         
     }
     
-        //Returns true is an object is blocking the line
+    //Returns true if an opaque object is blocking the line
     public static boolean CheckSightLine(int x0, int y0, int x1, int y1, Board gameboard){
         
         //Holds starting coordinates
@@ -195,7 +195,8 @@ public class Board<T> {
         for (int[] i : points){
             if (!((i[0] == x1 && i[1] == y1) || (i[0] == startx && i[1] == starty))){
                 if (gameboard.GetSquare(i[0], i[1]) != null){
-                    return true;
+                    if (((GameObject)gameboard.GetSquare(i[0], i[1])).isOpaque == true)
+                        return true;
                 }
             }
         }
