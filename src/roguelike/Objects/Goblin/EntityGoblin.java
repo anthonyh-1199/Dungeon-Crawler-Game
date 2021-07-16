@@ -72,13 +72,13 @@ public class EntityGoblin extends Entity implements StateMachine {
         
         if (hitRoll < armorClass) {
             
-            gameboard.getCamera().AddMessage("The goblin dodges the    attack!");
+            gameboard.getCamera().AddMessage("The goblin dodges the attack!");
             
             return;
             
         }
         
-        gameboard.getCamera().AddMessage("The goblin is hit with   your weapon!");
+        gameboard.getCamera().AddMessage("The goblin is hit with your   weapon!");
         
         this.hitPoints -= damageRoll;
         

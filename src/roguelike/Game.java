@@ -121,44 +121,130 @@ public class Game extends javax.swing.JFrame implements KeyListener {
         
         //Update stats board
         
-        s = " ";
+        int statsBoardLength = 32;
+        int i = 0;
         
-        s += player.name + " (" + player.classLevel + ")";
-        while (s.length() < 28) {s += " ";}
+        s = "";
+        
+        //Upper border
+        while (s.length() < statsBoardLength * (i + 1) + i) {s += " ";}
+        
+        i++;
+        
+        //FORMATING PLAYER NAME AND CLASS UI
+        
+        s += "\n " + player.name + " (" + player.classLevel + ")";
+        while (s.length() < statsBoardLength * (i + 1) + i) {s += " ";}
+        
+        i++;
+
+        //FORMATING LINE BREAK
+        
+        s += "\n";
+        
+        while (s.length() < statsBoardLength * (i + 1) + i) {s += " ";}
+        
+        i++;
+        
+        //FORMATING PLAYER HEALTH UI
         
         s += "\n Hitpoints: " + player.hitPoints + " / " + player.maxHitPoints;
-        while (s.length() < 28 * 2 + 1) {s += " ";}
+        while (s.length() < statsBoardLength * (i + 1) + i) {s += " ";}
+        
+        //FORMATING LINE BREAK
+        
+        i++;
+        
+        s += "\n";
+        
+        while (s.length() < statsBoardLength * (i + 1) + i) {s += " ";}
+        
+        //FORMATING PLAYER WALLET UI
+        
+        i++;
+        
+        s += "\n Balance: $" + player.walletBalance;
+        while (s.length() < statsBoardLength * (i + 1) + i) {s += " ";}
+        
+        //FORMATING LINE BREAK
+        
+        i++;
+        
+        s += "\n";
+        
+        while (s.length() < statsBoardLength * (i + 1) + i) {s += " ";}
+        
+        //FORMATING PLAYER STATS UI
         
         s += "\n STR: " + player.statStrength;
-        while (s.length() < 28 * 2 + 1 + 15) {s += " ";}
+        while (s.length() < statsBoardLength * (i + 1) + i + 17) {s += " ";}
+        i++;
         s += "DEX: " + player.statDexterity;
-        while (s.length() < 28 * 3 + 2) {s += " ";}
+        while (s.length() < statsBoardLength * (i + 1) + i) {s += " ";}
         
         s += "\n CON: " + player.statConstitution;
-        while (s.length() < 28 * 3 + 2 + 15) {s += " ";}
+        while (s.length() < statsBoardLength * (i + 1) + i + 17) {s += " ";}
+        i++;
         s += "WIS: " + player.statWisdom;
-        while (s.length() < 28 * 4 + 3) {s += " ";}
+        while (s.length() < statsBoardLength * (i + 1) + i) {s += " ";}
         
         s += "\n INT: " + player.statIntelligence;
-        while (s.length() < 28 * 4 + 3 + 15) {s += " ";}
+        while (s.length() < statsBoardLength * (i + 1) + i + 17) {s += " ";}
+        i++;
         s += "CHA: " + player.statCharisma;
-        while (s.length() < 28 * 5 + 4) {s += " ";}
+        while (s.length() < statsBoardLength * (i + 1) + i) {s += " ";}
         
+        //FORMATING LINE BREAK
         
-        for (int i = 0; i < player.inventory.inventory.length; i++) {
+        i++;
+        
+        s += "\n";
+        
+        while (s.length() < statsBoardLength * (i + 1) + i) {s += " ";}
+
+        //FORMATING INVENTORY UI
+
+        for (int j = 0; j < player.inventory.inventory.length; j++) {
             
-            ParentItem item = player.inventory.inventory[i];
+            //Format first item entry in row
+            
+            ParentItem item = player.inventory.inventory[j];
             
             s += "\n • ";
-            
+
             if (item != null) {
                 
                 s += item.itemName;
                 
             }
             
-            while (s.length() < 28 * (6 + i) + (5 + i)) {s += " ";}
+            while (s.length() < statsBoardLength * (i + 1) + (i) + 17) {s += " ";}
+            
+            i++;
+            
+            //Format second item entry in row
+            
+            item = player.inventory.inventory[++j];
+            
+            s += "• ";
+
+            if (item != null) {
+                
+                s += item.itemName;
+                
+            }
+            
+            while (s.length() < statsBoardLength * (i + 1) + (i)) {s += " ";}
+            
         }
+        
+        //FORMATING LINE BREAK
+        
+        i++;
+        
+        s += "\n";
+        
+        while (s.length() < statsBoardLength * (i + 1) + i) {s += " ";}
         
         jStatsBoard.setText(s);
         
@@ -244,22 +330,23 @@ public class Game extends javax.swing.JFrame implements KeyListener {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 706, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(4, 4, 4)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 746, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 290, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 290, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 345, Short.MAX_VALUE)
+                    .addComponent(jScrollPane3))
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 766, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 334, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 363, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 426, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap())
+                        .addComponent(jScrollPane3))
+                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 820, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(23, 23, 23))
         );
 
         pack();

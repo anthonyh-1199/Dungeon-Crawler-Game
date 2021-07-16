@@ -26,7 +26,7 @@ public class Camera {
     Board gameboard;
     int size;
     ArrayList<String> messages = new ArrayList<>();
-    final int MESSAGES_MAX_SIZE = 17;
+    final int MESSAGES_MAX_SIZE = 19;
             
     //Constructor
     
@@ -45,7 +45,7 @@ public class Camera {
         //Initialize variables
         String s = "";
         StyledDocument doc = j.getStyledDocument();
-        Color[] colors = new Color[2 * (size * size) + size];
+        Color[] colors = new Color[2 * ((size + 4) * (size + 4)) + (size + 4)];
         int i = 0;
         Color darkColor = new Color(20,40,50);
         
@@ -54,18 +54,39 @@ public class Camera {
         int starty = (focalPoint.getY() - (size / 2));
         
         //Clamp the view so that it doesn't go out of range
-        if (startx < 0){
+        if (startx < 0) {
+            
             startx = 0;
+            
         }
-        if (starty < 0){
+        if (starty < 0) {
+            
             starty = 0;
+            
         }
-        if ((startx + size) > gameboard.getSize()){
+        if ((startx + size) > gameboard.getSize()) {
+            
             startx = gameboard.getSize() - size;
+            
         }
-        if ((starty + size) > gameboard.getSize()){
+        if ((starty + size) > gameboard.getSize()) {
+            
             starty = gameboard.getSize() - size;
+            
         }
+        
+        //Format upper border
+        for (int n = 0; n < size + 2; n++) {
+            
+            s += "  ";
+            i++;
+            i++;
+            
+        }
+        
+        i++;
+        i++;
+        s += "\n  ";
         
         //Loop through the area that will be in the view
         for (int y = starty; y < starty + size; y++){
@@ -153,7 +174,23 @@ public class Camera {
             }
             
             i++;
-            s += "\n";
+            i++;
+            i++;
+            
+            s += "  \n  ";
+            
+            i++;
+            i++;
+            
+        }
+        
+        //Format lower border
+        for (int n = 0; n < size + 2 - 1; n++) {
+            
+            s += "  ";
+            i++;
+            i++;
+            
         }
         
         //Set text
@@ -164,14 +201,21 @@ public class Camera {
         StyleConstants.setBackground(set, Color.BLACK);
 
         for (int k = 0; k < s.length(); k++) {
+            
             Color c = colors[k];
+            
             if (c != null){
+                
                 StyleConstants.setForeground(set, c);
+
             }
+
             doc.setCharacterAttributes(k, 1, set, true);
+
         }
+
     }
-    
+
     public void AddMessage(String s) {
         
         //Add bullet point to message
@@ -180,7 +224,7 @@ public class Camera {
         //Split larger messages into smaller ones
         for (int i = 0; i < s.length(); i++){
             
-            if (i == 27) {
+            if (i == 31) {
                 
                 //Put the beginning part of the message in its own line
                 messages.add(s.substring(0, i) + " ");
@@ -195,7 +239,7 @@ public class Camera {
         }
         
         //Add padding to shorter messages (helps with formating)
-        while (s.length() <= 27) {
+        while (s.length() <= 31) {
             
             s += " ";
             
@@ -216,11 +260,15 @@ public class Camera {
     //Getter methods
     
     public GameObject GetFocalPoint() {
+        
         return this.focalPoint;
+        
     }
     
     public int GetSize() {
+        
         return this.size;
+        
     }
     
     public ArrayList<String> GetMessages() {
@@ -230,20 +278,25 @@ public class Camera {
         //Formating hack - if not at capacity, fill the remainder with blanks
         while (output.size() <= MESSAGES_MAX_SIZE) {
             
-            output.add("                            ");
+            output.add("                                ");
             
         }
         
         return output;
+        
     }
     
     //Setter methods
     
     public void SetFocalPoint(GameObject o) {
+        
         this.focalPoint = o;
+        
     }
     
     public void SetSize(int s) {
+        
         this.size = s;
+        
     }
 }

@@ -50,7 +50,7 @@ public class GoblinStateIdle extends State {
             
             if (!Board.checkSightLine(parent.xposition, parent.yposition, p.getX(), p.getY(), parent.gameboard)){
                 
-                parent.gameboard.getCamera().AddMessage("The goblin lets out a    startling scream!");
+                parent.gameboard.getCamera().AddMessage("The goblin lets out a         startling scream!");
                 
                 parent.changeState(parent.STATE_CHASE);
             }
