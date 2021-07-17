@@ -1,5 +1,5 @@
 
-package MapGeneration;
+package mapgeneration;
 
 import java.util.LinkedList;
 import java.util.List;

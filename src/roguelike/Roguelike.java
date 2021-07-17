@@ -5,8 +5,8 @@
  */
 package roguelike;
 
-import MapGeneration.DungeonLayoutGenerator;
-import View.Camera;
+import mapgeneration.DungeonLayoutGenerator;
+import view.Camera;
 
 /**
  *

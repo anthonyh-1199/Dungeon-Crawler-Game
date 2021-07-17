@@ -5,7 +5,7 @@
  */
 package roguelike;
 
-import roguelike.Objects.Entity;
+import roguelike.objects.entities.Entity;
 
 /**
  *

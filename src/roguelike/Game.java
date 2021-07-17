@@ -1,18 +1,15 @@
 
 package roguelike;
 
-import View.Camera;
-import MapGeneration.CaveGenerator;
+import view.Camera;
+import mapgeneration.CaveGenerator;
 import java.awt.Color;
-import roguelike.Objects.Player.Player;
+import roguelike.objects.entities.player.Player;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.util.ArrayList;
-import javax.swing.text.SimpleAttributeSet;
-import javax.swing.text.StyleConstants;
-import javax.swing.text.StyledDocument;
-import roguelike.Items.WeaponDagger;
-import roguelike.Items.ParentItem;
+import javax.swing.text.*;
+import roguelike.items.*;
 
 /**
  * @author Anthony
@@ -31,19 +28,19 @@ public class Game extends javax.swing.JFrame implements KeyListener {
         String seed =
         "............................." + 
         ".###########################." + 
-        ".#.......d......C..#.......#." + 
-        ".#.......d......C..#.......#." + 
-        ".#.......d......#..#.......#." + 
+        ".#.......d....ggg.g#.......#." + 
+        ".#.......d....gg...#.......#." + 
+        ".#.......d.....g#..#.......#." + 
+        ".#.......d..P...#..#...#...#." + 
         ".#.......d......#..#...#...#." + 
         ".#.......d......#..#...#...#." + 
         ".#.......d......#..#...#...#." + 
         ".#.......d......#..#...#...#." + 
         ".#.......d......#..#...#...#." + 
         ".#.......d......#..#...#...#." + 
+        ".#.......d......#..#.g.#...#." + 
         ".#.......d......#..#...#...#." + 
-        ".#.......d......#..#...#...#." + 
-        ".#.......d......#..#...#...#." + 
-        ".#......P.......#..#...#...#." + 
+        ".#..............#..#...#...#." + 
         ".#..............#..#...#...#." + 
         ".#..............#..#...#...#." + 
         ".#..............#..#...#...#." + 
@@ -54,14 +51,14 @@ public class Game extends javax.swing.JFrame implements KeyListener {
         ".#..............#..#...#...#." + 
         ".#..............#..#...#...#." + 
         ".#..............#......#...#." + 
+        ".#..............#......#.g.#." + 
         ".#..............#......#...#." + 
-        ".#..............#......#GGG#." + 
         ".###########################." +
         ".............................";
 
         this.gameboard = new Board(400);
         
-        new CaveGenerator(gameboard, 300, 2);
+        new CaveGenerator(gameboard, 300, 1);
         
         this.gameboard = new Board(29, seed);
         
@@ -69,7 +66,7 @@ public class Game extends javax.swing.JFrame implements KeyListener {
 
         camera = gameboard.camera;
 
-        updateView();
+        update();
 
     }
     
@@ -77,54 +74,25 @@ public class Game extends javax.swing.JFrame implements KeyListener {
     private void update() {
 
         gameboard.update();
-        updateView();
+        updateWindowView();
+        updateWindowStats();
+        updateWindowMessages();
 
     }
     
-    private void updateView() {
+    private void updateWindowStats() {
         
-        //Initialize formating variables
+        //Initialize variables
         
-        String s;
-        StyledDocument doc;
+        final int statsBoardLength = 32;
+        int i = 0;
+        
+        StyledDocument doc = jStatsBoard.getStyledDocument();
         SimpleAttributeSet set = new SimpleAttributeSet();
         StyleConstants.setBackground(set, Color.BLACK);
         StyleConstants.setForeground(set, Color.WHITE);
         
-        //Update camera screen
-        
-        camera.GetView(jGameScreen);
-        
-        //Update message board
-        
-        ArrayList<String> messages = camera.GetMessages();
-        
-        s = "";
-        
-        for (String m : messages) {
-            
-            s += m + "\n";
-            
-        }
-        
-        jMessageBoard.setText(s);
-        
-        //Format message board
-
-        doc = jMessageBoard.getStyledDocument();
-        
-        for (int k = 0; k < s.length(); k++) {
-            
-            doc.setCharacterAttributes(k, 1, set, true);
-            
-        }
-        
-        //Update stats board
-        
-        int statsBoardLength = 32;
-        int i = 0;
-        
-        s = "";
+        String s = "";
         
         //Upper border
         while (s.length() < statsBoardLength * (i + 1) + i) {s += " ";}
@@ -250,13 +218,51 @@ public class Game extends javax.swing.JFrame implements KeyListener {
         
         //Format message board
 
-        doc = jStatsBoard.getStyledDocument();
+        for (int k = 0; k < s.length(); k++) {
+            
+            doc.setCharacterAttributes(k, 1, set, true);
+            
+        }
+        
+    }
+    
+    private void updateWindowMessages() {
+
+        //Update message board
+        
+        ArrayList<String> messages = camera.GetMessages();
+        
+        String s = "";
+        
+        for (String m : messages) {
+            
+            s += m + "\n";
+            
+        }
+        
+        jMessageBoard.setText(s);
+        
+        //Format message board
+
+        StyledDocument doc = jMessageBoard.getStyledDocument();
+        SimpleAttributeSet set = new SimpleAttributeSet();
+        StyleConstants.setBackground(set, Color.BLACK);
+        StyleConstants.setForeground(set, Color.WHITE);
         
         for (int k = 0; k < s.length(); k++) {
             
             doc.setCharacterAttributes(k, 1, set, true);
             
         }
+        
+    }
+    
+    
+    private void updateWindowView() {
+
+        //Update camera screen
+        
+        camera.GetView(jGameScreen);
 
     }
 

@@ -11,7 +11,7 @@ package mapgeneration;
  */
 public class DungeonGenerator {
     /*
-    Create a 2x2 grid to hold the room generation data (very small, each square represents a room)
+    Create a 2d grid to hold the room generation data (very small, each square represents a room)
 
 3-dimensional array (x coordinate, y coordinate, 0/1 for mark)
 

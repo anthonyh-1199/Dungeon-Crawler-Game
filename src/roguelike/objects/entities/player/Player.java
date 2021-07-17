@@ -1,19 +1,19 @@
 /*
  */
-package roguelike.Objects.Player;
+package roguelike.objects.entities.player;
 
 import java.awt.Color;
 import roguelike.Board;
-import roguelike.Items.ParentItem;
-import roguelike.Items.ParentWeapon;
-import roguelike.Items.WeaponFists;
-import roguelike.Objects.Entity;
-import roguelike.Objects.GameObject;
+import roguelike.items.ParentItem;
+import roguelike.items.weapons.ParentWeapon;
+import roguelike.items.weapons.WeaponFists;
+import roguelike.objects.entities.*;
+import roguelike.objects.ParentGameObject;
 
 /**
  * @author Anthony
  */
-public class Player extends GameObject{
+public class Player extends ParentGameObject{
     
     public int maxHitPoints, hitPoints, weaponDamage, classLevel;
     public int statCharisma, statConstitution, statDexterity, statIntelligence, statStrength, statWisdom;
@@ -35,6 +35,7 @@ public class Player extends GameObject{
         this.statCharisma = statConstitution = statDexterity = statIntelligence = statStrength = statWisdom = 1;
         this.classLevel = 1;
         this.walletBalance = 10;
+        this.isSolid = true;
         
         gameboard.setPlayer(this);
     }
@@ -83,21 +84,14 @@ public class Player extends GameObject{
         if (gameboard.checkIfSquareIsEmpty(xgoal, ygoal)) {
 
             //Remove current position in board
-            gameboard.setSquare(xposition, yposition, null);
-
-            //Update player's positional variables
-            xposition = xgoal;
-            yposition = ygoal;
-
-            //Set to new position in board
-            gameboard.setSquare(xposition, yposition, this);
+            changeSquare(xgoal, ygoal);
             
             return;
 
         }
         
         //Get non-null object occupying the square
-        GameObject object = (GameObject)gameboard.getSquare(xgoal, ygoal);
+        ParentGameObject object = gameboard.getObjectAtSquare(xgoal, ygoal, 0);
         
         //If object is nonsolid, interact with it
         if ((object).isSolid() == false){
@@ -105,26 +99,20 @@ public class Player extends GameObject{
             switch (object.getClass().getSuperclass().getSimpleName()){
                 
                 case "ParentWeapon":
-                    ParentItem i = (ParentItem)(object);
+                    ParentItem item = (ParentItem)(object);
                     //If our inventory isn't full, add it to inventory and
                     //remove it from the board
                     if (!inventory.isFull()) {
-                        inventory.addItem(i);
-                        gameboard.setSquare(xposition, yposition, null);
+                        
+                        inventory.addItem(item);
+                        gameboard.removeObjectFromSquare(item);
+                        
                     }
-                    //Else, we move around it
-                    else {
-                        gameboard.setSquare(xposition, yposition, object);
-                    }
+                    break;
                     
             }
-
-            //Update player's positional variables
-            xposition = xgoal;
-            yposition = ygoal;
-
-            //Set to new position in board
-            gameboard.setSquare(xposition, yposition, this);
+            
+            changeSquare(xgoal, ygoal);
 
         }
         
@@ -132,7 +120,7 @@ public class Player extends GameObject{
         else {
             switch (object.getClass().getSuperclass().getSimpleName()){
                 case "Entity":
-                    Entity entity = (Entity)gameboard.getSquare(xgoal, ygoal);
+                    Entity entity = (Entity)object;
                     ParentWeapon weapon = getWeapon();
                     entity.takeDamage(this, weapon.getDamage(), weapon.getAccuracy(this.statDexterity));
                     break;

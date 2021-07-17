@@ -1,12 +1,12 @@
 /*
 
  */
-package roguelike.Objects.Goblin;
+package roguelike.objects.entities.goblin;
 
 import java.util.PriorityQueue;
 import roguelike.Node;
-import roguelike.Objects.Entity;
-import roguelike.Objects.Player.Player;
+import roguelike.objects.entities.Entity;
+import roguelike.objects.entities.player.Player;
 import roguelike.State;
 
 /**
@@ -53,18 +53,10 @@ public class GoblinStateChase extends State {
     
     public void move(int xgoal, int ygoal){
 
-        //If space is empty, move into it
-        if ((parent.gameboard.getSquare(xgoal, ygoal)) == null) {
+        //If space is not occupied by a solid object, move into it
+        if ((!parent.gameboard.checkIfSquareHasSolid(xgoal, ygoal))) {
 
-            //Remove current position in board
-            parent.gameboard.setSquare(parent.xposition, parent.yposition, null);
-            
-            //Update positional variables
-            parent.xposition = xgoal;
-            parent.yposition = ygoal;
-
-            //Set to new position in board
-            parent.gameboard.setSquare(xgoal, ygoal, parent);
+            parent.changeSquare(xgoal, ygoal);
             
         }
         
@@ -117,8 +109,8 @@ public class GoblinStateChase extends State {
                         return;
                     }
                     
-                    //If the node isn't empty, add it directly to the closed list
-                    if (!parent.gameboard.checkIfSquareIsEmpty(m.x, m.y)) {
+                    //If the node is occupyied by a solid object, add it directly to the closed list
+                    if (parent.gameboard.checkIfSquareHasSolid(m.x, m.y)) {
                     //if (((gameboard.GetObjectAtSquare(m.x, m.y)) != null) &&
                     //!(gameboard.GetObjectAtSquare(m.x, m.y).getClass().getSimpleName().equals(this.getClass().getSimpleName()))) {
                         

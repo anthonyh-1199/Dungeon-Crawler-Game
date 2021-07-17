@@ -1,8 +1,8 @@
 /*
  */
-package roguelike.Objects.Goblin;
+package roguelike.objects.entities.goblin;
 
-import roguelike.Objects.Entity;
+import roguelike.objects.entities.Entity;
 import roguelike.State;
 
 /**
@@ -19,11 +19,7 @@ public class GoblinStateDead extends State {
         
         parent.gameboard.getCamera().AddMessage("The goblin's been slain!");
         
-        //Remove self from board
-        e.gameboard.setSquare(e.xposition, e.yposition, null);
-        
-        //Remove self from actionList
-        e.gameboard.removeObjectFromList(e);
+        parent.deleteSelf();
         
     }
 

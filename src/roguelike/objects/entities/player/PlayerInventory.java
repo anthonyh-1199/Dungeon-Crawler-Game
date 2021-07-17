@@ -1,7 +1,7 @@
 
-package roguelike.Objects.Player;
+package roguelike.objects.entities.player;
 
-import roguelike.Items.ParentItem;
+import roguelike.items.ParentItem;
 
 /**
  * @author Anthony

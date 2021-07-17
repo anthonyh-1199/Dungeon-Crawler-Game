@@ -1,9 +1,11 @@
 /*
 
  */
-package roguelike.Objects;
+package roguelike.objects.entities;
 
+import roguelike.objects.entities.Entity;
 import roguelike.Board;
+import roguelike.objects.ParentGameObject;
 
 /**
  * @author Anthony
@@ -30,21 +32,9 @@ public class EntityCrate extends Entity{
         gameboard.addObjectToList(this);
         
     }
-
-    public void die(){
-        
-        //Remove self from board
-        gameboard.setSquare(xposition, yposition, null);
-        
-        //Remove self from actionList
-        gameboard.removeObjectFromList(this);
-        
-        //TO-DO: Add items drops
-        
-    }
     
     @Override
-    public void takeDamage(GameObject source, int damageRoll, int hitRoll) {
+    public void takeDamage(ParentGameObject source, int damageRoll, int hitRoll) {
         
         this.hitPoints -= damageRoll;
         
@@ -56,7 +46,7 @@ public class EntityCrate extends Entity{
         //Check if object is dead
         if (hitPoints <= 0){
 
-            die();
+            deleteSelf();
             return;
             
         }

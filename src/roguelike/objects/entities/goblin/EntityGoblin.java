@@ -3,12 +3,12 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package roguelike.Objects.Goblin;
+package roguelike.objects.entities.goblin;
 
 import java.awt.Color;
 import roguelike.Board;
-import roguelike.Objects.Entity;
-import roguelike.Objects.GameObject;
+import roguelike.objects.entities.Entity;
+import roguelike.objects.ParentGameObject;
 import roguelike.State;
 import roguelike.StateMachine;
 
@@ -24,21 +24,21 @@ public class EntityGoblin extends Entity implements StateMachine {
     State currentState;
 
     //Constructor
-    public EntityGoblin(int x, int y, Board b, int h) {
+    public EntityGoblin(int x, int y, Board b) {
         
         //Call parent constructor
         super(x, y, b);
 
         //Board attributes
-        this.symbol = 'g';
-        this.isSolid = true;
-        this.name = "Goblin";
+        symbol = 'g';
+        isSolid = true;
+        name = "Goblin";
         isOpaque = false;
         color = new Color(36,191,32);
         
         //Combat attributes
         this.armorClass = 12;
-        this.hitPoints = h;
+        this.hitPoints = 7;
         this.speed = 1;
         
         //Add self to actionQueue
@@ -68,7 +68,7 @@ public class EntityGoblin extends Entity implements StateMachine {
     /* Class methods */
     
     @Override
-    public void takeDamage(GameObject source, int damageRoll, int hitRoll) {
+    public void takeDamage(ParentGameObject source, int damageRoll, int hitRoll) {
         
         if (hitRoll < armorClass) {
             

@@ -1,16 +1,15 @@
 
-package MapGeneration;
+package mapgeneration;
 
 import roguelike.Board;
-import roguelike.Objects.ObjectWall;
+import roguelike.objects.ObjectWall;
 
 /**
  * @author Anthony
  */
 
 /**
- * Parent class that contains all the functionality needed to generate rooms
- * and structures inside the game world
+ * Parent class that contains all the functionality needed to generate rooms and structures inside the game world
  */
 public abstract class Generator {
     
@@ -23,7 +22,7 @@ public abstract class Generator {
     public void FillBoard(){
         for (int y = 0; y < gameboard.getSize(); y++){
             for (int x = 0; x < gameboard.getSize(); x++){
-                gameboard.setSquare(x, y, new ObjectWall(x, y, gameboard));
+                gameboard.addObjectToSquare(x, y, new ObjectWall(x, y, gameboard));
             }
         }
     }

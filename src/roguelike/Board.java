@@ -1,60 +1,65 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package roguelike;
 
-import View.Camera;
-import roguelike.Objects.Player.Player;
-import roguelike.Objects.GameObject;
-import roguelike.Objects.EntitySheep;
-import roguelike.Objects.Goblin.EntityGoblin;
-import roguelike.Objects.ObjectWall;
-import roguelike.Objects.EntityCrate;
+import roguelike.items.weapons.*;
+import roguelike.objects.entities.EntitySheep;
+import roguelike.objects.ObjectWall;
+import roguelike.objects.entities.*;
+import roguelike.objects.ParentGameObject;
 import java.util.*;
-import roguelike.Items.WeaponDagger;
+import view.Camera;
+import roguelike.objects.entities.player.*;
+import roguelike.objects.entities.goblin.*;
 
 /**
- *
  * @author Anthony
  */
 public class Board<T> {
     
     Tile[][] gameboard;
     int size;
-    LinkedList<GameObject> actionList = new LinkedList<>();
+    LinkedList<ParentGameObject> actionList = new LinkedList<>();
     Player player;
     Camera camera;
     
     //Creates a square board with given dimensions
     public Board(int size) {
+        
         this.size = size;
         gameboard = new Tile[size][size];
         
         for (int y = 0; y < size; y++){
+            
             for (int x = 0; x < size; x++){
+                
                 gameboard[x][y] = new Tile();
+                
             }
+            
         }
+        
     }
     
-    //Creates a square board and fills it based on a pre-made seed
-    //Seed must match the dimensions of the board
+    //Creates a square board and fills it based on a pre-made seed - seed must match the dimensions of the board
     public Board(int size, String seed){
         
         this.size = size;
         gameboard = new Tile[size][size];
         
         for (int y = 0; y < size; y++){
+            
             for (int x = 0; x < size; x++){
+                
                 gameboard[x][y] = new Tile();
+                
             }
+            
         }
         
         int currentCharacter = 0;
         
         for (int y = 0; y < size; y++){
+            
             for (int x = 0; x < size; x++){
                 
                 char c = seed.charAt(currentCharacter);
@@ -64,94 +69,223 @@ public class Board<T> {
                     case '#':
                         new ObjectWall(x, y, this);
                         break;
+                        
                     case 'd':
-                        new WeaponDagger(x, y, this);
+                        new WeaponSword(x, y, this);
                         break;
+                        
                     case 'C':
                         new EntityCrate(x, y, this, 2);
                         break;
+                        
                     case 'P':
                         new Player(x, y, this, 10);
                         break;
-                    case 'G':
-                        new EntityGoblin(x, y, this, 5);
+                        
+                    case 'g':
+                        new EntityGoblin(x, y, this);
                         break;
+                        
                     case 'S':
                         new EntitySheep(x, y, this, 3);
                         break;
+                        
                 }
                 
                 currentCharacter++;
                 
             }
+            
         }
+        
     }
     
-    //Returns the object at a specified square, returns null if empty
-    public T getSquare(int x, int y) {
-        if ((x < size && x >= 0) &&
-            (y < size && y >= 0)) {
-                return (T)gameboard[x][y].GetObject();
+    //Returns the tile at coordinates (x, y)
+    public Tile getTile(int x, int y) {
+        
+        if (isWithinBounds(x, y)) {
+            
+                return gameboard[x][y];
+                
         }
+        
         return null;
+        
     }
     
-    public Camera getCamera() {
-        return this.camera;
-    }
-    
-    //Return true if the square is empty
-    public boolean checkIfSquareIsEmpty(int x, int y) {
-        return (getSquare(x, y) == null);
-    }
-    
-    //Sets the object at a specified square
-    public void setSquare(int x, int y, GameObject object) {
-        if ((x < size && x >= 0) &&
-            (y < size && y >= 0)){
-                gameboard[x][y].SetObject(object);
+    //Returns the object at a specified square, returns null if the square is empty or out of bounds
+    public List<ParentGameObject> getObjectsAtSquare(int x, int y) {
+        
+        if (isWithinBounds(x, y)) {
+
+            return gameboard[x][y].getObjects();
+                
         }
+        
+        return null;
+        
+    }
+    
+    //Returns a specific object at index i in the Tile's objects, returns null if the List is empty or square coordinates are invalid
+    public ParentGameObject getObjectAtSquare(int x, int y, int i) {
+        
+        if (isWithinBounds(x, y)) {
+
+                return (gameboard[x][y].getObject(i));
+                
+        }
+        
+        return null;
+        
+    }
+    
+    //Removes the object from its current square
+    public void removeObjectFromSquare(ParentGameObject o) {
+        
+        gameboard[o.xposition][o.yposition].removeObject(o);
+        
+    }
+
+    //Removes all the objects in a square from that Tile's objects List and from the board's ActionQueue if applicable
+    public void clearSquare(int x, int y) {
+        
+        if (getObjectsAtSquare(x, y) == null) {
+            
+            return;
+            
+        }
+        
+        for (ParentGameObject o : getObjectsAtSquare(x, y)) {
+
+            removeObjectFromActionList(o);
+            
+        }
+        
+        getObjectsAtSquare(x, y).clear();
+        
+    }
+    
+    //Returns true if an object with a specific name is occupying the square
+    public boolean checkIfSquareContainsObject(int x, int y, String s) {
+
+        for (ParentGameObject o : getObjectsAtSquare(x, y)) {
+            
+            if (o.name == s) {
+                
+                return true;
+                
+            }
+            
+        }
+        
+        return false;
+        
+    }
+    
+    //Returns true if an object with (isSolid == true) is occupying the square
+    public boolean checkIfSquareHasSolid(int x, int y) {
+        
+        for (ParentGameObject o : getObjectsAtSquare(x, y)) {
+            
+            if (o.isSolid == true) {
+                
+                return true;
+                
+            }
+            
+        }
+        
+        return false;
+        
+    }
+    
+    //Returns the board's Camera object
+    public Camera getCamera() {
+        
+        return this.camera;
+        
+    }
+    
+    //Returns true if the square is currently unoccupied
+    public boolean checkIfSquareIsEmpty(int x, int y) {
+        
+        if (isWithinBounds(x, y)) {
+
+                return (gameboard[x][y].isEmpty());
+                
+        }
+
+        return false;
+        
+    }
+    
+    //Adds the object to a specified square
+    public void addObjectToSquare(int x, int y, ParentGameObject object) {
+        
+        if (isWithinBounds(x, y)) {
+            
+                gameboard[x][y].addObject(object);
+                
+        }
+        
     }
     
     //Adds object to ActionQueue
-    public void addObjectToList(GameObject object) {
+    public void addObjectToList(ParentGameObject object) {
+        
         actionList.add(object);
+        
     }
     
+    //Changes a tile's seen flag
     public void setSeen(int x, int y) {
-        gameboard[x][y].SetSeen(true);
+        
+        gameboard[x][y].setSeen(true);
+        
     }
     
+    //Returns a tile's seen flag
     public boolean getSeen(int x, int y) {
-        if ((x < size && x >= 0) &&
-            (y < size && y >= 0)) {
-                return (gameboard[x][y].GetSeen());
+        
+        if (isWithinBounds(x, y)) {
+            
+                return (gameboard[x][y].getSeen());
+                
         }
+        
         return false;
     }
     
     public void setPlayer(Player player) {
+        
         this.player = player;
         this.camera = new Camera(player, this, 35);
+        
     }
     
     public Player getPlayer() {
+        
         return this.player;
+        
     }
     
     public int getSize() {
+        
         return this.size;
+        
     }
     
     //Removes object from ActionQueue
-    public void removeObjectFromList(GameObject object) {
+    public void removeObjectFromActionList(ParentGameObject object) {
+        
         actionList.remove(object);
+        
     }
     
     //Loops through all objects in the action list and calls their Update() functions
     public void update() {
         
-        for (GameObject object : actionList) {
+        for (ParentGameObject object : actionList) {
             object.update();
         }
         
@@ -194,14 +328,33 @@ public class Board<T> {
 
         for (int[] i : points){
             if (!((i[0] == x1 && i[1] == y1) || (i[0] == startx && i[1] == starty))){
-                if (gameboard.getSquare(i[0], i[1]) != null){
-                    if (((GameObject)gameboard.getSquare(i[0], i[1])).isOpaque == true)
-                        return true;
+                //Check if square isn't null
+                if (gameboard.getTile(i[0], i[1]) != null){
+                    //Check if an opaque object is occupying the square
+                    for (Object o : gameboard.getObjectsAtSquare(i[0], i[1])) {
+                        if (((ParentGameObject)o).isOpaque == true) {
+                            return true;
+                        }
+                    }
                 }
             }
         }
         
         return false;
+    }
+    
+    //Returns true if the x and y coordinates are within the bounds of the board
+    private boolean isWithinBounds(int x, int y) {
+        
+        if ((x < size && x >= 0) &&
+            (y < size && y >= 0)) {
+            
+                return true;
+                
+        }
+        
+        return false;
+        
     }
     
     //Returns a representation of the board in a String
@@ -214,14 +367,17 @@ public class Board<T> {
             for (int x = 0; x < gameboard.length; x++) {
                 
                 //If the square is empty/null, set the character to 0
-                if (getSquare(x, y) == null){
+                if (checkIfSquareIsEmpty(x, y)){
+                    
                     s += '.' + " ";
+                    continue;
+                    
                 }
                 
                 //Else, add the respective character to represent the object
-                else {
-                    s += ((GameObject)getSquare(x, y)).getSymbol() + " ";
-                }
+                ParentGameObject o = getTile(x, y).getObject(0);
+                
+                s += (o.getSymbol()) + " ";
             }
             
             s += "\n";

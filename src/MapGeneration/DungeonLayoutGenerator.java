@@ -1,7 +1,7 @@
 /*
  */
 
-package MapGeneration;
+package mapgeneration;
 
 import java.util.Collections;
 import java.util.LinkedList;

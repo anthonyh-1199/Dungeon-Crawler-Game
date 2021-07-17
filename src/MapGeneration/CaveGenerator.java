@@ -1,10 +1,10 @@
 
-package MapGeneration;
+package mapgeneration;
 
 import java.util.Random;
 import roguelike.Board;
-import roguelike.Objects.Goblin.EntityGoblin;
-import roguelike.Objects.Player.Player;
+import roguelike.objects.entities.goblin.EntityGoblin;
+import roguelike.objects.entities.player.Player;
 
 /**
  * @author Anthony
@@ -12,18 +12,23 @@ import roguelike.Objects.Player.Player;
 public class CaveGenerator extends Generator{
     
     public CaveGenerator(Board b, int length, int passes) {
+        
         super(b);
         
         FillBoard();
         
         for (int i = 0; i < passes; i++) {
+            
             GenerateCave(gameboard.getSize() / 2, gameboard.getSize() / 2, length);
+            
         }
         
         CaveCleanup();
+        
     }
     
     private void GenerateCave(int startx, int starty, int length){
+        
         Random r = new Random();
         int direction;
         int x = startx;
@@ -32,7 +37,9 @@ public class CaveGenerator extends Generator{
         
         //Move around the board randomly emptying squares until the desired #
         while (i < length){
+            
             direction = r.nextInt(4);
+            
             if (direction == 0 && (x + 1) < (gameboard.getSize()-1)) {
                 x += 1;
             } else if (direction == 1 && (x - 1) > 0) {
@@ -44,9 +51,12 @@ public class CaveGenerator extends Generator{
             }
             
             if (!gameboard.checkIfSquareIsEmpty(x, y)){
-                gameboard.setSquare(x, y, null);
+
+                gameboard.clearSquare(x, y);
                 i++;
+                
             }
+            
         }
         
         //Add a player
@@ -54,7 +64,8 @@ public class CaveGenerator extends Generator{
         
         //TESTING
         //Add a goblin
-        new EntityGoblin(x, y, gameboard, 5);
+        new EntityGoblin(x, y, gameboard);
+        
     }
     
     //Removes stray walls from the cave to improve layout
@@ -65,7 +76,7 @@ public class CaveGenerator extends Generator{
             for (int x = 1; x < gameboard.getSize() - 1; x++){
                 
                 if (!gameboard.checkIfSquareIsEmpty(x, y) &&
-                    gameboard.getSquare(x, y).getClass().getSimpleName().equals("ObjectWall")) {
+                    gameboard.checkIfSquareContainsObject(x, y, "wall")) {
                     
                         //If the square has at least 3 empty neighbors, remove it
                         int emptyNeighbors = 0;
@@ -76,7 +87,9 @@ public class CaveGenerator extends Generator{
                         if (gameboard.checkIfSquareIsEmpty(x, y + 1)) emptyNeighbors++;
                         
                         if (emptyNeighbors >= 3){
-                            gameboard.setSquare(x, y, null);
+                            
+                            gameboard.clearSquare(x, y);
+                            
                     }
                 }
             }

@@ -3,9 +3,10 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package roguelike.Objects;
+package roguelike.objects.entities;
 
-import roguelike.Objects.Player.Player;
+import roguelike.objects.entities.Entity;
+import roguelike.objects.entities.player.Player;
 import java.util.Random;
 import roguelike.Board;
 

@@ -1,12 +1,12 @@
 /*
 
  */
-package roguelike.Objects.Goblin;
+package roguelike.objects.entities.goblin;
 
 import java.util.Random;
 import roguelike.Board;
-import roguelike.Objects.Entity;
-import roguelike.Objects.Player.Player;
+import roguelike.objects.entities.Entity;
+import roguelike.objects.entities.player.Player;
 import roguelike.State;
 
 /**
@@ -29,7 +29,7 @@ public class GoblinStateIdle extends State {
         checkTransitions();
         
         //Move randomly
-        MoveRandomly();
+        moveRandomly();
         
     }
 
@@ -57,7 +57,7 @@ public class GoblinStateIdle extends State {
         }
     }
     
-    public void MoveRandomly(){
+    public void moveRandomly(){
         
         int xgoal = parent.xposition;
         int ygoal = parent.yposition;
@@ -86,15 +86,7 @@ public class GoblinStateIdle extends State {
         //If space is empty, move into it
         if (parent.gameboard.checkIfSquareIsEmpty(xgoal, ygoal)) {
 
-            //Remove current position in board
-            parent.gameboard.setSquare(parent.xposition, parent.yposition, null);
-            
-            //Update positional variables
-            parent.xposition = xgoal;
-            parent.yposition = ygoal;
-
-            //Set to new position in board
-            parent.gameboard.setSquare(xgoal, ygoal, parent);
+            parent.changeSquare(xgoal, ygoal);
             
         }
         
