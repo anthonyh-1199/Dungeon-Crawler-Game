@@ -121,10 +121,10 @@ public class Camera {
                         !gameboard.checkIfSquareIsEmpty(x + 1, y) &&
                         !gameboard.checkIfSquareIsEmpty(x, y - 1) &&
                         !gameboard.checkIfSquareIsEmpty(x, y + 1)) &&
-                        gameboard.getObjectAtSquare(x - 1, y, 0).getClass().getSimpleName().equals("ObjectWall") &&
-                        gameboard.getObjectAtSquare(x + 1, y, 0).getClass().getSimpleName().equals("ObjectWall") &&
-                        gameboard.getObjectAtSquare(x, y - 1, 0).getClass().getSimpleName().equals("ObjectWall") &&
-                        gameboard.getObjectAtSquare(x, y + 1, 0).getClass().getSimpleName().equals("ObjectWall")){
+                        gameboard.getObjectAtSquare(x - 1, y, 0).isType("wall") &&
+                        gameboard.getObjectAtSquare(x + 1, y, 0).isType("wall") &&
+                        gameboard.getObjectAtSquare(x, y - 1, 0).isType("wall") &&
+                        gameboard.getObjectAtSquare(x, y + 1, 0).isType("wall")){
                         
                             s += "  ";
                             i++;
@@ -172,10 +172,10 @@ public class Camera {
                     !gameboard.checkIfSquareIsEmpty(x + 1, y) &&
                     !gameboard.checkIfSquareIsEmpty(x, y - 1) &&
                     !gameboard.checkIfSquareIsEmpty(x, y + 1)) &&
-                    gameboard.getObjectAtSquare(x - 1, y, 0).getClass().getSimpleName().equals("ObjectWall") &&
-                    gameboard.getObjectAtSquare(x + 1, y, 0).getClass().getSimpleName().equals("ObjectWall") &&
-                    gameboard.getObjectAtSquare(x, y - 1, 0).getClass().getSimpleName().equals("ObjectWall") &&
-                    gameboard.getObjectAtSquare(x, y + 1, 0).getClass().getSimpleName().equals("ObjectWall")){
+                    gameboard.getObjectAtSquare(x - 1, y, 0).isType("wall") &&
+                    gameboard.getObjectAtSquare(x + 1, y, 0).isType("wall") &&
+                    gameboard.getObjectAtSquare(x, y - 1, 0).isType("wall") &&
+                    gameboard.getObjectAtSquare(x, y + 1, 0).isType("wall")){
 
                         s += "  ";
                         colors[i++] = (gameboard.getObjectAtSquare(x, y, 0)).getColor();
