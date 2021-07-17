@@ -82,6 +82,13 @@ public class EntityGoblin extends Entity implements StateMachine {
         
         this.hitPoints -= damageRoll;
         
+        //Check if object is dead
+        if (hitPoints <= 0) {
+
+            changeState(STATE_DEAD);
+            
+        }
+        
     }
     
     @Override
