@@ -97,18 +97,24 @@ public class Camera {
                     
                     //If we haven't seen that square yet, don't draw it
                     if (!gameboard.getSeen(x, y)){
+                        
                         s += "  ";
                         i++;
                         i++;
+                        
                         continue;
+                        
                     }
 
                     //If the square is surrounded on all 4 sides, don't draw it
                     if (gameboard.checkIfSquareIsEmpty(x, y)){
+                        
                         s += '.' + " ";
                         colors[i++] = darkColor;
                         i++;
+                        
                         continue;
+                        
                     }
 
                     if ((!gameboard.checkIfSquareIsEmpty(x - 1, y) &&
@@ -119,55 +125,70 @@ public class Camera {
                         gameboard.getObjectAtSquare(x + 1, y, 0).getClass().getSimpleName().equals("ObjectWall") &&
                         gameboard.getObjectAtSquare(x, y - 1, 0).getClass().getSimpleName().equals("ObjectWall") &&
                         gameboard.getObjectAtSquare(x, y + 1, 0).getClass().getSimpleName().equals("ObjectWall")){
+                        
                             s += "  ";
                             i++;
                             i++;
+                            
                         continue;
+                        
                     } 
                     
                     if (gameboard.getObjectAtSquare(x, y, 0).getClass().getSimpleName().equals("ObjectWall")){
+                        
                         s += ((ParentGameObject)gameboard.getObjectAtSquare(x, y, 0)).getSymbol() + " ";
                         colors[i++] = darkColor;
                         i++;
+                        
                         continue;
+                        
                     }
                     
                     s += '.' + " ";
                     colors[i++] = darkColor;
                     i++;
+                    
                     continue;
+                    
                 }
                 
                 //Make square seen
                 gameboard.setSeen(x, y);
 
-                //If the square is empty/null, set the character to .
+                //If the square is empty/null, set the character to '.'
                 if (gameboard.checkIfSquareIsEmpty(x, y)){
+                    
                     s += '.' + " ";
                     colors[i++] = Color.WHITE;
                     i++;
+                    
+                    continue;
+                    
                 }
                 
-                //Else, add the respective character to represent the object
-                else {
-                    //If the square is surrounded on all 4 sides, don't draw it
-                    if ((!gameboard.checkIfSquareIsEmpty(x - 1, y) &&
-                        !gameboard.checkIfSquareIsEmpty(x + 1, y) &&
-                        !gameboard.checkIfSquareIsEmpty(x, y - 1) &&
-                        !gameboard.checkIfSquareIsEmpty(x, y + 1)) &&
-                        gameboard.getObjectAtSquare(x - 1, y, 0).getClass().getSimpleName().equals("ObjectWall") &&
-                        gameboard.getObjectAtSquare(x + 1, y, 0).getClass().getSimpleName().equals("ObjectWall") &&
-                        gameboard.getObjectAtSquare(x, y - 1, 0).getClass().getSimpleName().equals("ObjectWall") &&
-                        gameboard.getObjectAtSquare(x, y + 1, 0).getClass().getSimpleName().equals("ObjectWall")){
-                            s += "  ";
-                            colors[i++] = (gameboard.getObjectAtSquare(x, y, 0)).getColor();
-                            i++;
-                        } else {
-                            s += ((ParentGameObject)gameboard.getObjectAtSquare(x, y, 0)).getSymbol() + " ";
-                            colors[i++] = (gameboard.getObjectAtSquare(x, y, 0)).getColor();
-                            i++;
-                    }
+                //Add the respective character to represent the object
+                //If the square is surrounded on all 4 sides, don't draw it
+                if ((!gameboard.checkIfSquareIsEmpty(x - 1, y) &&
+                    !gameboard.checkIfSquareIsEmpty(x + 1, y) &&
+                    !gameboard.checkIfSquareIsEmpty(x, y - 1) &&
+                    !gameboard.checkIfSquareIsEmpty(x, y + 1)) &&
+                    gameboard.getObjectAtSquare(x - 1, y, 0).getClass().getSimpleName().equals("ObjectWall") &&
+                    gameboard.getObjectAtSquare(x + 1, y, 0).getClass().getSimpleName().equals("ObjectWall") &&
+                    gameboard.getObjectAtSquare(x, y - 1, 0).getClass().getSimpleName().equals("ObjectWall") &&
+                    gameboard.getObjectAtSquare(x, y + 1, 0).getClass().getSimpleName().equals("ObjectWall")){
+
+                        s += "  ";
+                        colors[i++] = (gameboard.getObjectAtSquare(x, y, 0)).getColor();
+                        i++;
+                        
+                    } else {
+                    
+                        s += ((ParentGameObject)gameboard.getObjectAtSquare(x, y, 0)).getSymbol() + " ";
+                        colors[i++] = (gameboard.getObjectAtSquare(x, y, 0)).getColor();
+                        i++;
+                        
                 }
+
             }
             
             i++;

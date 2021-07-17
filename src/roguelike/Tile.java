@@ -8,9 +8,7 @@ import roguelike.objects.ParentGameObject;
  * @author Anthony
 
  * This class represents the individual squares that form the game board
- * The variables that comprise a square include a list of all the game objects
- * currently occupying that square, a seen flag, and a default type for when
- * the square is empty
+ * The variables that comprise a square include a list of all the game objects currently occupying that square, a seen flag, and a default type for when the square is empty
 **/
 public class Tile {
     
@@ -56,7 +54,7 @@ public class Tile {
     
     public void addObject(ParentGameObject o) {
         
-        objects.add(o);
+        objects.add(0, o);
         
     }
     
@@ -77,4 +75,5 @@ public class Tile {
         this.seen = s;
         
     }
+    
 }
