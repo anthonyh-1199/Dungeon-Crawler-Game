@@ -99,6 +99,12 @@ public abstract class ParentGameObject {
         
     }
     
+    public boolean isType(String s) {
+        
+        return (s.equals(objectType));
+        
+    }
+    
     public abstract void update();
 
 
