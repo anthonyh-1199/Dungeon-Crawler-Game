@@ -5,7 +5,7 @@
  */
 package roguelike;
 
-import roguelike.objects.entities.Entity;
+import roguelike.objects.entities.ParentEntity;
 
 /**
  *
@@ -13,7 +13,7 @@ import roguelike.objects.entities.Entity;
  */
 public abstract class State {
     
-    public abstract void enterState(Entity e);
+    public abstract void enterState(ParentEntity e);
 
     public abstract void update();
     

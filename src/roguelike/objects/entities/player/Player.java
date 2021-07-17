@@ -28,26 +28,27 @@ public class Player extends ParentGameObject{
         
         //Set variables
         this.maxHitPoints = this.hitPoints = h;
-        this.symbol = '@';
+        this.objectSymbol = '@';
         this.weaponDamage = 1;
-        this.name = "Player";
-        this.color = new Color(255,255,255);
-        this.statCharisma = statConstitution = statDexterity = statIntelligence = statStrength = statWisdom = 1;
+        this.objectName = "Player";
+        this.objectColor = new Color(255,255,255);
+        this.statCharisma = statConstitution = statDexterity = statIntelligence = statStrength = statWisdom = 4;
         this.classLevel = 1;
         this.walletBalance = 10;
         this.isSolid = true;
         
         gameboard.setPlayer(this);
+        
     }
     
     public ParentWeapon getWeapon() {
-        
-        for (ParentItem item : inventory.inventory) {
+
+        for (ParentItem item : getInventory()) {
             
-            if (item == null) break;
+            if (item == null) continue;
             
-            if (item.itemType.equals("Weapon")) {
-                
+            if (item.itemType.equals("weapon")) {
+
                 return (ParentWeapon)item;
                 
             }
@@ -118,14 +119,27 @@ public class Player extends ParentGameObject{
         
         //If not, perform contextual behavior based on object in square
         else {
-            switch (object.getClass().getSuperclass().getSimpleName()){
-                case "Entity":
-                    Entity entity = (Entity)object;
+            
+            switch (object.getType()){
+                
+                case "enemy":
+                    ParentEntity entity = (ParentEntity)object;
                     ParentWeapon weapon = getWeapon();
                     entity.takeDamage(this, weapon.getDamage(), weapon.getAccuracy(this.statDexterity));
                     break;
+                    
             }
+            
         }
+        
+    }
+    
+    /* Getter methods */
+    
+    public ParentItem[] getInventory() {
+        
+        return inventory.inventory;
+        
     }
 
     @Override

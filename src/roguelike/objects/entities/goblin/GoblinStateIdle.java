@@ -5,7 +5,7 @@ package roguelike.objects.entities.goblin;
 
 import java.util.Random;
 import roguelike.Board;
-import roguelike.objects.entities.Entity;
+import roguelike.objects.entities.ParentEntity;
 import roguelike.objects.entities.player.Player;
 import roguelike.State;
 
@@ -17,7 +17,7 @@ public class GoblinStateIdle extends State {
     EntityGoblin parent;
 
     @Override
-    public void enterState(Entity e) {
+    public void enterState(ParentEntity e) {
         
         parent = (EntityGoblin) e;
         

@@ -5,7 +5,7 @@
  */
 package roguelike.objects.entities;
 
-import roguelike.objects.entities.Entity;
+import roguelike.objects.entities.ParentEntity;
 import roguelike.objects.entities.player.Player;
 import java.util.Random;
 import roguelike.Board;
@@ -14,7 +14,7 @@ import roguelike.Board;
  *
  * @author Anthony
  */
-public class EntitySheep extends Entity{
+public class EntitySheep extends ParentEntity{
     
     //Constructor
     public EntitySheep(int x, int y, Board b, int h){

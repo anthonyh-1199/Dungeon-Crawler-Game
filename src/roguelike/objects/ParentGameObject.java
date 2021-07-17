@@ -15,11 +15,12 @@ public abstract class ParentGameObject {
     
     public Board gameboard;
     public boolean isSolid;
-    public char symbol;
-    public Color color;
+    public char objectSymbol;
+    public Color objectColor;
     public int xposition;
     public int yposition;
-    public String name;
+    public String objectName;
+    public String objectType;
     public boolean isOpaque;
     
     //Constructor
@@ -82,15 +83,23 @@ public abstract class ParentGameObject {
     
     public char getSymbol() {
         
-        return symbol;
+        return objectSymbol;
         
     }
     
     public Color getColor() {
         
-        return color;
+        return objectColor;
+        
+    }
+    
+    public String getType() {
+        
+        return objectType;
         
     }
     
     public abstract void update();
+
+
 }

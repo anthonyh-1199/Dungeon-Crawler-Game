@@ -17,7 +17,9 @@ public abstract class ParentWeapon extends ParentItem {
         
         super(x, y, b);
         
-        this.itemType = "weapon";
+        itemType = "weapon";
+        
+        objectType = "item";
         
         Initialize();
         
@@ -41,7 +43,7 @@ public abstract class ParentWeapon extends ParentItem {
     public int getDamage() {
         
         Random r = new Random();
-        
+
         return (r.nextInt(weaponDamageBase) + 1) + weaponDamageModifier;
         
     }
@@ -49,7 +51,7 @@ public abstract class ParentWeapon extends ParentItem {
     public int getAccuracy(int accuracyModifier) {
         
         Random r = new Random();
-        
+
         return (r.nextInt(20) + 1) + accuracyModifier;
         
     }

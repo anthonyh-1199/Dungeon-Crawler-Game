@@ -3,14 +3,14 @@
  */
 package roguelike.objects.entities;
 
-import roguelike.objects.entities.Entity;
+import roguelike.objects.entities.ParentEntity;
 import roguelike.Board;
 import roguelike.objects.ParentGameObject;
 
 /**
  * @author Anthony
  */
-public class EntityCrate extends Entity{
+public class EntityCrate extends ParentEntity{
     
     //Constructor
     public EntityCrate(int x, int y, Board b, int h){

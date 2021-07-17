@@ -31,8 +31,8 @@ public class WeaponDagger extends ParentWeapon {
 
         //Board state attributes
         isSolid = false;
-        symbol = 'd';
-        color = new Color(255,228,231);
+        objectSymbol = 'd';
+        objectColor = new Color(255,228,231);
         
         //Status effect attributes
         weaponDamageBase = 3;

@@ -31,8 +31,8 @@ public class WeaponFists extends ParentWeapon {
 
         //Board state attributes
         isSolid = false;
-        symbol = '@';
-        color = new Color(255,228,231);
+        objectSymbol = '@';
+        objectColor = new Color(255,228,231);
         
         //Status effect attributes
         weaponDamageBase = 2;

@@ -7,7 +7,7 @@ package roguelike.objects.entities.goblin;
 
 import java.awt.Color;
 import roguelike.Board;
-import roguelike.objects.entities.Entity;
+import roguelike.objects.entities.ParentEntity;
 import roguelike.objects.ParentGameObject;
 import roguelike.State;
 import roguelike.StateMachine;
@@ -15,7 +15,7 @@ import roguelike.StateMachine;
 /**
  * @author Anthony
  */
-public class EntityGoblin extends Entity implements StateMachine {
+public class EntityGoblin extends ParentEntity implements StateMachine {
     
     //Initialize variables
     State STATE_IDLE = new GoblinStateIdle();
@@ -30,11 +30,12 @@ public class EntityGoblin extends Entity implements StateMachine {
         super(x, y, b);
 
         //Board attributes
-        symbol = 'g';
+        objectSymbol = 'g';
         isSolid = true;
-        name = "Goblin";
+        objectName = "goblin";
+        objectType = "enemy";
         isOpaque = false;
-        color = new Color(36,191,32);
+        objectColor = new Color(36,191,32);
         
         //Combat attributes
         this.armorClass = 12;

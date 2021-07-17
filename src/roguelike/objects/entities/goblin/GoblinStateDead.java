@@ -2,7 +2,7 @@
  */
 package roguelike.objects.entities.goblin;
 
-import roguelike.objects.entities.Entity;
+import roguelike.objects.entities.ParentEntity;
 import roguelike.State;
 
 /**
@@ -13,7 +13,7 @@ public class GoblinStateDead extends State {
     EntityGoblin parent;
 
     @Override
-    public void enterState(Entity e) {
+    public void enterState(ParentEntity e) {
         
         parent = (EntityGoblin) e;
         

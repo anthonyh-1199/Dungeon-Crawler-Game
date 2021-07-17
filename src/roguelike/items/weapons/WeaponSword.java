@@ -31,8 +31,8 @@ public class WeaponSword extends ParentWeapon {
 
         //Board state attributes
         isSolid = false;
-        symbol = 's';
-        color = new Color(255,228,231);
+        objectSymbol = 's';
+        objectColor = new Color(255,228,231);
         
         //Status effect attributes
         weaponDamageBase = 6;

@@ -66,14 +66,17 @@ public class Game extends javax.swing.JFrame implements KeyListener {
 
         camera = gameboard.camera;
 
-        update();
-
+        updateWindowView();
+        updateWindowStats();
+        updateWindowMessages();
+        
     }
     
     //Updates the board to reflect changes
     private void update() {
 
         gameboard.update();
+        
         updateWindowView();
         updateWindowStats();
         updateWindowMessages();
@@ -101,7 +104,7 @@ public class Game extends javax.swing.JFrame implements KeyListener {
         
         //FORMATING PLAYER NAME AND CLASS UI
         
-        s += "\n " + player.name + " (" + player.classLevel + ")";
+        s += "\n " + player.objectName + " (" + player.classLevel + ")";
         while (s.length() < statsBoardLength * (i + 1) + i) {s += " ";}
         
         i++;
@@ -256,8 +259,7 @@ public class Game extends javax.swing.JFrame implements KeyListener {
         }
         
     }
-    
-    
+
     private void updateWindowView() {
 
         //Update camera screen
@@ -396,7 +398,7 @@ public class Game extends javax.swing.JFrame implements KeyListener {
 
     @Override
     public void keyPressed(KeyEvent e) {
-        
+
         player = gameboard.getPlayer();
 
         switch (e.getKeyCode()) {

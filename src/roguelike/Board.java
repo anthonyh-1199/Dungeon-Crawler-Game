@@ -165,12 +165,12 @@ public class Board<T> {
         
     }
     
-    //Returns true if an object with a specific name is occupying the square
+    //Returns true if an object with a specific objectName is occupying the square
     public boolean checkIfSquareContainsObject(int x, int y, String s) {
 
         for (ParentGameObject o : getObjectsAtSquare(x, y)) {
             
-            if (o.name == s) {
+            if (o.objectName == s) {
                 
                 return true;
                 

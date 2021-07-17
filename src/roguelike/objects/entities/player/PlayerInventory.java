@@ -24,8 +24,9 @@ public class PlayerInventory {
         }
         
         return true;
+        
     }
-    
+
     public void addItem(ParentItem item) {
         
         if (!isFull()) {
