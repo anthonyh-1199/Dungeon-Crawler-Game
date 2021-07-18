@@ -56,6 +56,12 @@ public abstract class ParentWeapon extends ParentItem {
         
     }
     
+    public int getRange() {
+        
+        return weaponRange;
+        
+    }
+    
     public abstract void onHitEffect();
 
     @Override
