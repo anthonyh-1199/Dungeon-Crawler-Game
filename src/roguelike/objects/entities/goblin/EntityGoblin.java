@@ -1,27 +1,31 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package roguelike.objects.entities.goblin;
 
 import java.awt.Color;
 import roguelike.Board;
 import roguelike.objects.entities.ParentEntity;
-import roguelike.objects.ParentGameObject;
 import roguelike.State;
 import roguelike.StateMachine;
+import roguelike.items.weapons.*;
 
 /**
  * @author Anthony
  */
 public class EntityGoblin extends ParentEntity implements StateMachine {
     
-    //Initialize variables
+    //State machine variables
     State STATE_IDLE = new GoblinStateIdle();
     State STATE_CHASE= new GoblinStateChase();
     State STATE_DEAD = new GoblinStateDead();
     State currentState;
+    
+    //AI variables
+    ParentEntity targetObject;
+    
+    //Behavioral variables
+    int statCharisma, statConstitution, statDexterity, statIntelligence, statStrength, statWisdom;
+    ParentWeapon meleeWeapon;
+    ParentWeapon rangedWeapon;
 
     //Constructor
     public EntityGoblin(int x, int y, Board b) {
@@ -30,17 +34,28 @@ public class EntityGoblin extends ParentEntity implements StateMachine {
         super(x, y, b);
 
         //Board attributes
-        objectSymbol = 'g';
-        isSolid = true;
-        objectName = "goblin";
-        objectType = "enemy";
         isOpaque = false;
         objectColor = new Color(36,191,32);
+        isSolid = true;
+        objectName = "goblin";
+        objectSymbol = 'G';
+        objectType = "enemy";
         
-        //Combat attributes
-        this.armorClass = 12;
-        this.hitPoints = 7;
-        this.speed = 1;
+        //Stat attributes
+        armorClass = 12;
+        hitPoints = 7;
+        meleeWeapon = new WeaponFists(); 
+        moveSpeed = 1;
+        rangedWeapon = new WeaponShortbow();
+        statCharisma = -1;
+        statConstitution = 0;
+        statDexterity = 2;
+        statIntelligence = -1;
+        statStrength = -1;
+        statWisdom = -1;
+        
+        //AI variables
+        targetObject = null;
         
         //Add self to actionQueue
         gameboard.addObjectToList(this);
@@ -68,8 +83,26 @@ public class EntityGoblin extends ParentEntity implements StateMachine {
     
     /* Class methods */
     
+    public void doMeleeAttack(ParentEntity damageTarget) {
+
+        damageTarget.takeDamage(this, meleeWeapon.getDamage(), meleeWeapon.getAccuracy(statDexterity));
+        
+    }
+    
+    public void doRangedAttack(ParentEntity damageTarget) {
+
+        damageTarget.takeDamage(this, rangedWeapon.getDamage(), rangedWeapon.getAccuracy(statDexterity));
+        
+    }
+    
     @Override
-    public void takeDamage(ParentGameObject source, int damageRoll, int hitRoll) {
+    public void takeDamage(ParentEntity damageSource, int damageRoll, int hitRoll) {
+        
+        if (targetObject == null && damageSource != null) {
+            
+            targetObject = damageSource;
+            
+        }
         
         if (hitRoll < armorClass) {
             
