@@ -13,9 +13,9 @@ import roguelike.objects.ParentGameObject;
 /**
  * @author Anthony
  */
-public class Player extends ParentGameObject{
+public class Player extends ParentEntity{
     
-    public int maxHitPoints, hitPoints, weaponDamage, classLevel;
+    public int maxHitPoints, weaponDamage, classLevel;
     public int statCharisma, statConstitution, statDexterity, statIntelligence, statStrength, statWisdom;
     public int walletBalance;
     public PlayerInventory inventory = new PlayerInventory();
@@ -36,6 +36,7 @@ public class Player extends ParentGameObject{
         this.classLevel = 1;
         this.walletBalance = 10;
         this.isSolid = true;
+        armorClass = 12;
         
         gameboard.setPlayer(this);
         
@@ -125,7 +126,7 @@ public class Player extends ParentGameObject{
                 case "enemy":
                     ParentEntity entity = (ParentEntity)object;
                     ParentWeapon weapon = getWeapon();
-                    entity.takeDamage(this, weapon.getDamage(), weapon.getAccuracy(this.statDexterity));
+                    entity.takeDamage(this, weapon.getDamage(), weapon.getAccuracy(statDexterity));
                     break;
                     
             }
@@ -139,6 +140,23 @@ public class Player extends ParentGameObject{
     public ParentItem[] getInventory() {
         
         return inventory.inventory;
+        
+    }
+    
+    @Override
+    public void takeDamage(ParentEntity damageSource, int damageRoll, int hitRoll) {
+
+        if (hitRoll < armorClass) {
+            
+            gameboard.getCamera().AddMessage("You dodge the attack!");
+            
+            return;
+            
+        }
+        
+        gameboard.getCamera().AddMessage("You are hit!");
+        
+        this.hitPoints -= damageRoll;
         
     }
 
