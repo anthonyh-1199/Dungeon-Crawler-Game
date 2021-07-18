@@ -42,6 +42,7 @@ public class GoblinStateIdle extends State {
             parent.changeState(parent.STATE_DEAD);
             
             return;
+            
         }
         
         Player p = parent.gameboard.getPlayer();
@@ -52,9 +53,14 @@ public class GoblinStateIdle extends State {
                 
                 parent.gameboard.getCamera().AddMessage("The goblin lets out a         startling scream!");
                 
+                parent.targetObject = (ParentEntity)p;
+                
                 parent.changeState(parent.STATE_CHASE);
+                
             }
+            
         }
+        
     }
     
     public void moveRandomly(){
