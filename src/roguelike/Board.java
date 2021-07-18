@@ -18,7 +18,7 @@ public class Board<T> {
     
     Tile[][] gameboard;
     int size;
-    LinkedList<ParentGameObject> actionList = new LinkedList<>();
+    public LinkedList<ParentGameObject> actionList = new LinkedList<>();
     Player player;
     Camera camera;
     
@@ -82,7 +82,7 @@ public class Board<T> {
                         new Player(x, y, this, 10);
                         break;
                         
-                    case 'g':
+                    case 'G':
                         new EntityGoblin(x, y, this);
                         break;
                         
@@ -167,15 +167,19 @@ public class Board<T> {
     
     //Returns true if an object with a specific objectName is occupying the square
     public boolean checkIfSquareContainsObject(int x, int y, String s) {
+        
+        if (isWithinBounds(x, y)) {
 
-        for (ParentGameObject o : getObjectsAtSquare(x, y)) {
-            
-            if (o.objectName == s) {
-                
-                return true;
-                
+            for (ParentGameObject o : getObjectsAtSquare(x, y)) {
+
+                if (o.objectName == s) {
+
+                    return true;
+
+                }
+
             }
-            
+        
         }
         
         return false;
@@ -240,7 +244,11 @@ public class Board<T> {
     //Changes a tile's seen flag
     public void setSeen(int x, int y) {
         
-        gameboard[x][y].setSeen(true);
+        if (isWithinBounds(x, y)) {
+
+            gameboard[x][y].setSeen(true);
+
+        }
         
     }
     
@@ -286,7 +294,9 @@ public class Board<T> {
     public void update() {
         
         for (ParentGameObject object : actionList) {
+            
             object.update();
+
         }
         
     }
@@ -341,6 +351,12 @@ public class Board<T> {
         }
         
         return false;
+    }
+    
+    public static double calculateDistance(int xstart, int ystart, int xgoal, int ygoal) {
+        
+        return Math.sqrt(Math.pow((xgoal - xstart), 2) + Math.pow((ygoal - ystart), 2));
+        
     }
     
     //Returns true if the x and y coordinates are within the bounds of the board

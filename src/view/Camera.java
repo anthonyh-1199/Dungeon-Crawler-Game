@@ -93,7 +93,7 @@ public class Camera {
                 //Drawing out-of-sight
                 if ((Board.checkSightLine(focalPoint.getX(), focalPoint.getY(), x, y, gameboard) &&
                     Board.checkSightLine(x, y, focalPoint.getX(), focalPoint.getY(), gameboard)) ||
-                    (Math.sqrt(Math.pow((focalPoint.getX() - x), 2) + Math.pow((focalPoint.getY() - y), 2)) > 8.5)){
+                    (Board.calculateDistance(focalPoint.getX(), focalPoint.getY(), x, y) > 8.5)){
                     
                     //If we haven't seen that square yet, don't draw it
                     if (!gameboard.getSeen(x, y)){
