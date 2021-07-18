@@ -1,6 +1,4 @@
-/*
- * Abstract class that encapsulates all game objects (walls, items, ncps)
- */
+
 package roguelike.objects;
 
 import java.awt.Color;
@@ -8,12 +6,15 @@ import roguelike.Board;
 
 /**
  * @author Anthony
+ * 
+ * Abstract class that encapsulates all game objects (walls, items, ncps)
  */
 public abstract class ParentGameObject {
     
     //Class variables
     
     public Board gameboard;
+    public boolean isOpaque;
     public boolean isSolid;
     public char objectSymbol;
     public Color objectColor;
@@ -21,7 +22,6 @@ public abstract class ParentGameObject {
     public int yposition;
     public String objectName;
     public String objectType;
-    public boolean isOpaque;
     
     //Constructor
     
@@ -67,6 +67,12 @@ public abstract class ParentGameObject {
         
     }
     
+    public boolean isType(String s) {
+        
+        return (s.equals(objectType));
+        
+    }
+    
     //Getter methods
     
     public int getX() {
@@ -96,12 +102,6 @@ public abstract class ParentGameObject {
     public String getType() {
         
         return objectType;
-        
-    }
-    
-    public boolean isType(String s) {
-        
-        return (s.equals(objectType));
         
     }
     
