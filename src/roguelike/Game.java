@@ -28,18 +28,18 @@ public class Game extends javax.swing.JFrame implements KeyListener {
         String seed =
         "............................." + 
         ".###########################." + 
-        ".#.......d....ggg.g#.......#." + 
-        ".#.......d....gg...#.......#." + 
-        ".#.......d.....g#..#.......#." + 
+        ".#.......d.........#.......#." + 
+        ".#.......d.........#.......#." + 
+        ".#.......d......#..#.......#." + 
         ".#.......d..P...#..#...#...#." + 
         ".#.......d......#..#...#...#." + 
         ".#.......d......#..#...#...#." + 
         ".#.......d......#..#...#...#." + 
         ".#.......d......#..#...#...#." + 
+        ".#.......d.....C#..#...#...#." + 
         ".#.......d......#..#...#...#." + 
-        ".#.......d......#..#...#...#." + 
-        ".#.......d......#..#.g.#...#." + 
-        ".#.......d......#..#...#...#." + 
+        ".#..............#..#.G.#...#." + 
+        ".#..............#..#...#...#." + 
         ".#..............#..#...#...#." + 
         ".#..............#..#...#...#." + 
         ".#..............#..#...#...#." + 
@@ -51,7 +51,7 @@ public class Game extends javax.swing.JFrame implements KeyListener {
         ".#..............#..#...#...#." + 
         ".#..............#..#...#...#." + 
         ".#..............#......#...#." + 
-        ".#..............#......#.g.#." + 
+        ".#..............#......#.G.#." + 
         ".#..............#......#...#." + 
         ".###########################." +
         ".............................";
@@ -76,7 +76,7 @@ public class Game extends javax.swing.JFrame implements KeyListener {
     private void update() {
 
         gameboard.update();
-        
+
         updateWindowView();
         updateWindowStats();
         updateWindowMessages();
@@ -175,17 +175,21 @@ public class Game extends javax.swing.JFrame implements KeyListener {
 
         //FORMATING INVENTORY UI
 
-        for (int j = 0; j < player.inventory.inventory.length; j++) {
+        for (int j = 0; j < player.inventory.inventory.length / 2; j++) {
             
             //Format first item entry in row
             
             ParentItem item = player.inventory.inventory[j];
             
-            s += "\n • ";
+            s += "\n " + (j) + ". ";
 
             if (item != null) {
                 
                 s += item.itemName;
+                
+            } else {
+                
+                s += "Empty";
                 
             }
             
@@ -195,13 +199,17 @@ public class Game extends javax.swing.JFrame implements KeyListener {
             
             //Format second item entry in row
             
-            item = player.inventory.inventory[++j];
+            item = player.inventory.inventory[j + 5];
             
-            s += "• ";
+            s += (j + 5) + " ";
 
             if (item != null) {
                 
                 s += item.itemName;
+                
+            } else {
+                
+                s += "Empty";
                 
             }
             
