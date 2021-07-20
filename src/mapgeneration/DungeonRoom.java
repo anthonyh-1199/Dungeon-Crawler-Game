@@ -28,25 +28,35 @@ public class DungeonRoom {
     //Setter methods
     
     public void AddNeighbor(DungeonRoom r) {
+        
         neighbors.add(r);
+        
     }
     
     //Getter methods
     
     public List<DungeonRoom> GetNeighbors() {
+        
         return neighbors;
+        
     }   
     
     public int GetX() {
+        
         return x;
+        
     }
     
     public int GetY() {
+        
         return y;
+        
     }
     
     public boolean IsSpecial() {
+        
         return special;
+        
     } 
     
 }
