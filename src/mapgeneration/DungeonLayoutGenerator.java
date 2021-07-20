@@ -19,12 +19,22 @@ public class DungeonLayoutGenerator {
     int bonusGoal = 2;
     
     public DungeonLayoutGenerator() { 
+
+    }
+    
+    public DungeonRoom[][] generateLayout() {
+        
         do {
+            
             GenerateBaseLayout();
+            
         } 
         while (!AddDeadEndRooms());
         
         System.out.println(ToString());
+
+        return roomsGrid;
+        
     }
     
     //Generates a base layout consisting of one unbroken line of rooms that 
@@ -127,19 +137,24 @@ public class DungeonLayoutGenerator {
                     roomsGrid[neighborx][neighbory] = neighbor;
                     roomsQueue.add(roomsGrid[neighborx][neighbory]);
                     roomsCount++;
+                    
                 }
                 
                 //Leave once we hit the goal # of rooms
                 if (roomsCount == roomGoal){
+                    
                     break;
+                    
                 }
 
             }
         
         }
+        
         while (roomsCount < roomGoal);
+        
     }
-    
+   
     public boolean AddDeadEndRooms() {
         
         //Initialize variables
@@ -150,11 +165,17 @@ public class DungeonLayoutGenerator {
         List<DungeonRoom> roomsList = new LinkedList<>();
         
         for (int y = 0; y < roomsGrid.length; y++){
+            
             for (int x = 0; x < roomsGrid.length; x++) {
+                
                 if (roomsGrid[x][y] != null){
+                    
                     roomsList.add(roomsGrid[x][y]);
+                    
                 }
+                
             }
+            
         }
         
         //Shuffle the list
@@ -267,11 +288,17 @@ public class DungeonLayoutGenerator {
         List<DungeonRoom> roomsList = new LinkedList<>();
         
         for (int y = 0; y < roomsGrid.length; y++){
+            
             for (int x = 0; x < roomsGrid.length; x++) {
+                
                 if (roomsGrid[x][y] != null){
+                    
                     roomsList.add(roomsGrid[x][y]);
+                    
                 }
+                
             }
+            
         }
         
         //Shuffle the list
@@ -312,20 +339,30 @@ public class DungeonLayoutGenerator {
             int neighborsCount = 0;
 
             if (roomsGrid[neighborx + 1][neighbory] != null) {
+                
                 neighborsCount++;
+                
             }
             if (roomsGrid[neighborx - 1][neighbory] != null) {
+                
                 neighborsCount++;
+                
             }
             if (roomsGrid[neighborx][neighbory + 1] != null) {
+                
                 neighborsCount++;
+                
             }
             if (roomsGrid[neighborx][neighbory - 1] != null) {
+                
                 neighborsCount++;
+                
             }
 
             if (neighborsCount > 1){
+                
                 continue;
+                
             }
 
             //If the neighbor is empty, add a room to it
@@ -341,11 +378,14 @@ public class DungeonLayoutGenerator {
                 //Set the neighbor as the current room
                 roomsGrid[neighborx][neighbory] = neighbor;
                 roomsCount++;
+                
             }
 
             //Leave once we hit the goal # of rooms
             if (roomsCount == bonusGoal){
+                
                 return true;
+                
             }
             
         }
@@ -370,15 +410,21 @@ public class DungeonLayoutGenerator {
                 } else {
                     
                     if (roomsGrid[x][y].special){
+                        
                         s += "X ";
+                        
                     } else {
+                        
                         s += "O ";
+                        
                     }
                     
                 }
+                
             }
             
             s += "\n";
+            
         }
         
         for (int y = 0; y < roomsGrid.length; y++){
@@ -393,15 +439,21 @@ public class DungeonLayoutGenerator {
                     s += d.GetX() + " " + d.GetY() + " : ";
                     
                     for (DungeonRoom n : d.GetNeighbors()){
+                        
                         s += n.GetX() + " " + n.GetY() + ", ";;
+                        
                     }
                     
                     s += "\n";
                     
                 }
+                
             }
+            
         }
 
         return s;
+        
     }
+    
 }
