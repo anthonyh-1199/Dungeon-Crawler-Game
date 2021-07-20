@@ -16,14 +16,25 @@ public abstract class Generator {
     public Board gameboard;
     
     public Generator(Board b){
+        
         gameboard = b;
+        
+        FillBoard();
+        
     }
     
     public void FillBoard(){
+        
         for (int y = 0; y < gameboard.getSize(); y++){
+            
             for (int x = 0; x < gameboard.getSize(); x++){
+                
                 gameboard.addObjectToSquare(x, y, new ObjectWall(x, y, gameboard));
+                
             }
+            
         }
+        
     }
+    
 }
