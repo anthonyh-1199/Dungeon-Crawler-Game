@@ -39,7 +39,71 @@ public class DungeonRoom {
         
         return neighbors;
         
-    }   
+    }
+    
+    public boolean hasNeighborNorth() {
+        
+        for (DungeonRoom room : neighbors) {
+            
+            if (room.y < y) {
+                
+                return true;
+                
+            }
+            
+        }
+        
+        return false;
+        
+    }
+    
+    public boolean hasNeighborSouth() {
+        
+        for (DungeonRoom room : neighbors) {
+            
+            if (room.y > y) {
+                
+                return true;
+                
+            }
+            
+        }
+        
+        return false;
+        
+    }
+    
+    public boolean hasNeighborEast() {
+        
+        for (DungeonRoom room : neighbors) {
+            
+            if (room.x > x) {
+                
+                return true;
+                
+            }
+            
+        }
+        
+        return false;
+        
+    }
+    
+    public boolean hasNeighborWest() {
+        
+        for (DungeonRoom room : neighbors) {
+            
+            if (room.x < x) {
+                
+                return true;
+                
+            }
+            
+        }
+        
+        return false;
+        
+    }
     
     public int GetX() {
         
