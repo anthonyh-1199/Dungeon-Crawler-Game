@@ -14,11 +14,22 @@ public abstract class ParentItem extends ParentGameObject{
 
     //Constructor for when item is on the board
     public ParentItem(int x, int y, Board b) {
+        
         super(x, y, b);
         isOpaque = false;
+        
     }
     
     //Constructor for when item is in player's inventory
     public ParentItem() {}
+    
+    //Method for adding an item that isn't on the board to the board
+    public void putOnBoard(int x, int y, Board b) {
+        
+        this.gameboard = b;
+        
+        changeSquare(x, y);
+        
+    }
     
 }
