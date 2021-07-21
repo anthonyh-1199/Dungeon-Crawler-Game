@@ -4,6 +4,7 @@ package mapgeneration;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.List;
 import roguelike.Board;
 import roguelike.items.weapons.WeaponSword;
 import roguelike.objects.ObjectWall;
@@ -48,7 +49,6 @@ public class DungeonGenerator extends Generator {
                 }
                 
                 //If square has a room, add it to the board
-                //TO-DO: find out how many exits the room has and rotate it to fit the map
                 generateRoom(roomsGrid[x][y], gameboard);
                 
             }
@@ -59,7 +59,122 @@ public class DungeonGenerator extends Generator {
 
     public void generateRoom(DungeonRoom room, Board gameboard) {
 
-        char[][] roomSeed = getRoomFromFile("DungeonRoomLayouts1A.txt", 1);
+        char[][] roomSeed = new char[ROOM_SIZE][ROOM_SIZE];
+        
+        //Get the correct layout for the room based on its position/neighbors
+        List<DungeonRoom> roomNeighbors = room.GetNeighbors();
+        
+        switch (roomNeighbors.size()) {
+            
+            case 1:
+                
+                //Deadend rooms
+                if (room.hasNeighborEast()) {
+                    
+                    roomSeed = getRoomFromFile("DungeonRoomLayouts1.txt", 0);
+                    
+                }
+                if (room.hasNeighborSouth()) {
+                    
+                    roomSeed = getRoomFromFile("DungeonRoomLayouts1.txt", 1);
+                    
+                }
+                if (room.hasNeighborWest()) {
+                    
+                    roomSeed = getRoomFromFile("DungeonRoomLayouts1.txt", 2);
+                    
+                }
+                if (room.hasNeighborNorth()) {
+                    
+                    roomSeed = getRoomFromFile("DungeonRoomLayouts1.txt", 3);
+                    
+                }
+                
+                break;
+                
+            case 2:
+                
+                //Straight hallways
+                if (room.hasNeighborEast() && room.hasNeighborWest()) {
+                    
+                    roomSeed = getRoomFromFile("DungeonRoomLayouts2S.txt", 0);
+                    
+                }
+                
+                if (room.hasNeighborNorth() && room.hasNeighborSouth()) {
+                    
+                    roomSeed = getRoomFromFile("DungeonRoomLayouts2S.txt", 1);
+                    
+                }
+                
+                //L-shaped rooms
+                if (room.hasNeighborEast()){
+                    
+                    if (room.hasNeighborNorth()){
+                    
+                        roomSeed = getRoomFromFile("DungeonRoomLayouts2L.txt", 0);
+                    
+                    }
+                    
+                    if (room.hasNeighborSouth()){
+                    
+                        roomSeed = getRoomFromFile("DungeonRoomLayouts2L.txt", 1);
+                    
+                    }
+                    
+                }
+                
+                if (room.hasNeighborWest()){
+                    
+                    if (room.hasNeighborNorth()){
+                    
+                        roomSeed = getRoomFromFile("DungeonRoomLayouts2L.txt", 3);
+                    
+                    }
+                    
+                    if (room.hasNeighborSouth()){
+                    
+                        roomSeed = getRoomFromFile("DungeonRoomLayouts2L.txt", 2);
+                    
+                    }
+                    
+                }
+                
+                break;
+                
+            case 3:
+                
+                if (!room.hasNeighborWest()) {
+                    
+                    roomSeed = getRoomFromFile("DungeonRoomLayouts3.txt", 0);
+                    
+                }
+                
+                if (!room.hasNeighborNorth()) {
+                    
+                    roomSeed = getRoomFromFile("DungeonRoomLayouts3.txt", 1);
+                    
+                }
+                                
+                if (!room.hasNeighborEast()) {
+                    
+                    roomSeed = getRoomFromFile("DungeonRoomLayouts3.txt", 2);
+                    
+                }
+                                
+                if (!room.hasNeighborSouth()) {
+                    
+                    roomSeed = getRoomFromFile("DungeonRoomLayouts3.txt", 3);
+                    
+                }
+                
+                break;
+                
+            default:
+
+                roomSeed = getRoomFromFile("DungeonRoomLayouts4.txt", 0);
+                
+        }
         
         //Initialize variables
         int xoffset = room.GetX() * 20;
@@ -148,8 +263,28 @@ public class DungeonGenerator extends Generator {
         
     }
     
-    //Rotates the String representation of a room clockwise
+    //Rotates the matrix representation of a room clockwise
     private char[][] rotateRoom(char[][] oldSeed) {
+        
+        char[][] newSeed = new char[ROOM_SIZE][ROOM_SIZE];
+
+        for (int y = 0; y < ROOM_SIZE; y++){
+            
+            for (int x = ROOM_SIZE - 1; x >= 0; x--){
+
+                //Transform the x and y coordinates
+                newSeed[y][x] = oldSeed[x][ROOM_SIZE - 1 - y];
+                
+            }
+            
+        }
+        
+        return newSeed;
+        
+    }
+    
+    //Flips the matrix representation of a room vertically
+    private char[][] flipRoom(char[][] oldSeed) {
         
         char[][] newSeed = new char[ROOM_SIZE][ROOM_SIZE];
 
@@ -158,9 +293,8 @@ public class DungeonGenerator extends Generator {
             
             for (int x = ROOM_SIZE - 1; x >= 0; x--){
 
-                //Flip the x and y coordinates
-                //newSeed[x][ROOM_SIZE - 1 - y] = oldSeed[y][x];
-                newSeed[y][x] = oldSeed[x][ROOM_SIZE - 1 - y];
+                //Transform the x and y coordinates
+                newSeed[x][y] = oldSeed[x][ROOM_SIZE - 1 - y];
                 
             }
             
