@@ -38,7 +38,7 @@ public class GoblinStateChase extends State {
             //If we're within melee range, attempt a melee attack
             if (distanceToTarget <= parent.meleeWeapon.getRange()) {
 
-                parent.gameboard.getCamera().AddMessage("The goblin makes an attack    at you!");
+                parent.gameboard.getCamera().addMessage("The goblin makes an attack    at you!");
                 
                 parent.doMeleeAttack(parent.targetObject);
 

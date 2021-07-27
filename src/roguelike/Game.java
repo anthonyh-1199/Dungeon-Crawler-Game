@@ -250,7 +250,7 @@ public class Game extends javax.swing.JFrame implements KeyListener {
 
         //Update message board
         
-        ArrayList<String> messages = camera.GetMessages();
+        ArrayList<String> messages = camera.getMessages();
         
         String s = "";
         
@@ -281,7 +281,7 @@ public class Game extends javax.swing.JFrame implements KeyListener {
 
         //Update camera screen
         
-        camera.GetView(jGameScreen);
+        camera.getView(jGameScreen);
 
     }
 
@@ -450,12 +450,12 @@ public class Game extends javax.swing.JFrame implements KeyListener {
                     case KeyEvent.VK_D:
                         if (player.inventory.isEmpty()) {
                             
-                            gameboard.camera.AddMessage("You have no items to drop!");
+                            gameboard.camera.addMessage("You have no items to drop!");
                             
                         } else {
                             
                             focus = "dropmenu";
-                            gameboard.camera.AddMessage("Type the key of the item you  wish to drop (0-9)");
+                            gameboard.camera.addMessage("Type the key of the item you  wish to drop (0-9)");
                             
                         }
                         break;

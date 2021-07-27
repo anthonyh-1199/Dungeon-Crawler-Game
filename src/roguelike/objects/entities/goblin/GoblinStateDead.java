@@ -17,7 +17,7 @@ public class GoblinStateDead extends State {
         
         parent = (EntityGoblin) e;
         
-        parent.gameboard.getCamera().AddMessage("The goblin's been slain!");
+        parent.gameboard.getCamera().addMessage("The goblin's been slain!");
         
         parent.deleteSelf();
         

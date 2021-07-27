@@ -174,13 +174,13 @@ public class Player extends ParentEntity{
 
         if (hitRoll < armorClass) {
             
-            gameboard.getCamera().AddMessage("You dodge the attack!");
+            gameboard.getCamera().addMessage("You dodge the attack!");
             
             return;
             
         }
         
-        gameboard.getCamera().AddMessage("You are hit!");
+        gameboard.getCamera().addMessage("You are hit!");
         
         this.hitPoints -= damageRoll;
         

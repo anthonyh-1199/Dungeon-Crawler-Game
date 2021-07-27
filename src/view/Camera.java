@@ -37,7 +37,7 @@ public class Camera {
     
     //Class methods
     
-    public void GetView(JTextPane j) {
+    public void getView(JTextPane j) {
         
         //Initialize variables
         String s = "";
@@ -317,7 +317,7 @@ public class Camera {
         
     }
 
-    public void AddMessage(String s) {
+    public void addMessage(String s) {
         
         //Add bullet point to message
         s = "• " + s;
@@ -360,19 +360,19 @@ public class Camera {
 
     //Getter methods
     
-    public ParentGameObject GetFocalPoint() {
+    public ParentGameObject getFocalPoint() {
         
         return this.focalPoint;
         
     }
     
-    public int GetSize() {
+    public int getSize() {
         
         return this.size;
         
     }
     
-    public ArrayList<String> GetMessages() {
+    public ArrayList<String> getMessages() {
         
         ArrayList<String> output = (ArrayList<String>) messages.clone();
         
@@ -389,13 +389,13 @@ public class Camera {
     
     //Setter methods
     
-    public void SetFocalPoint(ParentGameObject o) {
+    public void setFocalPoint(ParentGameObject o) {
         
         this.focalPoint = o;
         
     }
     
-    public void SetSize(int s) {
+    public void setSize(int s) {
         
         this.size = s;
         
