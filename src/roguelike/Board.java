@@ -4,9 +4,9 @@ package roguelike;
 import roguelike.items.weapons.*;
 import roguelike.objects.entities.EntitySheep;
 import roguelike.objects.ObjectWall;
-import roguelike.objects.entities.*;
 import roguelike.objects.ParentGameObject;
 import java.util.*;
+import roguelike.objects.entities.chest.EntityChest;
 import view.Camera;
 import roguelike.objects.entities.player.*;
 import roguelike.objects.entities.goblin.*;
@@ -21,6 +21,7 @@ public class Board<T> {
     public LinkedList<ParentGameObject> actionList = new LinkedList<>();
     Player player;
     Camera camera;
+    int[] cursor = {-1, -1}; 
     
     //Creates a square board with given dimensions
     public Board(int size) {
@@ -75,7 +76,7 @@ public class Board<T> {
                         break;
                         
                     case 'C':
-                        new EntityCrate(x, y, this, 2);
+                        new EntityChest(x, y, this);
                         break;
                         
                     case 'P':
@@ -96,6 +97,30 @@ public class Board<T> {
                 
             }
             
+        }
+        
+    }
+    
+    public int[] getCursor() {
+        
+        return cursor;
+        
+    }
+    
+    public void setCursor(int x, int y) {
+
+        cursor[0] = x;
+        cursor[1] = y;
+        
+    }
+    
+    public void moveCursor(int x, int y) {
+        
+        if (isWithinBounds(cursor[0] + x, cursor[1] + y)) {
+            
+            cursor[0] += x;
+            cursor[1] += y;
+                
         }
         
     }

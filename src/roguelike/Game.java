@@ -2,13 +2,13 @@
 package roguelike;
 
 import view.Camera;
-import mapgeneration.CaveGenerator;
 import java.awt.Color;
 import roguelike.objects.entities.player.Player;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.util.ArrayList;
 import javax.swing.text.*;
+import mapgeneration.DungeonGenerator;
 import roguelike.items.*;
 
 /**
@@ -20,6 +20,7 @@ public class Game extends javax.swing.JFrame implements KeyListener {
     Board gameboard;
     Player player;
     Camera camera;
+    String focus;
 
     public Game() {
         initComponents();
@@ -56,11 +57,13 @@ public class Game extends javax.swing.JFrame implements KeyListener {
         ".###########################." +
         ".............................";
 
-        this.gameboard = new Board(400);
+        this.gameboard = new Board(600);
         
-        new CaveGenerator(gameboard, 300, 1);
+        DungeonGenerator dg = new DungeonGenerator(gameboard);
         
-        this.gameboard = new Board(29, seed);
+        this.focus = "player";
+        
+        //new CaveGenerator(gameboard, 300, 1);
         
         this.player = gameboard.getPlayer();
 
@@ -73,14 +76,18 @@ public class Game extends javax.swing.JFrame implements KeyListener {
     }
     
     //Updates the board to reflect changes
-    private void update() {
-
-        gameboard.update();
+    private void updateView() {
 
         updateWindowView();
         updateWindowStats();
         updateWindowMessages();
 
+    }
+    
+    private void updateGame() {
+        
+        gameboard.update();
+        
     }
     
     private void updateWindowStats() {
@@ -337,6 +344,7 @@ public class Game extends javax.swing.JFrame implements KeyListener {
         jMessageBoard.setBackground(new java.awt.Color(0, 0, 0));
         jMessageBoard.setBorder(null);
         jMessageBoard.setFont(new java.awt.Font("Consolas", 0, 18)); // NOI18N
+        jMessageBoard.setAutoscrolls(false);
         jMessageBoard.setFocusable(false);
         jMessageBoard.setMargin(new java.awt.Insets(0, 0, 0, 0));
         jScrollPane3.setViewportView(jMessageBoard);
@@ -349,20 +357,17 @@ public class Game extends javax.swing.JFrame implements KeyListener {
                 .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 746, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 345, Short.MAX_VALUE)
-                    .addComponent(jScrollPane3))
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 345, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 345, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 820, javax.swing.GroupLayout.PREFERRED_SIZE)
             .addGroup(layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 363, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jScrollPane3))
-                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 820, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(23, 23, 23))
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 363, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, 0)
+                .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 451, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
 
         pack();
@@ -409,22 +414,81 @@ public class Game extends javax.swing.JFrame implements KeyListener {
 
         player = gameboard.getPlayer();
 
-        switch (e.getKeyCode()) {
-            case KeyEvent.VK_UP:
-                player.Move("UP");
+        switch (focus) {
+
+            case "player":
+                
+                switch (e.getKeyCode()) {
+                    
+                    case KeyEvent.VK_UP:
+                        player.Move("UP");
+                        updateGame();
+                        break;
+
+                    case KeyEvent.VK_DOWN:
+                        player.Move("DOWN");
+                        updateGame();
+                        break;
+
+                    case KeyEvent.VK_LEFT:
+                        player.Move("LEFT");
+                        updateGame();
+                        break;
+
+                    case KeyEvent.VK_RIGHT:
+                        player.Move("RIGHT");
+                        updateGame();
+                        break;
+
+                    case KeyEvent.VK_SPACE:
+                        gameboard.setCursor(player.xposition, player.yposition);
+                        focus = "cursor";
+                        break;
+
+                }
+            
+                updateView();
+                
                 break;
-            case KeyEvent.VK_DOWN:
-                player.Move("DOWN");
+                
+            case "cursor":
+                
+                switch (e.getKeyCode()) {
+                    
+                    case KeyEvent.VK_UP:
+                        gameboard.moveCursor(0, -1);
+                        updateGame();
+                        break;
+
+                    case KeyEvent.VK_DOWN:
+                        gameboard.moveCursor(0, 1);
+                        updateGame();
+                        break;
+
+                    case KeyEvent.VK_LEFT:
+                        gameboard.moveCursor(-1, 0);
+                        updateGame();
+                        break;
+
+                    case KeyEvent.VK_RIGHT:
+                        gameboard.moveCursor(1, 0);
+                        updateGame();
+                        break;
+
+                    case KeyEvent.VK_SPACE:
+                        gameboard.setCursor(-1, -1);
+                        focus = "player";
+                        break;
+
+                }
+            
+                updateView();
+                
                 break;
-            case KeyEvent.VK_LEFT:
-                player.Move("LEFT");
-                break;
-            case KeyEvent.VK_RIGHT:
-                player.Move("RIGHT");
-                break;
+            
         }
         
-        update();
+
 
     }
 
