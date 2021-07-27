@@ -117,14 +117,7 @@ public class Camera {
                         
                     }
 
-                    if ((!gameboard.checkIfSquareIsEmpty(x - 1, y) &&
-                        !gameboard.checkIfSquareIsEmpty(x + 1, y) &&
-                        !gameboard.checkIfSquareIsEmpty(x, y - 1) &&
-                        !gameboard.checkIfSquareIsEmpty(x, y + 1)) &&
-                        gameboard.getObjectAtSquare(x - 1, y, 0).isType("wall") &&
-                        gameboard.getObjectAtSquare(x + 1, y, 0).isType("wall") &&
-                        gameboard.getObjectAtSquare(x, y - 1, 0).isType("wall") &&
-                        gameboard.getObjectAtSquare(x, y + 1, 0).isType("wall")){
+                    if (checkSurroundedByWalls(x, y)){
                         
                             s += "  ";
                             i++;
@@ -168,14 +161,7 @@ public class Camera {
                 
                 //Add the respective character to represent the object
                 //If the square is surrounded on all 4 sides, don't draw it
-                if ((!gameboard.checkIfSquareIsEmpty(x - 1, y) &&
-                    !gameboard.checkIfSquareIsEmpty(x + 1, y) &&
-                    !gameboard.checkIfSquareIsEmpty(x, y - 1) &&
-                    !gameboard.checkIfSquareIsEmpty(x, y + 1)) &&
-                    gameboard.getObjectAtSquare(x - 1, y, 0).isType("wall") &&
-                    gameboard.getObjectAtSquare(x + 1, y, 0).isType("wall") &&
-                    gameboard.getObjectAtSquare(x, y - 1, 0).isType("wall") &&
-                    gameboard.getObjectAtSquare(x, y + 1, 0).isType("wall")){
+                if (checkSurroundedByWalls(x, y)){
 
                         s += "  ";
                         colors[i++] = (gameboard.getObjectAtSquare(x, y, 0)).getColor();
@@ -232,6 +218,59 @@ public class Camera {
 
         }
 
+    }
+    
+    //Helper method for getView()
+    private boolean checkSurroundedByWalls(int x, int y) {
+        
+        int neighborsCount = 0;
+        
+        if (x > 0) {
+            
+            if (!gameboard.checkIfSquareIsEmpty(x - 1, y) &&
+                gameboard.getObjectAtSquare(x - 1, y, 0).isType("wall")){
+                
+                neighborsCount++;
+                
+            }
+            
+        }
+        
+        if (x < gameboard.getSize()) {
+            
+            if (!gameboard.checkIfSquareIsEmpty(x + 1, y) &&
+                gameboard.getObjectAtSquare(x + 1, y, 0).isType("wall")){
+                
+                neighborsCount++;
+                
+            }
+            
+        }
+        
+        if (y > 0) {
+            
+            if (!gameboard.checkIfSquareIsEmpty(x, y - 1) &&
+                gameboard.getObjectAtSquare(x, y - 1, 0).isType("wall")){
+                
+                neighborsCount++;
+                
+            }
+            
+        }
+        
+        if (y < gameboard.getSize()) {
+            
+            if (!gameboard.checkIfSquareIsEmpty(x, y + 1) &&
+                gameboard.getObjectAtSquare(x, y + 1, 0).isType("wall")){
+                
+                neighborsCount++;
+                
+            }
+            
+        }
+        
+        return neighborsCount == 4;
+        
     }
 
     public void AddMessage(String s) {
