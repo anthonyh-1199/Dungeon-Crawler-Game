@@ -9,6 +9,7 @@ import roguelike.items.weapons.ParentWeapon;
 import roguelike.items.weapons.WeaponFists;
 import roguelike.objects.entities.*;
 import roguelike.objects.ParentGameObject;
+import roguelike.objects.entities.chest.EntityChest;
 
 /**
  * @author Anthony
@@ -123,11 +124,21 @@ public class Player extends ParentEntity{
             
             switch (object.getType()){
                 
+                case "chest":
+                {
+                    EntityChest entity = (EntityChest)object;
+                    if (!entity.isOpen()) {
+                        entity.openChest();
+                    }
+                    break;
+                }
                 case "enemy":
+                {
                     ParentEntity entity = (ParentEntity)object;
                     ParentWeapon weapon = getWeapon();
                     entity.takeDamage(this, weapon.getDamage(), weapon.getAccuracy(statDexterity));
                     break;
+                }
                     
             }
             
