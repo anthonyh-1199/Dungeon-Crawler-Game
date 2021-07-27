@@ -154,6 +154,21 @@ public class Player extends ParentEntity{
         
     }
     
+    //Moves the item at index i to the gameboard at position (x, y)
+    public void dropItem(int x, int y, int i) {
+        
+        ParentItem item = getInventory()[i];
+        
+        if (item != null) {
+            
+            inventory.removeItem(i);
+            
+            item.putOnBoard(x, y, gameboard);
+            
+        }
+        
+    }
+    
     @Override
     public void takeDamage(ParentEntity damageSource, int damageRoll, int hitRoll) {
 
