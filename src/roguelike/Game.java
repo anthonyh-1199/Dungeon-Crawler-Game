@@ -59,11 +59,13 @@ public class Game extends javax.swing.JFrame implements KeyListener {
 
         this.gameboard = new Board(600);
         
-        DungeonGenerator dg = new DungeonGenerator(gameboard);
+        //DungeonGenerator dg = new DungeonGenerator(gameboard);
         
         this.focus = "player";
         
         //new CaveGenerator(gameboard, 300, 1);
+        
+        this.gameboard = new Board(29, seed);
         
         this.player = gameboard.getPlayer();
 
@@ -444,6 +446,19 @@ public class Game extends javax.swing.JFrame implements KeyListener {
                         gameboard.setCursor(player.xposition, player.yposition);
                         focus = "cursor";
                         break;
+                        
+                    case KeyEvent.VK_D:
+                        if (player.inventory.isEmpty()) {
+                            
+                            gameboard.camera.AddMessage("You have no items to drop!");
+                            
+                        } else {
+                            
+                            focus = "dropmenu";
+                            gameboard.camera.AddMessage("Type the key of the item you  wish to drop (0-9)");
+                            
+                        }
+                        break;
 
                 }
             
@@ -457,26 +472,51 @@ public class Game extends javax.swing.JFrame implements KeyListener {
                     
                     case KeyEvent.VK_UP:
                         gameboard.moveCursor(0, -1);
-                        updateGame();
                         break;
 
                     case KeyEvent.VK_DOWN:
                         gameboard.moveCursor(0, 1);
-                        updateGame();
                         break;
 
                     case KeyEvent.VK_LEFT:
                         gameboard.moveCursor(-1, 0);
-                        updateGame();
                         break;
 
                     case KeyEvent.VK_RIGHT:
                         gameboard.moveCursor(1, 0);
-                        updateGame();
                         break;
 
                     case KeyEvent.VK_SPACE:
                         gameboard.setCursor(-1, -1);
+                        focus = "player";
+                        break;
+
+                }
+            
+                updateView();
+                
+                break;
+                
+            case "dropmenu":
+
+                switch (e.getKeyCode()) {
+                    
+                    case KeyEvent.VK_0:
+                    case KeyEvent.VK_1:
+                    case KeyEvent.VK_2:
+                    case KeyEvent.VK_3:
+                    case KeyEvent.VK_4:
+                    case KeyEvent.VK_5:
+                    case KeyEvent.VK_6:
+                    case KeyEvent.VK_7:
+                    case KeyEvent.VK_8:
+                    case KeyEvent.VK_9:
+                        player.dropItem(player.xposition, player.yposition, Character.getNumericValue(e.getKeyChar()));
+                        updateGame();
+                        focus = "player";
+                        break;
+
+                    case KeyEvent.VK_ESCAPE:
                         focus = "player";
                         break;
 
