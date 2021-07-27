@@ -56,19 +56,52 @@ public class Camera {
             startx = 0;
             
         }
+        
         if (starty < 0) {
             
             starty = 0;
             
         }
+        
         if ((startx + size) > gameboard.getSize()) {
             
             startx = gameboard.getSize() - size;
             
         }
+        
         if ((starty + size) > gameboard.getSize()) {
             
             starty = gameboard.getSize() - size;
+            
+        }
+        
+        //Clamp the cursor if applicable
+        
+        if (gameboard.getCursor()[0] != -1 || gameboard.getCursor()[1] != -1){
+            
+            if (gameboard.getCursor()[0] < startx) {
+
+                gameboard.getCursor()[0] = startx;
+
+            }
+            
+            if (gameboard.getCursor()[1] < starty) {
+
+                gameboard.getCursor()[1] = starty;
+
+            }
+            
+            if (gameboard.getCursor()[0] >= (startx + size) - 1) {
+
+                gameboard.getCursor()[0] = (startx + size) - 1;
+
+            }
+            
+            if (gameboard.getCursor()[1] >= (starty + size) - 1) {
+
+                gameboard.getCursor()[1] = (starty + size) - 1;
+
+            }
             
         }
         
@@ -89,6 +122,17 @@ public class Camera {
         for (int y = starty; y < starty + size; y++){
             
             for (int x = startx; x < startx + size; x++) {
+                
+                //Drawing cursor
+                if (gameboard.getCursor()[0] == x && gameboard.getCursor()[1] == y) {
+                    
+                    s += 'X' + " ";
+                    colors[i++] = Color.RED;
+                    i++;
+
+                    continue;
+                    
+                }
                 
                 //Drawing out-of-sight
                 if ((Board.checkSightLine(focalPoint.getX(), focalPoint.getY(), x, y, gameboard) &&
