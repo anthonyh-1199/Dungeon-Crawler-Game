@@ -26,6 +26,21 @@ public class PlayerInventory {
         return true;
         
     }
+    
+    public boolean isEmpty() {
+        
+        for (ParentItem item : inventory) {
+            
+            if (item != null) {
+                
+                return false;
+            }
+            
+        }
+        
+        return true;
+        
+    }
 
     public void addItem(ParentItem item) {
         
@@ -42,6 +57,16 @@ public class PlayerInventory {
 
             }
             
+        }
+        
+    }
+
+    public void removeItem(int i) {
+        
+        if (inventory[i] != null) {
+
+            inventory[i] = null;
+
         }
         
     }
