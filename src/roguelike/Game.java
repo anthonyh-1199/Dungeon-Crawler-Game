@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import javax.swing.text.*;
 import mapgeneration.DungeonGenerator;
 import roguelike.items.*;
+import roguelike.items.weapons.ParentWeapon;
 
 /**
  * @author Anthony
@@ -21,9 +22,12 @@ public class Game extends javax.swing.JFrame implements KeyListener {
     Player player;
     Camera camera;
     String focus;
+    ParentItem selectedItem = null;
 
     public Game() {
+        
         initComponents();
+        
         this.addKeyListener(this);
         
         String seed =
@@ -59,7 +63,7 @@ public class Game extends javax.swing.JFrame implements KeyListener {
 
         this.gameboard = new Board(600);
         
-        //DungeonGenerator dg = new DungeonGenerator(gameboard);
+        DungeonGenerator dg = new DungeonGenerator(gameboard);
         
         this.focus = "player";
         
@@ -379,6 +383,7 @@ public class Game extends javax.swing.JFrame implements KeyListener {
      * @param args the command line arguments
      */
     public static void main(String args[]) {
+        
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
         /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
@@ -404,8 +409,11 @@ public class Game extends javax.swing.JFrame implements KeyListener {
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(() -> {
+            
             new Game().setVisible(true);
+            
         });
+        
     }
 
     @Override
@@ -423,31 +431,55 @@ public class Game extends javax.swing.JFrame implements KeyListener {
                 switch (e.getKeyCode()) {
                     
                     case KeyEvent.VK_UP:
+                        
                         player.Move("UP");
+                        
                         updateGame();
+                        
                         break;
 
                     case KeyEvent.VK_DOWN:
+                        
                         player.Move("DOWN");
+                        
                         updateGame();
+                        
                         break;
 
                     case KeyEvent.VK_LEFT:
+                        
                         player.Move("LEFT");
+                        
                         updateGame();
+                        
                         break;
 
                     case KeyEvent.VK_RIGHT:
+                        
                         player.Move("RIGHT");
+                        
                         updateGame();
+                        
                         break;
 
-                    case KeyEvent.VK_SPACE:
-                        gameboard.setCursor(player.xposition, player.yposition);
-                        focus = "cursor";
+                    case KeyEvent.VK_U:
+
+                        if (player.inventory.isEmpty()) {
+                            
+                            gameboard.camera.addMessage("You have no items to use!");
+                            
+                        } else {
+                            
+                            focus = "usemenu";
+                            
+                            gameboard.camera.addMessage("Type the key of the item you  wish to use (0-9)");
+                            
+                        }
+
                         break;
                         
                     case KeyEvent.VK_D:
+                        
                         if (player.inventory.isEmpty()) {
                             
                             gameboard.camera.addMessage("You have no items to drop!");
@@ -455,9 +487,11 @@ public class Game extends javax.swing.JFrame implements KeyListener {
                         } else {
                             
                             focus = "dropmenu";
+                            
                             gameboard.camera.addMessage("Type the key of the item you  wish to drop (0-9)");
                             
                         }
+                        
                         break;
 
                 }
@@ -466,29 +500,51 @@ public class Game extends javax.swing.JFrame implements KeyListener {
                 
                 break;
                 
-            case "cursor":
+            case "weaponaimingmenu":
                 
                 switch (e.getKeyCode()) {
                     
                     case KeyEvent.VK_UP:
+                        
                         gameboard.moveCursor(0, -1);
+                        
                         break;
 
                     case KeyEvent.VK_DOWN:
+                        
                         gameboard.moveCursor(0, 1);
+                        
                         break;
 
                     case KeyEvent.VK_LEFT:
+                        
                         gameboard.moveCursor(-1, 0);
+                        
                         break;
 
                     case KeyEvent.VK_RIGHT:
+                        
                         gameboard.moveCursor(1, 0);
+                        
                         break;
 
                     case KeyEvent.VK_SPACE:
+                        
+                        //Print message
+                        gameboard.camera.addMessage("You fire your " + selectedItem.itemName);
+                        
+                        //Make attack
+                        player.makeRangedAttack(gameboard.cursor[0], gameboard.cursor[1], (ParentWeapon) selectedItem);
+                        
+                        //Reset cursor
                         gameboard.setCursor(-1, -1);
+                        
+                        //Update game state
+                        updateGame();
+                        
+                        //Return focus to player
                         focus = "player";
+                        
                         break;
 
                 }
@@ -511,13 +567,102 @@ public class Game extends javax.swing.JFrame implements KeyListener {
                     case KeyEvent.VK_7:
                     case KeyEvent.VK_8:
                     case KeyEvent.VK_9:
-                        player.dropItem(player.xposition, player.yposition, Character.getNumericValue(e.getKeyChar()));
-                        updateGame();
-                        focus = "player";
+                        
+                        ParentItem item = player.getInventory()[Character.getNumericValue(e.getKeyChar())];
+
+                        if (item != null) {
+                        
+                            player.dropItem(player.xposition, player.yposition, Character.getNumericValue(e.getKeyChar()));
+                            
+                            gameboard.camera.addMessage("You dropped your " + item.itemName);
+                            
+                            updateGame();
+                            
+                            focus = "player";
+                        
+                        } else {
+
+                            gameboard.camera.addMessage("You do not have an item in    that slot!");
+
+                        }
+
                         break;
 
                     case KeyEvent.VK_ESCAPE:
+                        
                         focus = "player";
+                        
+                        break;
+
+                }
+            
+                updateView();
+                
+                break;
+                
+            case "usemenu":
+
+                switch (e.getKeyCode()) {
+                    
+                    case KeyEvent.VK_0:
+                    case KeyEvent.VK_1:
+                    case KeyEvent.VK_2:
+                    case KeyEvent.VK_3:
+                    case KeyEvent.VK_4:
+                    case KeyEvent.VK_5:
+                    case KeyEvent.VK_6:
+                    case KeyEvent.VK_7:
+                    case KeyEvent.VK_8:
+                    case KeyEvent.VK_9:
+                        
+                        ParentItem item = player.getInventory()[Character.getNumericValue(e.getKeyChar())];
+
+                        if (item != null) {
+
+                            switch (item.itemType) {
+                                
+                                case "weapon":
+                                    
+                                    //Ranged weapon
+                                    if (((ParentWeapon)item).getRange() > 1) {
+                                        
+                                        selectedItem = item;
+                                        
+                                        gameboard.setCursor(player.xposition, player.yposition);
+                                        
+                                        gameboard.camera.addMessage("You aim your " + item.itemName);
+                                        
+                                        focus = "weaponaimingmenu";
+                                        
+                                        break;
+                                        
+                                    }
+                                    
+                                    gameboard.camera.addMessage("You can not use that item!");
+                                    
+                                    break;
+                                    
+                                default:
+                                    
+                                    gameboard.camera.addMessage("You can not use that item!");
+                                    
+                                    break;
+                                    
+                                
+                            }
+
+                        } else {
+                        
+                            gameboard.camera.addMessage("You do not have an item in    that slot!");
+                            
+                        }
+
+                        break;
+
+                    case KeyEvent.VK_ESCAPE:
+                        
+                        focus = "player";
+                        
                         break;
 
                 }
