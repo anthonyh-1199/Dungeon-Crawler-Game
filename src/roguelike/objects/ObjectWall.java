@@ -20,11 +20,12 @@ public class ObjectWall extends ParentGameObject{
         super(x, y, b);
         
         //Set variables
-        isSolid = true;
-        symbol = '#';
-        color = new Color(255,255,255);
         isOpaque = true;
-        name = "wall";
+        isSolid = true;
+        objectSymbol = '#';
+        objectColor = new Color(255,255,255);
+        objectName = "wall";
+        objectType = "wall";
 
     }
     
