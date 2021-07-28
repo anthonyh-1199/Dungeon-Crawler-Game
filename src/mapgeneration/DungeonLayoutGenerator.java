@@ -15,8 +15,8 @@ import java.util.Random;
 public class DungeonLayoutGenerator {
     
     DungeonRoom[][] roomsGrid = new DungeonRoom[30][30];
-    int roomGoal = 5;
-    int bonusGoal = 2;
+    int roomGoal = 7;
+    int bonusGoal = 3;
     
     public DungeonLayoutGenerator() { 
 
@@ -31,7 +31,7 @@ public class DungeonLayoutGenerator {
         } 
         while (!AddDeadEndRooms());
         
-        System.out.println(ToString());
+        System.out.println(toString());
 
         return roomsGrid;
         
@@ -118,7 +118,7 @@ public class DungeonLayoutGenerator {
                     neighborsCount++;
                 }
                 
-                if (neighborsCount > 1){
+                if (neighborsCount > 2){
                     continue;
                 }
 
@@ -248,7 +248,7 @@ public class DungeonLayoutGenerator {
                 neighborsCount++;
             }
 
-            if (neighborsCount > 1){
+            if (neighborsCount > 2){
                 continue;
             }
 
@@ -359,7 +359,7 @@ public class DungeonLayoutGenerator {
                 
             }
 
-            if (neighborsCount > 1){
+            if (neighborsCount > 2){
                 
                 continue;
                 
@@ -394,7 +394,8 @@ public class DungeonLayoutGenerator {
         
     }
     
-    public String ToString() {
+    @Override
+    public String toString() {
         
         String s = "";
         

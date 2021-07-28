@@ -5,6 +5,7 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.List;
+import java.util.Random;
 import roguelike.Board;
 import roguelike.items.weapons.WeaponSword;
 import roguelike.objects.ObjectWall;
@@ -17,7 +18,7 @@ import roguelike.objects.entities.player.Player;
  */
 public class DungeonGenerator extends Generator {
     
-    final int ROOM_SIZE = 20;
+    final int ROOM_SIZE = 10;
     
     public DungeonGenerator(Board gameboard) {
         
@@ -177,8 +178,8 @@ public class DungeonGenerator extends Generator {
         }
         
         //Initialize variables
-        int xoffset = room.GetX() * 20;
-        int yoffset = room.GetY() * 20;
+        int xoffset = room.GetX() * ROOM_SIZE;
+        int yoffset = room.GetY() * ROOM_SIZE;
         
         //Go through the string file and put its game elements onto the board
         for (int y = 0; y < ROOM_SIZE; y++){
@@ -221,14 +222,45 @@ public class DungeonGenerator extends Generator {
 
     }
     
+    //Helper method for getRoomFromFile
+    private int getLengthOfFile(String fileName) {
+        
+        int linesCount = 0;
+        
+        try (BufferedReader reader = new BufferedReader(new FileReader(fileName))) {
+
+            while (reader.readLine() != null) linesCount++;
+            reader.close();
+
+        } catch (IOException e) {
+
+            return 0;
+            
+        }
+        
+        return linesCount;
+        
+    }
+    
     private char[][] getRoomFromFile(String fileName, int rotationsCount) {
         
         char[][] roomSeed = new char[ROOM_SIZE][ROOM_SIZE];
 
-        try (BufferedReader br = new BufferedReader(new FileReader(fileName))) {
+        //Pick random room in the file
+        Random r = new Random();
+        int seedOffset = r.nextInt(getLengthOfFile(fileName) / (ROOM_SIZE + 1) + 1);
 
-            String line = br.readLine();
+        try (BufferedReader reader = new BufferedReader(new FileReader(fileName))) {
+
+            String line = reader.readLine();
             
+            //Skip to correct seed in file
+            for (int i = 0; i < seedOffset * (ROOM_SIZE + 1); i++) {
+                
+                line = reader.readLine();
+                
+            }
+
             int x = 0;
             int y = 0;
 
@@ -243,9 +275,11 @@ public class DungeonGenerator extends Generator {
                 y++;
                 x = 0;
 
-                line = br.readLine();
+                line = reader.readLine();
                 
             }
+            
+            reader.close();
 
         } catch (IOException e) {
 
