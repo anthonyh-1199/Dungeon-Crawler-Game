@@ -4,6 +4,7 @@ package roguelike.objects.entities.goblin;
 
 import roguelike.objects.entities.ParentEntity;
 import roguelike.State;
+import roguelike.items.food.FoodMeat;
 
 /**
  * @author Anthony
@@ -18,6 +19,8 @@ public class GoblinStateDead extends State {
         parent = (EntityGoblin) e;
         
         parent.gameboard.getCamera().addMessage("The goblin's been slain!");
+        
+        new FoodMeat(parent.xposition, parent.yposition, parent.gameboard);
         
         parent.deleteSelf();
         
