@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import javax.swing.text.*;
 import mapgeneration.DungeonGenerator;
 import roguelike.items.*;
+import roguelike.items.food.ParentFood;
 import roguelike.items.weapons.ParentWeapon;
 import roguelike.objects.ParentGameObject;
 
@@ -776,6 +777,25 @@ public class Game extends javax.swing.JFrame implements KeyListener {
                                     }
                                     
                                     gameboard.camera.addMessage("You can not use that item!");
+                                    
+                                    break;
+                                    
+                                case "food":
+                                    
+                                    //Apply the food's effect
+                                    ((ParentFood)item).consume(player);
+                                    
+                                    //Print out message
+                                    gameboard.camera.addMessage("You use the " + item.itemName);
+                                    
+                                    //Delete item from inventory
+                                    player.inventory.removeItem(Character.getNumericValue(e.getKeyChar()));
+                                    
+                                    //Update the game state
+                                    updateGame();
+                                    
+                                    //Return focus
+                                    focus = "player";
                                     
                                     break;
                                     
