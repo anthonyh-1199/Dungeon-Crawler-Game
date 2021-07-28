@@ -43,7 +43,7 @@ public class EntityGoblin extends ParentEntity implements StateMachine {
         
         //Stat attributes
         armorClass = 12;
-        hitPoints = 7;
+        maxHitPoints = hitPoints = 7;
         meleeWeapon = new WeaponFists(); 
         moveSpeed = 1;
         rangedWeapon = new WeaponShortbow();

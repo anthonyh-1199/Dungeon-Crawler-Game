@@ -11,7 +11,7 @@ import roguelike.objects.ParentGameObject;
  */
 public abstract class ParentEntity extends ParentGameObject{
     
-    public int hitPoints, moveSpeed, armorClass;
+    public int hitPoints, maxHitPoints, moveSpeed, armorClass;
 
     public ParentEntity(int x, int y, Board b) {
         
