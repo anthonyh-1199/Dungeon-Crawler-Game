@@ -146,6 +146,34 @@ public class Player extends ParentEntity{
         
     }
     
+    public void makeRangedAttack(int x, int y, ParentWeapon weapon) {
+        
+        //If space is empty, do nothing
+        if (gameboard.checkIfSquareIsEmpty(x, y)) {
+
+            return;
+
+        }
+        
+        //Get non-null object occupying the square
+        ParentGameObject object = gameboard.getObjectAtSquare(x, y, 0);
+        
+        //Perform contextual behavior based on object in square
+        switch (object.getType()){
+
+            case "enemy":
+
+                ParentEntity entity = (ParentEntity)object;
+
+                entity.takeDamage(this, weapon.getDamage(), weapon.getAccuracy(statDexterity));
+
+                break;
+
+
+        }
+        
+    }
+    
     /* Getter methods */
     
     public ParentItem[] getInventory() {
