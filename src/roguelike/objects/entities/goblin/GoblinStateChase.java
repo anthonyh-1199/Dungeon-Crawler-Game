@@ -73,7 +73,9 @@ public class GoblinStateChase extends State {
 
         //Return the next node in the path
         while (node.parent.parent != null){
+            
             node = node.parent;
+            
         }
 
         move(node.x, node.y);
