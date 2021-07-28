@@ -3,6 +3,8 @@
 package roguelike.objects.entities.player;
 
 import java.awt.Color;
+import java.util.ArrayList;
+import java.util.List;
 import roguelike.Board;
 import roguelike.items.ParentItem;
 import roguelike.items.weapons.ParentWeapon;
@@ -16,7 +18,7 @@ import roguelike.objects.entities.chest.EntityChest;
  */
 public class Player extends ParentEntity{
     
-    public int maxHitPoints, weaponDamage, classLevel;
+    public int weaponDamage, classLevel;
     public int statCharisma, statConstitution, statDexterity, statIntelligence, statStrength, statWisdom;
     public int walletBalance;
     public PlayerInventory inventory = new PlayerInventory();
@@ -142,18 +144,83 @@ public class Player extends ParentEntity{
         
     }
     
-    public void makeRangedAttack(int x, int y, ParentWeapon weapon) {
+    public void makeRangedAttack(int goalx, int goaly, ParentWeapon weapon) {
         
-        //If space is empty, do nothing
-        if (gameboard.checkIfSquareIsEmpty(x, y)) {
+        /* Go along path towards goal until you either hit an object or reach the goal */
+
+        //Holds starting coordinates
+        int startx = xposition;
+        int starty = yposition;
+        
+        //Initialize algorithm variables
+        int x0 = startx;
+        int y0 = starty;
+        int x1 = goalx;
+        int y1 = goaly;
+        
+        //Initialize object to hold what we hit
+        ParentGameObject object = null;
+        
+        //Create list to store points on line
+        List<int[]> points = new ArrayList<>();
+        
+        //Line generation via Bresenham's complete line algorithm
+        int dx = Math.abs(x1 - x0);
+        int sx = x0 < x1 ? 1 : -1;
+        int dy = -Math.abs(y1 - y0);
+        int sy = y0 < y1 ? 1 : -1;
+        int err = dx + dy;
+        
+        while (true){
+            points.add(new int[]{x0,y0});
+            if (x0 == x1 && y0 == y1){
+                break;
+            }
+            int e2 = 2*err;
+            if (e2 >= dy){
+                err += dy;
+                x0 += sx;
+            }
+            if (e2 <= dx){
+                err += dx;
+                y0 += sy;
+            }
+        }
+
+        //Check each point in line for solid object
+        for (int[] i : points){
+            
+            if (!((i[0] == x1 && i[1] == y1) || (i[0] == startx && i[1] == starty))){
+                
+                //Check if square isn't null
+                if (gameboard.getTile(i[0], i[1]) != null){
+                    
+                    //Check if a solid object is occupying the square
+                    for (Object o : gameboard.getObjectsAtSquare(i[0], i[1])) {
+                        
+                        if (((ParentGameObject)o).isSolid == true) {
+
+                            object = (ParentGameObject) o;
+                            
+                            break;
+                            
+                        }
+                        
+                    }
+                    
+                }
+                
+            }
+            
+        }
+
+        //If we did not hit any object, exit
+        if (object == null) {
 
             return;
 
         }
-        
-        //Get non-null object occupying the square
-        ParentGameObject object = gameboard.getObjectAtSquare(x, y, 0);
-        
+
         //Perform contextual behavior based on object in square
         switch (object.getType()){
 
