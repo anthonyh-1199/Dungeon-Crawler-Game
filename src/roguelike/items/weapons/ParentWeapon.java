@@ -19,8 +19,6 @@ public abstract class ParentWeapon extends ParentItem {
         
         itemType = "weapon";
         
-        objectType = "item";
-        
         Initialize();
         
     }

@@ -11,6 +11,7 @@ import javax.swing.text.*;
 import mapgeneration.DungeonGenerator;
 import roguelike.items.*;
 import roguelike.items.weapons.ParentWeapon;
+import roguelike.objects.ParentGameObject;
 
 /**
  * @author Anthony
@@ -432,7 +433,7 @@ public class Game extends javax.swing.JFrame implements KeyListener {
                     
                     case KeyEvent.VK_UP:
                         
-                        player.Move("UP");
+                        player.move("UP");
                         
                         updateGame();
                         
@@ -440,7 +441,7 @@ public class Game extends javax.swing.JFrame implements KeyListener {
 
                     case KeyEvent.VK_DOWN:
                         
-                        player.Move("DOWN");
+                        player.move("DOWN");
                         
                         updateGame();
                         
@@ -448,7 +449,7 @@ public class Game extends javax.swing.JFrame implements KeyListener {
 
                     case KeyEvent.VK_LEFT:
                         
-                        player.Move("LEFT");
+                        player.move("LEFT");
                         
                         updateGame();
                         
@@ -456,7 +457,7 @@ public class Game extends javax.swing.JFrame implements KeyListener {
 
                     case KeyEvent.VK_RIGHT:
                         
-                        player.Move("RIGHT");
+                        player.move("RIGHT");
                         
                         updateGame();
                         
@@ -478,6 +479,79 @@ public class Game extends javax.swing.JFrame implements KeyListener {
 
                         break;
                         
+                    //Picking up items
+                    case KeyEvent.VK_P:
+                        
+                        //Check if player's inventory is full
+                        if (player.inventory.isFull()) {
+                            
+                            gameboard.camera.addMessage("Your inventory is full!");
+                            
+                        } else {
+                            
+                            //Check if square is empty
+                            if (gameboard.checkIfSquareIsEmpty(player.xposition, player.yposition)) {
+                                
+                                gameboard.camera.addMessage("There is nothing to pick up!");
+                                
+                                break;
+                                
+                            }
+                            
+                            //Check if square contains no items
+                            boolean itemless = true;
+                            
+                            for (int i = 0; i < gameboard.getObjectsAtSquare(player.xposition, player.yposition).size(); i++) {
+
+                                ParentGameObject object = gameboard.getObjectAtSquare(player.xposition, player.yposition, i);
+
+                                if ("item".equals(object.objectType)) {
+
+                                    itemless = false;
+                                    
+                                    continue;
+
+                                }
+
+                            }
+                            
+                            if (itemless) {
+                                
+                                gameboard.camera.addMessage("There is nothing to pick up!");
+                                
+                                break;
+                                
+                            }
+                                 
+                            //List out up to 10 items on that square to the message board
+                            gameboard.camera.addMessage("Type the key of the item you  wish to pick up: ");
+
+                            for (int i = 0; i < gameboard.getObjectsAtSquare(player.xposition, player.yposition).size(); i++) {
+
+                                ParentGameObject object = gameboard.getObjectAtSquare(player.xposition, player.yposition, i);
+
+                                if ("item".equals(object.objectType)) {
+
+                                    gameboard.camera.addMessage(" " + i + ". " + ((ParentItem)object).itemName);
+
+                                }
+                                
+                                if (i == 9) {
+                                    
+                                    break;
+                                    
+                                }
+
+                            }
+
+                            //Switch to item pick-up menu
+                            focus = "itempickupmenu";
+                            
+                        }
+                        
+                        break;
+                        
+                    //Dropping items
                     case KeyEvent.VK_D:
                         
                         if (player.inventory.isEmpty()) {
@@ -486,7 +560,7 @@ public class Game extends javax.swing.JFrame implements KeyListener {
                             
                         } else {
                             
-                            focus = "dropmenu";
+                            focus = "itemdropmenu";
                             
                             gameboard.camera.addMessage("Type the key of the item you  wish to drop (0-9)");
                             
@@ -496,6 +570,69 @@ public class Game extends javax.swing.JFrame implements KeyListener {
 
                 }
             
+                updateView();
+                
+                break;
+                
+            case "itempickupmenu":
+                
+                switch (e.getKeyCode()) {
+                    
+                    case KeyEvent.VK_0:
+                    case KeyEvent.VK_1:
+                    case KeyEvent.VK_2:
+                    case KeyEvent.VK_3:
+                    case KeyEvent.VK_4:
+                    case KeyEvent.VK_5:
+                    case KeyEvent.VK_6:
+                    case KeyEvent.VK_7:
+                    case KeyEvent.VK_8:
+                    case KeyEvent.VK_9:
+                        
+                        //Convert key to int
+                        int i = Character.getNumericValue(e.getKeyChar());
+                        
+                        //Check if key is out of range
+                        if (i >= gameboard.getObjectsAtSquare(player.xposition, player.yposition).size()) {
+                            
+                            gameboard.camera.addMessage("\"" + i + "\" isn't a valid key!");
+                            
+                        } else {
+                            
+                            ParentGameObject object = gameboard.getObjectAtSquare(player.xposition, player.yposition, i);
+                        
+                            if ("item".equals(object.objectType)) {
+                                
+                                //Pick up item
+                                player.inventory.addItem((ParentItem)object);
+                        
+                                gameboard.removeObjectFromSquare(object);
+                                
+                                //Update game
+                                gameboard.camera.addMessage("You picked up the " + ((ParentItem)object).itemName);
+
+                                updateGame();
+
+                                focus = "player";
+                                
+                            } else {
+                                
+                                gameboard.camera.addMessage("\"" + i + "\" isn't a valid key!");
+                                
+                            }
+                            
+                        }
+
+                        break;
+
+                    case KeyEvent.VK_ESCAPE:
+                        
+                        focus = "player";
+                        
+                        break;
+                    
+                }
+                
                 updateView();
                 
                 break;
@@ -553,7 +690,7 @@ public class Game extends javax.swing.JFrame implements KeyListener {
                 
                 break;
                 
-            case "dropmenu":
+            case "itemdropmenu":
 
                 switch (e.getKeyCode()) {
                     

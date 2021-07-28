@@ -61,7 +61,7 @@ public class Player extends ParentEntity{
         
     }
     
-    public void Move(String direction){
+    public void move(String direction){
         
         //Initialize variables
         int xgoal = xposition;
@@ -97,24 +97,8 @@ public class Player extends ParentEntity{
         ParentGameObject object = gameboard.getObjectAtSquare(xgoal, ygoal, 0);
         
         //If object is nonsolid, interact with it
-        if ((object).isSolid() == false){
+        if ((object).isSolid() == false) {
 
-            switch (object.getClass().getSuperclass().getSimpleName()){
-                
-                case "ParentWeapon":
-                    ParentItem item = (ParentItem)(object);
-                    //If our inventory isn't full, add it to inventory and
-                    //remove it from the board
-                    if (!inventory.isFull()) {
-                        
-                        inventory.addItem(item);
-                        gameboard.removeObjectFromSquare(item);
-                        
-                    }
-                    break;
-                    
-            }
-            
             changeSquare(xgoal, ygoal);
 
         }
@@ -122,22 +106,34 @@ public class Player extends ParentEntity{
         //If not, perform contextual behavior based on object in square
         else {
             
-            switch (object.getType()){
+            switch (object.objectType) {
                 
                 case "chest":
                 {
+                    
                     EntityChest entity = (EntityChest)object;
+                    
                     if (!entity.isOpen()) {
+                        
                         entity.openChest();
+                        
                     }
+                    
                     break;
+                    
                 }
+                
                 case "enemy":
                 {
+                    
                     ParentEntity entity = (ParentEntity)object;
+                    
                     ParentWeapon weapon = getWeapon();
+                    
                     entity.takeDamage(this, weapon.getDamage(), weapon.getAccuracy(statDexterity));
+                    
                     break;
+                    
                 }
                     
             }
