@@ -11,23 +11,39 @@ import roguelike.objects.entities.player.Player;
  */
 public class CaveGenerator extends Generator{
     
-    public CaveGenerator(Board b, int length, int passes) {
+    public CaveGenerator(Board b) {
         
         super(b);
         
         FillBoard();
+
+    }
+    
+    //Generates a cave using Perlin Noise
+    //Resulting map has a border of walls to prevent out-of-bounds behavior
+    public void GeneratePerlinNoise(PerlinNoise noise) {
         
-        for (int i = 0; i < passes; i++) {
+        for (int x = 1; x < gameboard.getSize() - 1; x++) {
             
-            GenerateCave(gameboard.getSize() / 2, gameboard.getSize() / 2, length);
+            for (int y = 1; y < gameboard.getSize() - 1; y++) {
+
+                if (noise.getHeight(x, y) > 0.07 || noise.getHeight(x, y) < -0.07){
+
+                    continue;
+                    
+                }
+
+                gameboard.clearSquare(x, y);
+
+            }
             
         }
         
-        CaveCleanup();
-        
     }
     
-    private void GenerateCave(int startx, int starty, int length){
+    //Generates a cave using a simple random-walk algorithm
+    //GenerateCave(gameboard.getSize() / 2, gameboard.getSize() / 2, length);
+    public void GenerateRandomWalk(int startx, int starty, int length){
         
         Random r = new Random();
         int direction;
@@ -69,7 +85,7 @@ public class CaveGenerator extends Generator{
     }
     
     //Removes stray walls from the cave to improve layout
-    private void CaveCleanup(){
+    public void CaveCleanup(){
         
         for (int y = 1; y < gameboard.getSize() - 1; y++){
             
