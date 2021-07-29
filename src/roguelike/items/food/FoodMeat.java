@@ -47,7 +47,7 @@ public class FoodMeat extends ParentFood {
         
         if (parent.hitPoints > parent.maxHitPoints) {
             
-            parent.maxHitPoints = parent.hitPoints;
+            parent.hitPoints = parent.maxHitPoints;
             
         }
         
