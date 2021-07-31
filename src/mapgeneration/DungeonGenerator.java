@@ -6,6 +6,8 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.List;
 import java.util.Random;
+import mapgeneration.bsp.BSP;
+import mapgeneration.bsp.BSPnode;
 import roguelike.Board;
 import roguelike.items.weapons.WeaponSword;
 import roguelike.objects.ObjectWall;
@@ -25,6 +27,119 @@ public class DungeonGenerator extends Generator {
         super(gameboard);
         
         generateDungeonFromLayout(generateLayout(), gameboard);
+        
+    }
+    
+    //Generates dungeon rooms based on binary space partitions
+    public void generateRoomsFromBSP(Board gameboard, BSP bsp, int minimumRoomWidth, int minimumRoomArea) {
+        
+        //Get the smallest segments of the partition
+        List<BSPnode> regions = bsp.getNodesAtDepth(bsp.getDepth());
+        
+        //Create a room in each region
+        for (BSPnode region : regions) {
+
+            //Get data from the region
+            int xCenter = region.getX() + (region.getW() / 2);
+            int yCenter = region.getY() + (region.getH() / 2);
+            int[] regionTopLeft = {region.getX(), region.getY()};
+            int[] regionBottomRight = {region.getX() + region.getW(), region.getY() + region.getH()};
+            
+            //Initalize variables for the room
+            int[] topLeft = {xCenter - 1, yCenter - 1};
+            int[] bottomRight = {xCenter + 1, yCenter + 1};
+            
+            //Check if room has reached the desired size
+            int width = -1;
+            int height = -1;
+            
+            //Initialize variable for determining if the room has completed generation
+            boolean isNotComplete = true;
+            
+            //Continue expanding the room until it reaches the size requirements or has reached the maximum size of the region
+            while (isNotComplete) {
+                
+                //Randomly expand one of the 4 sides of the room, unless it goes out of bounds
+                Random r = new Random();
+                
+                switch (r.nextInt(4)) {
+                    
+                    //Up
+                    case 0:
+                        if (topLeft[1] > regionTopLeft[1] + 1) {
+                            
+                            topLeft[1] -= 1;
+                            
+                        }
+                        
+                    //Right
+                    case 1:
+                        if (bottomRight[1] < regionBottomRight[1]) {
+                            
+                            bottomRight[1] += 1;
+                            
+                        }
+                        
+                    //Down
+                    case 2:
+                        if (bottomRight[0] < regionBottomRight[0]) {
+                            
+                            bottomRight[0] += 1;
+                            
+                        }
+                        
+                    //Left
+                    case 3:
+                        if (topLeft[0] > regionTopLeft[0] + 1) {
+                            
+                            topLeft[0] -= 1;
+                            
+                        }
+                    
+                }
+                
+                //Check if room has reached the desired size
+                width = (bottomRight[1] - topLeft[1]);
+                height = (bottomRight[0] - topLeft[0]);
+                
+                if (width * height >= minimumRoomArea) {
+                    
+                    isNotComplete = false;
+                    
+                }
+                
+                //Check if room has reached the max size of the region
+                if (topLeft[0] == regionTopLeft[0] + 1 && topLeft[1] == regionTopLeft[1] + 1) {
+                    
+                    if (bottomRight[0] == regionBottomRight[0] && bottomRight[1] == regionBottomRight[1]) {
+                    
+                        isNotComplete = false;
+                    
+                    }
+                    
+                }
+                
+            }
+            
+            //Carve out room from board
+            for (int x = topLeft[1]; x < topLeft[1] + width; x++) {
+                
+                for (int y = topLeft[0]; y < topLeft[0] + height; y++) {
+                
+                    gameboard.clearSquare(x, y);
+                
+                }
+                
+            }
+            
+        }
+        
+    }
+    
+    //Generates connecting hallways between dungeon rooms
+    public void generateHallwaysFromBSP(BSP bsp) {
+        
+        
         
     }
     
