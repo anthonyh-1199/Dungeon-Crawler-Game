@@ -49,7 +49,6 @@ public class DungeonGenerator extends Generator {
             int[] topLeft = {xCenter - 1, yCenter - 1};
             int[] bottomRight = {xCenter + 1, yCenter + 1};
             
-            //Check if room has reached the desired size
             int width = -1;
             int height = -1;
             
