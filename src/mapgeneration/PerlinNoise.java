@@ -28,7 +28,7 @@ public class PerlinNoise {
 
     public PerlinNoise() {
         
-            set(0,0,0,0);
+            set(1,1,0.15,1);
             
     }
 
