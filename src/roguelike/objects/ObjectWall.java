@@ -31,4 +31,5 @@ public class ObjectWall extends ParentGameObject{
     
     @Override
     public void update() {}
+
 }
