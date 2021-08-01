@@ -320,7 +320,11 @@ public class Board<T> {
         
         for (ParentGameObject object : actionList) {
             
-            object.update();
+            if (player != null && calculateDistance(player.xposition, player.yposition, object.xposition, object.yposition) < 25) {
+            
+                object.update();
+            
+            }
 
         }
         
