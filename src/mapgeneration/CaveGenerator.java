@@ -3,6 +3,7 @@ package mapgeneration;
 
 import java.util.Random;
 import roguelike.Board;
+import roguelike.objects.entities.ParentEntity;
 import roguelike.objects.entities.goblin.EntityGoblin;
 import roguelike.objects.entities.player.Player;
 
@@ -21,7 +22,7 @@ public class CaveGenerator extends Generator{
     
     //Generates a cave using Perlin Noise
     //Resulting map has a border of walls to prevent out-of-bounds behavior
-    public void GeneratePerlinNoise(PerlinNoise noise) {
+    public void generatePerlinNoise(PerlinNoise noise) {
         
         for (int x = 1; x < gameboard.getSize() - 1; x++) {
             
@@ -41,9 +42,38 @@ public class CaveGenerator extends Generator{
         
     }
     
+    //Populates a gameboard with the given entity
+    
+    public void populateCave(Board gameboard, ParentEntity entity, int mininum, int maximum) {
+
+        //Generate the goal number based on the bounds
+        Random r = new Random();
+        
+        int goalEntities = mininum + r.nextInt(maximum - mininum + 1);
+        
+        int entitiesGenerated = 0;
+        
+        //Begin spawning entities until the goal is reached
+        while (entitiesGenerated != goalEntities) {
+            
+            int x = 1 + r.nextInt(gameboard.getSize());
+            int y = 1 + r.nextInt(gameboard.getSize());
+            
+            if (gameboard.checkIfSquareIsEmpty(x, y)) {
+
+                entity.getClone(x, y);
+                
+                entitiesGenerated++;
+                
+            }
+            
+        }
+        
+    }
+    
     //Generates a cave using a simple random-walk algorithm
     //GenerateCave(gameboard.getSize() / 2, gameboard.getSize() / 2, length);
-    public void GenerateRandomWalk(int startx, int starty, int length){
+    public void generateRandomWalk(int startx, int starty, int length){
         
         Random r = new Random();
         int direction;
