@@ -18,6 +18,8 @@ public abstract class ParentEntity extends ParentGameObject{
         super(x, y, b);
         
     }
+    
+    public abstract ParentEntity getClone(int x, int y);
 
     public void takeDamage(ParentEntity source, int damageRoll, int hitRoll) {};
     

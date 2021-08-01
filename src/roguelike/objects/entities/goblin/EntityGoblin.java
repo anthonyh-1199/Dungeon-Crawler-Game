@@ -7,6 +7,7 @@ import roguelike.objects.entities.ParentEntity;
 import roguelike.State;
 import roguelike.StateMachine;
 import roguelike.items.weapons.*;
+import roguelike.objects.ParentGameObject;
 
 /**
  * @author Anthony
@@ -123,6 +124,13 @@ public class EntityGoblin extends ParentEntity implements StateMachine {
             
         }
         
+    }
+    
+    @Override
+    public EntityGoblin getClone(int x, int y) {
+        
+        return new EntityGoblin(x, y, gameboard);
+
     }
     
     @Override

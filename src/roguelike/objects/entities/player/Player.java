@@ -12,6 +12,7 @@ import roguelike.items.weapons.WeaponFists;
 import roguelike.objects.entities.*;
 import roguelike.objects.ParentGameObject;
 import roguelike.objects.entities.chest.EntityChest;
+import roguelike.objects.entities.goblin.EntityGoblin;
 
 /**
  * @author Anthony
@@ -258,6 +259,13 @@ public class Player extends ParentEntity{
             
         }
         
+    }
+    
+    @Override
+    public Player getClone(int x, int y) {
+        
+        return null;
+
     }
     
     @Override
