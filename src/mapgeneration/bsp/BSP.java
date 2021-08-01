@@ -228,10 +228,14 @@ public class BSP {
             }
             
         }
-        
-        System.out.println(splitBounds[0] + " & " + splitBounds[1]);
-        
+
         return splitBounds;
+        
+    }
+    
+    public int getDepth() {
+        
+        return depth + 1;
         
     }
     
