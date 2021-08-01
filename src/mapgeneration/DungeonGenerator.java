@@ -4,10 +4,12 @@ package mapgeneration;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 import mapgeneration.bsp.BSP;
 import mapgeneration.bsp.BSPnode;
+import mapgeneration.bsp.BSProom;
 import roguelike.Board;
 import roguelike.items.weapons.WeaponSword;
 import roguelike.objects.ObjectWall;
@@ -26,12 +28,17 @@ public class DungeonGenerator extends Generator {
         
         super(gameboard);
         
-        generateDungeonFromLayout(generateLayout(), gameboard);
+        //generateDungeonFromLayout(generateLayout(), gameboard);
+        
+        //carveRooms(gameboard, generateRoomsFromBSP(new BSP(201, 201, 250, 250, 4), 3, 64));
         
     }
     
     //Generates dungeon rooms based on binary space partitions
-    public void generateRoomsFromBSP(Board gameboard, BSP bsp, int minimumRoomWidth, int minimumRoomArea) {
+    public List<BSProom> generateRoomsFromBSP(Board gameboard, BSP bsp, int minimumRoomWidth, int minimumRoomArea) {
+        
+        //Initialize output list
+        List<BSProom> rooms = new ArrayList<>();
         
         //Get the smallest segments of the partition
         List<BSPnode> regions = bsp.getNodesAtDepth(bsp.getDepth());
@@ -120,17 +127,34 @@ public class DungeonGenerator extends Generator {
                 
             }
             
-            //Carve out room from board
-            for (int x = topLeft[1]; x < topLeft[1] + width; x++) {
-                
-                for (int y = topLeft[0]; y < topLeft[0] + height; y++) {
-                
-                    gameboard.clearSquare(x, y);
-                
-                }
-                
-            }
+            //Create room object from data
+            BSProom room = new BSProom(topLeft[1], topLeft[0], width, height);
             
+            rooms.add(room);
+            
+        }
+        
+        carveRooms(gameboard, rooms);
+        
+        return rooms;
+        
+    }
+    
+    //Carves out the room layout onto the gameboard
+    private void carveRooms(Board gameboard, List<BSProom> rooms) {
+        
+        for (BSProom room : rooms) {
+
+            for (int x = room.getX(); x < room.getX() + room.getWidth(); x++) {
+
+                for (int y = room.getY(); y < room.getY() + room.getHeight(); y++) {
+
+                    gameboard.clearSquare(x, y);
+
+                }
+
+            }
+
         }
         
     }
@@ -138,7 +162,66 @@ public class DungeonGenerator extends Generator {
     //Generates connecting hallways between dungeon rooms
     public void generateHallwaysFromBSP(BSP bsp) {
         
+        //Connect the smallest rooms to their sibling nodes
+        List<BSPnode> regions = bsp.getNodesAtDepth(bsp.getDepth() - 1);
         
+        //Create a hallway connecting each pair
+        for (BSPnode region : regions) {
+            
+            BSPnode sisterNode = region.getBack();
+            BSPnode brotherNode = region.getFront();
+            
+            int sisterXCenter = sisterNode.getX() + (sisterNode.getW() / 2);
+            int sisterYCenter = sisterNode.getY() + (sisterNode.getH() / 2);
+            
+            int brotherXCenter = brotherNode.getX() + (brotherNode.getW() / 2);
+            int brotherYCenter = brotherNode.getY() + (brotherNode.getH() / 2);
+            
+            //Carve out hallways
+            //Carve out hallways
+            if (sisterXCenter != brotherXCenter) {
+                
+                if (sisterXCenter < brotherXCenter) {
+                
+                    for (int x = sisterXCenter; x < brotherXCenter; x++) {
+
+                        gameboard.clearSquare(sisterYCenter, x);
+
+                    }
+                
+                } else {
+
+                    for (int x = brotherXCenter; x < sisterXCenter; x++) {
+
+                        gameboard.clearSquare(sisterYCenter, x);
+
+                    }
+                
+                }
+                
+            } else {
+                
+                if (sisterYCenter < brotherYCenter) {
+                
+                    for (int y = sisterYCenter; y < brotherYCenter; y++) {
+
+                        gameboard.clearSquare(y, sisterXCenter);
+
+                    }
+                
+                } else {
+
+                    for (int y = brotherYCenter; y < sisterYCenter; y++) {
+
+                        gameboard.clearSquare(y, sisterXCenter);
+
+                    }
+                
+                }
+                
+            }
+            
+        }
         
     }
     
